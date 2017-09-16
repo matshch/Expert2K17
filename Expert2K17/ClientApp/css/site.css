@@ -1,4 +1,5 @@
 body {
+    min-width: 400px;
 	padding-top: 5rem;
     width: 100wh;
     height: 90vh;

@@ -1,4 +1,9 @@
-﻿.home .card {
+﻿.home .flex-item {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.home .card {
     background-color: rgba(255, 255, 255, 0.5) !important;
     max-width: 302px;
     color: black !important;
