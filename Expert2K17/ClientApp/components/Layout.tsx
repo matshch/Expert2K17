@@ -1,11 +1,11 @@
 import * as React from 'react';
-import NavBar from './NavBar';
 import { Container } from 'reactstrap';
+import Navbar from './NavBar';
 
 export class Layout extends React.Component<{}, {}> {
 	public render() {
 		return <div>
-			<NavBar />
+			<Navbar />
 			<Container fluid>
                 {this.props.children}
             </Container>
