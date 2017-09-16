@@ -1,5 +1,4 @@
 import './css/site.css';
-import './css/flex.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
