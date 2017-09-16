@@ -9,6 +9,8 @@ body {
     animation: Gradient 60s ease infinite;
 }
 
+
+
 @-webkit-keyframes Gradient {
     0% {
         background-position: 0% 50%
@@ -44,3 +46,10 @@ body {
         background-position: 0% 50%
     }
 }
+
+.createSideBar {
+    background-color: rgba(255,255,255,0.6)
+}
+    .createSideBar.card {
+        box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3);
+    }

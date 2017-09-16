@@ -16,8 +16,16 @@ type CounterProps =
     CounterStore.CounterState
     & typeof CounterStore.actionCreators
     & RouteComponentProps<{}>;
-export 
-    class TestCreater extends React.Component<CounterProps, {}> {
+export
+    class TestCreater extends React.Component<CounterProps, { redirected: boolean }> {
+    constructor() {
+        super();
+        let redirect = false;
+
+        this.state = {
+            redirected: redirect
+        }
+    }
     public ComponentWillMount() {
     }
     public render() {
@@ -29,9 +37,9 @@ export
         return <Container fluid>
             <Row>
                 <Col sm={3}>
-                    <TestCreaterNav />
+                    <TestCreaterNav redirected={this.state.redirected} />
                 </Col>
-                <Col sm={7}>
+                <Col sm={9}>
                     <Route path='/CreateTest/CreateSystem' component={TestCreaterSystem} />
                 </Col>
             </Row>
@@ -40,41 +48,43 @@ export
     }
 }
 
-export class TestCreaterNav extends React.Component<{}>{
-    constructor(props: {}) {
-        super(props);
+export class TestCreaterNav extends React.Component<{ redirected: boolean }, {}>{
+    constructor() {
+        super();
 
     }
     public render() {
         return (
-            <div>
+            <Card className="createSideBar">
+                <CardBlock>
                 <div>
                     <h4>Создайте проект</h4> 
                 </div>
 
                 <hr />
-                <Nav vertical>
+                <Nav className="nav-pills" vertical>
                     <NavItem>
-                        <NavLink to={'/CreateTest/CreateSystem'} className='nav-link' activeClassName='active'>Система</NavLink>
+                        <NavLink to={'/CreateTest/CreateSystem'} className='nav-link' exact activeClassName='active'>Система</NavLink>
                     </NavItem>
                     <NavItem>
-                        <NavLink to={'/CreateTest/CreateSystem'} className='nav-link' activeClassName='active'>Система</NavLink>
+                        <NavLink to={'/CreateTest/CreateSystem1'} className='nav-link' activeClassName='active'>Система</NavLink>
                     </NavItem>
                     <NavItem>
-                        <NavLink to={'/CreateTest/CreateSystem'} className='nav-link' activeClassName='active'>Система</NavLink>
+                        <NavLink to={'/CreateTest/CreateSystem2'} className='nav-link' activeClassName='active'>Система</NavLink>
                     </NavItem>
                     <NavItem>
-                        <NavLink to={'/CreateTest/CreateSystem'} className='nav-link' activeClassName='active'>Система</NavLink>
+                        <NavLink to={'/CreateTest/CreateSystem3'} className='nav-link' activeClassName='active'>Система</NavLink>
                     </NavItem>
                 </Nav>
-            </div>
+                </CardBlock>
+            </Card>
             );
     }
 }
 
 export class TestCreaterSystem extends React.Component<{}>{
     render() {
-        return <Card>
+        return <Card className="createSideBar">
             <CardBlock>
             <Form>
                 <FormGroup row>
