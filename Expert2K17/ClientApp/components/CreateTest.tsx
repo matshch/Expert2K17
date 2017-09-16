@@ -9,7 +9,8 @@ import { connect } from 'react-redux';
 import { ApplicationState } from '../store';
 import * as CounterStore from '../store/Counter';
 import * as WeatherForecasts from '../store/WeatherForecasts';
-import { Nav, NavItem, NavLink, Row, Container, Col, Button, Form, FormGroup, Label, Input, FormText, Media } from 'reactstrap'
+import { NavLink as RouterLink, Route } from 'react-router-dom'
+import { Nav, NavItem, NavLink, Row, Container, Col, Button, Form, FormGroup, Label, Input, FormText, Media, Card, CardBlock, CardTitle, CardText } from 'reactstrap'
 
 type CounterProps =
     CounterStore.CounterState
@@ -24,7 +25,7 @@ export
                     <TestCreaterNav />
                 </Col>
                 <Col sm={7}>
-                    <TestCreaterSystem />
+                    <Route path='/CreateTest/CreateSystem' component={TestCreaterSystem} />
                 </Col>
             </Row>
            
@@ -32,7 +33,7 @@ export
     }
 }
 
-class TestCreaterNav extends React.Component<{}>{
+export class TestCreaterNav extends React.Component<{}>{
     constructor(props: {}) {
         super(props);
 
@@ -47,10 +48,10 @@ class TestCreaterNav extends React.Component<{}>{
                 <hr />
                 <Nav vertical>
                     <NavItem>
-                        <NavLink>Система</NavLink>
-                        <NavLink>Система</NavLink>
-                        <NavLink>Система</NavLink>
-                        <NavLink>Система</NavLink>
+                        <NavLink> <RouterLink to={'/CreateTest/CreateSystem'} activeClassName='active'>Система</RouterLink></NavLink>                       
+                        <NavLink> <RouterLink to={'/CreateTest/CreateSystem'} activeClassName='active'>Система</RouterLink></NavLink>
+                        <NavLink> <RouterLink to={'/CreateTest/CreateSystem'} activeClassName='active'>Система</RouterLink></NavLink>
+                        <NavLink> <RouterLink to={'/CreateTest/CreateSystem'} activeClassName='active'>Система</RouterLink></NavLink>
                     </NavItem>
                 </Nav>
             </div>
@@ -58,49 +59,51 @@ class TestCreaterNav extends React.Component<{}>{
     }
 }
 
-class TestCreaterSystem extends React.Component<{}>{
+export class TestCreaterSystem extends React.Component<{}>{
     render() {
-        return <Container fluid>
+        return <Card>
+            <CardBlock>
             <Form>
                 <FormGroup row>
-                    <Label for="email" sm={2}>Название</Label>
-                    <Col sm={10}>
+                    <Label for="email" sm={3}>Название</Label>
+                    <Col sm={9}>
                         <Input type="email" name="email" id="email" placeholder="Email"></Input>
                     </Col>
                 </FormGroup>
                 <FormGroup row>
-                    <Label for="description" sm={2}>О системе</Label>
-                    <Col sm={10}>
+                    <Label for="description" sm={3}>О системе</Label>
+                    <Col sm={9}>
                         <Input type="textarea" id="description" placeholder="Описаение"></Input>
                     </Col>
                 </FormGroup>
                 <FormGroup row>
-                    <Label for="imge" sm={2}>Картинка</Label>
-                    <Col sm={10}>
+                    <Label for="imge" sm={3}>Картинка</Label>
+                    <Col sm={9}>
                         <Input type="file" name="file" id="imge"></Input>
                         <img className="img-fluid" ></img> //Доделать потом чтобы высота была
                     </Col>
                 </FormGroup>
                 <FormGroup row>
-                    <Label for="chb1" sm={2}>Публичный доступ</Label>
-                    <Col sm={10}>
+                    <Label for="chb1" sm={3}>Публичный доступ</Label>
+                    <Col sm={9}>
                         <Input type="checkbox" id="chb1"/>
                     </Col>
                 </FormGroup>
                 <FormGroup row>
-                    <Label for="chb2" sm={2}>Гостевой доступ</Label>
-                    <Col sm={10}>
+                    <Label for="chb2" sm={3}>Гостевой доступ</Label>
+                    <Col sm={9}>
                         <Input type="checkbox" id="chb2" />
                     </Col>
                 </FormGroup>
                 <Row>
-                    <Col sm={2} />
-                    <Col sm={10}>
+                    <Col sm={3} />
+                    <Col sm={9}>
                         <Button color="success" className="pull-left">Создать</Button>
                     </Col>
                 </Row>
             </Form>
-        </Container>
+            </CardBlock>
+        </Card>
     }
 }
 
