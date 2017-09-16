@@ -10,17 +10,15 @@ export interface ListItemProps {
 export default class ListItem extends React.Component<ListItemProps, {}> {
 	public render() {
 		return (
-			<div>
-				<Card className='flex-item'>
-					<CardImg top width="100%" src="https://i.imgur.com/Ly4uhTA.png" alt="Card image cap" />
-					<CardBlock>
-						<CardTitle>{this.props.title}</CardTitle>
-						<CardSubtitle>{this.props.subtitle}</CardSubtitle>
-						<CardText>{this.props.text}</CardText>
-						<Button>Button</Button>
-					</CardBlock>
-				</Card>
-			</div>
+			<Card className='flex-item card'>
+				<CardImg top width="300px" src="https://i.imgur.com/Ly4uhTA.png" alt="Card image cap" />
+				<CardBlock>
+					<CardTitle>{this.props.title}</CardTitle>
+					<CardSubtitle>{this.props.subtitle}</CardSubtitle>
+					<CardText>{this.props.text}</CardText>
+					<Button>Button</Button>
+				</CardBlock>
+			</Card>
 		);
 	}
 }
