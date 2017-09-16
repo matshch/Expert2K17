@@ -11,6 +11,7 @@
     "@types/react-router": "4.0.12",
     "@types/react-router-dom": "4.0.5",
     "@types/react-router-redux": "5.0.3",
+    "@types/reactstrap": "^4.3.13",
     "@types/webpack": "2.2.15",
     "@types/webpack-env": "1.13.0",
     "aspnet-prerendering": "^3.0.1",
