@@ -18,16 +18,17 @@ type CounterProps =
 export 
     class TestCreater extends React.Component<CounterProps, {}> {
     public render() {
-        return <div>
-            <Col sm={3}>
-                <TestCreaterNav/>
-            </Col>
-            <Col sm={9}>
-                <TestCreaterSystem/>
-            </Col>
-
+        return <Container fluid>
+            <Row>
+                <Col sm={3}>
+                    <TestCreaterNav />
+                </Col>
+                <Col sm={7}>
+                    <TestCreaterSystem />
+                </Col>
+            </Row>
            
-        </div>;
+        </Container>;
     }
 }
 
@@ -59,7 +60,7 @@ class TestCreaterNav extends React.Component<{}>{
 
 class TestCreaterSystem extends React.Component<{}>{
     render() {
-        return <div>
+        return <Container fluid>
             <Form>
                 <FormGroup row>
                     <Label for="email" sm={2}>Название</Label>
@@ -99,7 +100,7 @@ class TestCreaterSystem extends React.Component<{}>{
                     </Col>
                 </Row>
             </Form>
-        </div>
+        </Container>
     }
 }
 
