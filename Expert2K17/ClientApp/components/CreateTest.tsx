@@ -9,8 +9,8 @@ import { connect } from 'react-redux';
 import { ApplicationState } from '../store';
 import * as CounterStore from '../store/Counter';
 import * as WeatherForecasts from '../store/WeatherForecasts';
-import { NavLink as RouterLink, Route, Redirect } from 'react-router-dom';
-import { Nav, NavItem, NavLink, Row, Container, Col, Button, Form, FormGroup, Label, Input, FormText, Media, Card, CardBlock, CardTitle, CardText } from 'reactstrap'
+import { NavLink, Route, Redirect } from 'react-router-dom';
+import { Nav, NavItem, Row, Container, Col, Button, Form, FormGroup, Label, Input, FormText, Media, Card, CardBlock, CardTitle, CardText } from 'reactstrap'
 
 type CounterProps =
     CounterStore.CounterState
@@ -55,10 +55,16 @@ export class TestCreaterNav extends React.Component<{}>{
                 <hr />
                 <Nav vertical>
                     <NavItem>
-                        <NavLink> <RouterLink to={'/CreateTest/CreateSystem'} activeClassName='active'>Система</RouterLink></NavLink>                       
-                        <NavLink> <RouterLink to={'/CreateTest/CreateSystem'} activeClassName='active'>Система</RouterLink></NavLink>
-                        <NavLink> <RouterLink to={'/CreateTest/CreateSystem'} activeClassName='active'>Система</RouterLink></NavLink>
-                        <NavLink> <RouterLink to={'/CreateTest/CreateSystem'} activeClassName='active'>Система</RouterLink></NavLink>
+                        <NavLink to={'/CreateTest/CreateSystem'} className='nav-link' activeClassName='active'>Система</NavLink>
+                    </NavItem>
+                    <NavItem>
+                        <NavLink to={'/CreateTest/CreateSystem'} className='nav-link' activeClassName='active'>Система</NavLink>
+                    </NavItem>
+                    <NavItem>
+                        <NavLink to={'/CreateTest/CreateSystem'} className='nav-link' activeClassName='active'>Система</NavLink>
+                    </NavItem>
+                    <NavItem>
+                        <NavLink to={'/CreateTest/CreateSystem'} className='nav-link' activeClassName='active'>Система</NavLink>
                     </NavItem>
                 </Nav>
             </div>
