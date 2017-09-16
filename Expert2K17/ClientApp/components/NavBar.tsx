@@ -18,7 +18,7 @@ export default class NavBar extends React.Component<{}, {isOpen: boolean}> {
   render() {
     return (
       <div>
-        <Navbar fixed="top" color="faded" light toggleable>
+        <Navbar fixed="top" color="inverse" inverse={true} light toggleable>
           <NavbarToggler right onClick={this.toggle} />
           <NavbarBrand href="/">ЭЗ ПЕЗ</NavbarBrand>
           <Collapse isOpen={this.state.isOpen} navbar>

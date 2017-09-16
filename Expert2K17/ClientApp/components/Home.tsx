@@ -2,6 +2,7 @@ import * as React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import ListItem from './ListItem';
 import '../css/flex.css';
+import '../css/cards.css';
 
 export default class Home extends React.Component<RouteComponentProps<{}>, {}> {
 	renderListItem(t: string, st: string, tx: string) {

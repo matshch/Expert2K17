@@ -16,7 +16,6 @@ export default class ListItem extends React.Component<ListItemProps, {}> {
 					<CardTitle>{this.props.title}</CardTitle>
 					<CardSubtitle>{this.props.subtitle}</CardSubtitle>
 					<CardText>{this.props.text}</CardText>
-					<Button>Button</Button>
 				</CardBlock>
 			</Card>
 		);
