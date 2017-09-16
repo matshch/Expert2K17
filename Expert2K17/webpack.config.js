@@ -6,6 +6,7 @@ const merge = require('webpack-merge');
 
 module.exports = (env) => {
     const isDevBuild = !(env && env.prod);
+    const extractCSS = new ExtractTextPlugin('site.css');
 
     // Configuration in common to both client-side and server-side bundles
     const sharedConfig = () => ({
@@ -30,12 +31,12 @@ module.exports = (env) => {
         entry: { 'main-client': './ClientApp/boot-client.tsx' },
         module: {
             rules: [
-                { test: /\.css$/, use: ExtractTextPlugin.extract({ use: isDevBuild ? 'css-loader' : 'css-loader?minimize' }) }
+                { test: /\.css$/, use: extractCSS.extract({ use: isDevBuild ? 'css-loader' : 'css-loader?minimize' }) }
             ]
         },
         output: { path: path.join(__dirname, clientBundleOutputDir) },
         plugins: [
-            new ExtractTextPlugin('site.css'),
+            extractCSS,
             new webpack.DllReferencePlugin({
                 context: __dirname,
                 manifest: require('./wwwroot/dist/vendor-manifest.json')
@@ -56,6 +57,11 @@ module.exports = (env) => {
     const serverBundleConfig = merge(sharedConfig(), {
         resolve: { mainFields: ['main'] },
         entry: { 'main-server': './ClientApp/boot-server.tsx' },
+        module: {
+            rules: [
+                { test: /\.css$/, use: isDevBuild ? 'css-loader' : 'css-loader?minimize' } }
+            ]
+        },
         plugins: [
             new webpack.DllReferencePlugin({
                 context: __dirname,
