@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 import { ApplicationState } from '../store';
 import * as CounterStore from '../store/Counter';
 import * as WeatherForecasts from '../store/WeatherForecasts';
-import { NavLink as RouterLink, Route } from 'react-router-dom'
+import { NavLink as RouterLink, Route, Redirect } from 'react-router-dom';
 import { Nav, NavItem, NavLink, Row, Container, Col, Button, Form, FormGroup, Label, Input, FormText, Media, Card, CardBlock, CardTitle, CardText } from 'reactstrap'
 
 type CounterProps =
@@ -18,7 +18,14 @@ type CounterProps =
     & RouteComponentProps<{}>;
 export 
     class TestCreater extends React.Component<CounterProps, {}> {
+    public ComponentWillMount() {
+    }
     public render() {
+        if (this.props.location.pathname == '/CreateTest') {
+            return <Redirect to="/CreateTest/CreateSystem" />
+        }
+
+
         return <Container fluid>
             <Row>
                 <Col sm={3}>
