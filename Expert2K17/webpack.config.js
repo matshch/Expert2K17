@@ -59,7 +59,7 @@ module.exports = (env) => {
         entry: { 'main-server': './ClientApp/boot-server.tsx' },
         module: {
             rules: [
-                { test: /\.css$/, use: isDevBuild ? 'css-loader' : 'css-loader?minimize' } }
+                { test: /\.css$/, use: isDevBuild ? 'css-loader' : 'css-loader?minimize' }
             ]
         },
         plugins: [
