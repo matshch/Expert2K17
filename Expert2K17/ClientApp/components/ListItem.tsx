@@ -12,7 +12,7 @@ export default class ListItem extends React.Component<ListItemProps, {}> {
 	public render() {
 		return (
 			<Link to={'/'}>
-				<Card className='flex-item card'>
+				<Card className='flex-item'>
 					<CardImg top width="300px" src="https://i.imgur.com/Ly4uhTA.png" alt="Card image cap" />
 					<CardBlock>
 						<CardTitle>{this.props.title}</CardTitle>

@@ -1,4 +1,4 @@
-﻿.card {
+﻿.home .card {
     background-color: rgba(255, 255, 255, 0.5) !important;
     max-width: 302px;
     color: black !important;
@@ -10,7 +10,7 @@
     transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 
-.card:after {
+.home .card:after {
     content: "";
     border-radius: 5px;
     position: absolute;
@@ -25,11 +25,11 @@
     transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 
-.card:hover {
+.home .card:hover {
     -webkit-transform: scale(1.05, 1.05);
     transform: scale(1.05, 1.05);
 }
 
-.card:hover::after {
+.home .card:hover::after {
     opacity: 1;
 }

@@ -7,8 +7,8 @@ export class Layout extends React.Component<{}, {}> {
 		return <div>
 			<Navbar />
 			<Container fluid>
-                {this.props.children}
-            </Container>
-        </div>;
+				{this.props.children}
+			</Container>
+		</div>;
 	}
 }
