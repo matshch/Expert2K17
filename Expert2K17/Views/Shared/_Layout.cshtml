@@ -1,3 +1,4 @@
+﻿@using Microsoft.AspNetCore.Hosting
 <!DOCTYPE html>
 <html>
 <head>
@@ -6,7 +7,15 @@
     <title>@ViewData["Title"] - Expert2K17</title>
     <base href="~/" />
 
-    <link rel="stylesheet" href="~/dist/vendor.css" asp-append-version="true" />
+    @{
+        var relativePath = "dist/vendor.css";
+        var contentPath = ((IHostingEnvironment)ViewContext.HttpContext.RequestServices.GetService(typeof(IHostingEnvironment))).WebRootPath;
+        var vendorCSSPath = System.IO.Path.Combine(contentPath, relativePath);
+        if (System.IO.File.Exists(vendorCSSPath))
+        {
+            <link rel="stylesheet" href="~/dist/vendor.css" asp-append-version="true" />
+        }
+    }
     <link rel="stylesheet" href="~/dist/site.css" asp-append-version="true" />
 </head>
 <body>
