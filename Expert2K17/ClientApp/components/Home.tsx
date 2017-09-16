@@ -13,13 +13,13 @@ export default class Home extends React.Component<RouteComponentProps<{}>, {}> {
 		return (
 			<div className='container-fluid'>
 				<div className='flex-container'>
-					{this.renderListItem("azaz", "meda", "123")}
-					{this.renderListItem("azaz", "meda", "123")}
-					{this.renderListItem("azaz", "meda", "123")}
-					{this.renderListItem("azaz", "meda", "123")}
-					{this.renderListItem("azaz", "meda", "123")}
-					{this.renderListItem("azaz", "meda", "123")}
-					{this.renderListItem("azaz", "meda", "123")}
+					{this.renderListItem("Какую аниму глянуть?", "Данная великолепная система унесёт вас в великолепный мир аниме! ", "MaxAvatar")}
+					{this.renderListItem("Какую аниму глянуть?", "Данная великолепная система унесёт вас в великолепный мир аниме! ", "MaxAvatar")}
+					{this.renderListItem("Какую аниму глянуть?", "Данная великолепная система унесёт вас в великолепный мир аниме! ", "MaxAvatar")}
+					{this.renderListItem("Какую аниму глянуть?", "Данная великолепная система унесёт вас в великолепный мир аниме! ", "MaxAvatar")}
+					{this.renderListItem("Какую аниму глянуть?", "Данная великолепная система унесёт вас в великолепный мир аниме! ", "MaxAvatar")}
+					{this.renderListItem("Какую аниму глянуть?", "Данная великолепная система унесёт вас в великолепный мир аниме! ", "MaxAvatar")}
+					{this.renderListItem("Какую аниму глянуть?", "Данная великолепная система унесёт вас в великолепный мир аниме! ", "MaxAvatar")}
 				</div>
 			</div>);
 	}

@@ -1,5 +1,6 @@
 ﻿.card {
     background-color: rgba(255, 255, 255, 0.5) !important;
+    max-width: 302px;
     color: black !important;
     position: relative;
     display: inline-block;
