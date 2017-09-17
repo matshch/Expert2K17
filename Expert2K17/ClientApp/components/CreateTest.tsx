@@ -10,7 +10,7 @@ import { ApplicationState } from '../store';
 import * as CounterStore from '../store/Counter';
 import * as WeatherForecasts from '../store/WeatherForecasts';
 import { NavLink, Route, Redirect } from 'react-router-dom';
-import { Nav, NavItem, Row, Container, Col, Button, Form, FormGroup, Label, Input, FormText, Media, Card, CardBlock, CardTitle, CardText } from 'reactstrap'
+import { Nav, NavItem, Row, Container, Col, Button, Form, FormGroup, Label, Input, FormText, Media, Card, CardBlock, CardTitle, CardText, ListGroup, ListGroupItem, ListGroupItemText } from 'reactstrap'
 
 type CounterProps =
     CounterStore.CounterState
@@ -26,9 +26,9 @@ export
             redirected: redirect
         }
     }
-    public ComponentWillMount() {
+    ComponentWillMount() {
     }
-    public render() {
+    render() {
         if (this.props.location.pathname == '/CreateTest') {
             return <Redirect to="/CreateTest/CreateSystem" />
         }
@@ -41,6 +41,7 @@ export
                 </Col>
                 <Col sm={9}>
                     <Route path='/CreateTest/CreateSystem' component={TestCreaterSystem} />
+                    <Route path='/CreateTest/CreateAttribute' component={TestCreaterAttribute} />
                 </Col>
             </Row>
            
@@ -53,7 +54,7 @@ export class TestCreaterNav extends React.Component<{ redirected: boolean }, {}>
         super();
 
     }
-    public render() {
+    render() {
         return (
             <Card className="createSideBar">
                 <CardBlock>
@@ -67,10 +68,10 @@ export class TestCreaterNav extends React.Component<{ redirected: boolean }, {}>
                         <NavLink to={'/CreateTest/CreateSystem'} className='nav-link' exact activeClassName='active'>Система</NavLink>
                     </NavItem>
                     <NavItem>
-                        <NavLink to={'/CreateTest/CreateSystem1'} className='nav-link' activeClassName='active'>Система</NavLink>
+                            <NavLink to={'/CreateTest/CreateAttribute'} className='nav-link' activeClassName='active'>Аттрибуты</NavLink>
                     </NavItem>
                     <NavItem>
-                        <NavLink to={'/CreateTest/CreateSystem2'} className='nav-link' activeClassName='active'>Система</NavLink>
+                        <NavLink to={'/CreateTest/CreateSystem2'} className='nav-link' activeClassName='active'>Объекты</NavLink>
                     </NavItem>
                     <NavItem>
                         <NavLink to={'/CreateTest/CreateSystem3'} className='nav-link' activeClassName='active'>Система</NavLink>
@@ -88,9 +89,9 @@ export class TestCreaterSystem extends React.Component<{}>{
             <CardBlock>
             <Form>
                 <FormGroup row>
-                    <Label for="email" sm={3}>Название</Label>
+                    <Label for="text" sm={3}>Название</Label>
                     <Col sm={9}>
-                        <Input type="email" name="email" id="email" placeholder="Email"></Input>
+                        <Input type="text" name="text" id="text" placeholder="Название теста"></Input>
                     </Col>
                 </FormGroup>
                 <FormGroup row>
@@ -130,7 +131,70 @@ export class TestCreaterSystem extends React.Component<{}>{
     }
 }
 
-class TestCreaterAttribute extends React.Component<{}>{
+interface MainAttr {
+    attributes: [BasicAttribute];
+}
+
+interface BasicAttribute {
+    name: string;
+    parameters: [string];
+}
+
+
+class TestCreaterAttribute extends React.Component<{}, MainAttr>{
+    constructor() {
+        super();
+        this.state = {
+            attributes: [{
+                name: 'кек',
+                parameters: ['1']
+            }]
+        };
+    }
+    render() {
+        return <Container fluid>
+            
+            {this.state.attributes.map((val) => {
+                return <Attribute new={false} name={val.name} attr={val.parameters} />
+            })}
+        </Container>
+    }
+}
+
+interface AttributeProps {
+    new: boolean;
+    added?: (add: boolean) => void;
+    deleted?: (purge: boolean) => void;
+    name?: string;
+    attr: [string];
+}
+
+
+class Attribute extends React.Component<AttributeProps, {}>{
+    constructor() {
+        super();
+    }
+
+    render() {
+        return <Card className="createSideBar">
+            <CardBlock>
+                <Form>
+                    <FormGroup row>
+                        <Label for="texter" sm={3}>Название</Label>
+                        <Col sm={9}>
+                            <Input type="text" name="text" id="texter" value={this.props.name} placeholder="Название аттрибута"></Input>
+                        </Col>
+                    </FormGroup>
+                    <hr />
+                    <ListGroup>
+                        {this.props.attr.map((val) => {
+                            return <ListGroupItem>{val}</ListGroupItem>
+                        })}
+                    </ListGroup>
+                </Form>
+            </CardBlock>
+        </Card>
+    }
 
 }
 
