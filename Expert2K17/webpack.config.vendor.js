@@ -29,7 +29,8 @@ module.exports = (env) => {
             new webpack.NormalModuleReplacementPlugin(/\/iconv-loader$/, require.resolve('node-noop')), // Workaround for https://github.com/andris9/encoding/issues/16
             new webpack.DefinePlugin({
                 'process.env.NODE_ENV': isDevBuild ? '"development"' : '"production"'
-            })
+            }),
+            new webpack.optimize.ModuleConcatenationPlugin()
         ]
     };
 
