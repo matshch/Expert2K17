@@ -22,6 +22,7 @@ namespace Expert2K17
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddResponseCompression();
             services.AddMvc();
         }
 
@@ -39,6 +40,7 @@ namespace Expert2K17
             }
             else
             {
+                app.UseResponseCompression();
                 app.UseExceptionHandler("/Home/Error");
             }
 
