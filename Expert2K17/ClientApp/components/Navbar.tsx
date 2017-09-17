@@ -35,7 +35,9 @@ export default class NavBar extends React.Component<{}, {isOpen: boolean}> {
                 </NavLink>
               </NavItem>
               <NavItem>
-                <NavBarLink href="https://github.com/matshch/Expert2K17" target='_blank'>Github</NavBarLink>
+                <NavLink to={'/login'} className='nav-link' activeClassName='active'>
+                  Войти
+                </NavLink>
               </NavItem>
             </Nav>
           </Collapse>

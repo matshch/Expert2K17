@@ -43,3 +43,26 @@
 .home .card:hover::after {
     opacity: 1;
 }
+
+.login {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login .card {
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3);
+    background-color: rgba(255,255,255,0.6);
+    min-width: 300px;
+    max-width: 300px;
+}
+
+.login button {
+    margin-top: 20px;
+}
+
+.login form {
+    margin-top: 10px;
+    margin-left: 30px;
+    margin-right: 30px;
+}
