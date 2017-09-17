@@ -17,16 +17,7 @@ module.exports = (env) => {
         },
         entry: {
             vendor: [
-                'domain-task',
-                'event-source-polyfill',
-                'history',
-                'react',
-                'react-dom',
-                'react-router-dom',
-                'react-redux',
-                'redux',
-                'redux-thunk',
-                'react-router-redux'
+                'event-source-polyfill'
             ],
         },
         output: {
