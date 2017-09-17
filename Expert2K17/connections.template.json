@@ -1,0 +1,6 @@
+{
+  "ConnectionStrings": {
+    "PostgreSQL": "Host=localhost;Database=expert2k17;Username=expert2k17;Password=DatabasePassword"
+  },
+  "PromoteToAdminToken": "INSERT_YOUR_SUPER_SECRET_TOKEN_HERE"
+}

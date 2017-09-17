@@ -49,10 +49,12 @@
     "build": "npm-run-all build:vendor build:site",
     "build:vendor": "webpack --config webpack.config.vendor.js",
     "build:site": "webpack",
-    "prepare": "npm run build",
+    "prepare": "npm-run-all --parallel setup build",
+    "setup": "cp-file --no-overwrite connections.template.json connections.json",
     "start": "dotnet run"
   },
   "devDependencies": {
+    "cp-file-cli": "^1.0.1",
     "npm-run-all": "^4.1.1"
   }
 }
