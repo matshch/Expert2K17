@@ -1,9 +1,14 @@
-﻿.home .flex-item {
+﻿.home .card-text {
+    text-align: right;
+}
+
+.home .flex-item {
     padding-left: 10px;
     padding-right: 10px;
 }
 
 .home .card {
+    text-align: justify;
     background-color: rgba(255, 255, 255, 0.5) !important;
     max-width: 302px;
     color: black !important;
