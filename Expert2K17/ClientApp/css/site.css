@@ -1,16 +1,16 @@
 @font-face {
-    font-family: RobotoCondensed; /* ָלÿ רנטפעא */
-    src: url(../fonts/RobotoCondensed-Regular.ttf); /* ֿףעü ך פאיכף סמ רנטפעמל */
+    font-family: RobotoCondensed;
+    src: url(../fonts/RobotoCondensed-Regular.ttf);
 }
 
 @font-face {
-    font-family: Lobster; /* ָלÿ רנטפעא */
-    src: url(../fonts/Lobster-Regular.ttf); /* ֿףעü ך פאיכף סמ רנטפעמל */
+    font-family: Lobster;
+    src: url(../fonts/Lobster-Regular.ttf);
 }
 
 @font-face {
-    font-family: OpenSans-SemiBoldItalic; /* ָלÿ רנטפעא */
-    src: url(../fonts/OpenSans-SemiBoldItalic.ttf); /* ֿףעü ך פאיכף סמ רנטפעמל */
+    font-family: OpenSans-SemiBoldItalic;
+    src: url(../fonts/OpenSans-SemiBoldItalic.ttf);
 }
 
 *:not(.navbar *) {
@@ -78,6 +78,7 @@ body {
 .createSideBar {
     background-color: rgba(255,255,255,0.6)
 }
-    .createSideBar.card {
-        box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3);
-    }
+
+.createSideBar.card {
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3);
+}
