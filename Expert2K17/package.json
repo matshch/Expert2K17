@@ -46,6 +46,13 @@
     "webpack-merge": "^4.1.0"
   },
   "scripts": {
-    "install": "webpack --config webpack.config.vendor.js && webpack --config webpack.config.js"
+    "build": "npm-run-all build:vendor build:site",
+    "build:vendor": "webpack --config webpack.config.vendor.js",
+    "build:site": "webpack",
+    "prepare": "npm run build",
+    "start": "dotnet run"
+  },
+  "devDependencies": {
+    "npm-run-all": "^4.1.1"
   }
 }
