@@ -1,3 +1,12 @@
+@font-face {
+    font-family: Bignoodletoo; /* ָלÿ רנטפעא */
+    src: url(../fonts/bignoodletoo.ttf); /* ֿףעü ך פאיכף סמ רנטפעמל */
+}
+
+* {
+    font-family: Bignoodletoo !important;
+}
+
 body {
     min-width: 400px;
 	padding-top: 5rem;
