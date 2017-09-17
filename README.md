@@ -19,6 +19,8 @@
 
 Чтобы подготовить проект к запуску в режиме релиза, выполните команду `dotnet publish -c Release`. После этого в папке `bin/Release/netcoreapp2.0/publish` будет лежать скомпилированная версия системы, которую можно запустить командой `dotnet Expert2K17.dll`. Для запуска таким образом требуется [.NET Core 2.0.0 Runtime](https://github.com/dotnet/core/blob/master/release-notes/download-archives/2.0.0-download.md).
 
+При необходимости возможна сборка версии, независимой от .NET Core Runtime или SDK. Для этого выберите подходящие для целевых машин Runtime Identifier (RID) из [списка](https://github.com/dotnet/corefx/blob/release/2.0.0/pkg/Microsoft.NETCore.Platforms/runtime.json), затем добавьте в `Expert2K17.csproj` в раздел `<PropertyGroup>` тег `<RuntimeIdentifiers>`, в котором через точку с запятой перечислите все необходимые RIDы. После этого выполните публикацию проекта командой `dotnet publish -c Release -r `*RID*. В результате в папке `bin/Release/netcoreapp2.0/`*RID*`/publish` будет лежать скомпилированная версия системы, независимая от установленных в целевой системе .NET Core. Для запуска используйте исполняемый файл `Expert2K17`.
+
 ## Известные проблемы
 *   `npm install` выдаёт предупреждения вида:
 
