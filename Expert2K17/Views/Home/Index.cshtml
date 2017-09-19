@@ -1,8 +1,62 @@
+@using Microsoft.AspNetCore.Hosting
+@using Microsoft.AspNetCore.Http.Features
+@using Microsoft.AspNetCore.NodeServices
+@using Microsoft.AspNetCore.SpaServices.Prerendering
 @{
-    ViewData["Title"] = "Home Page";
-}
+    var serviceProvider = ViewContext.HttpContext.RequestServices;
+    var hostEnv = (IHostingEnvironment)serviceProvider.GetService(typeof(IHostingEnvironment));
+    var nodeServices = (INodeServices)serviceProvider.GetService(typeof(INodeServices));
+    var applicationBasePath = hostEnv.ContentRootPath;
 
-<div id="react-app" asp-prerender-module="ClientApp/dist/main-server">Loading...</div>
+    var applicationLifetime = (IApplicationLifetime)serviceProvider.GetService(typeof(IApplicationLifetime));
+    var applicationStoppingToken = applicationLifetime.ApplicationStopping;
+
+    var httpContext = ViewContext.HttpContext;
+    var requestFeature = httpContext.Features.Get<IHttpRequestFeature>();
+    var unencodedPathAndQuery = requestFeature.RawTarget;
+
+    var request = httpContext.Request;
+    var unencodedAbsoluteUrl = $"{request.Scheme}://{request.Host}{unencodedPathAndQuery}";
+
+    var moduleName = "ClientApp/dist/main-server";
+    var result = await Prerenderer.RenderToString(
+                applicationBasePath,
+                nodeServices,
+                applicationStoppingToken,
+                new JavaScriptModuleExport(moduleName),
+                unencodedAbsoluteUrl,
+                unencodedPathAndQuery,
+                default(object),
+                default(int),
+                request.PathBase.ToString());
+
+    if (!string.IsNullOrEmpty(result.RedirectUrl))
+    {
+        // It's a redirection
+        ViewContext.HttpContext.Response.Redirect(result.RedirectUrl);
+        return;
+    }
+
+    if (result.StatusCode.HasValue)
+    {
+        ViewContext.HttpContext.Response.StatusCode = result.StatusCode.Value;
+    }
+
+    var title = result.Globals["title"]?.ToString();
+    if (!string.IsNullOrEmpty(title))
+    {
+        ViewData["Title"] = title;
+        result.Globals.Remove("title");
+    }
+
+    var globalsScript = result.CreateGlobalsAssignmentScript();
+    var script = "";
+    if (!string.IsNullOrEmpty(globalsScript))
+    {
+        script = $"<script>{globalsScript}</script>";
+    }
+}
+<div id="react-app">@Html.Raw(result.Html)@Html.Raw(script)</div>
 
 @section scripts {
     <script src="~/dist/main-client.js" asp-append-version="true"></script>
