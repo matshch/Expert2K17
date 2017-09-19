@@ -8,7 +8,7 @@ export interface System {
     tldr: string;
     //guid: string;
 }
-interface KSystem {
+export interface KSystem {
     [guid: string]: System;
 }
 
@@ -19,7 +19,7 @@ interface Attributes {
     values: string[];
     unitValue: boolean;
 }
-interface KAttributes {
+export interface KAttributes {
     [guid: string]: Attributes;    
 }
 
@@ -34,7 +34,7 @@ interface Subject {
     pairs: Pair;
 }
 
-interface KSubject {
+export interface KSubject {
     [guid: string]: Subject;
 }
 
@@ -46,7 +46,7 @@ interface Parameter {
     values: string[];
 }
 
-interface KParameter {
+export interface KParameter {
     [guid: string]: string;
 }
 
@@ -71,7 +71,7 @@ interface Condition {
     parameter: boolean; // 0 - par -> 1 - attr
     //guid: string;   
 }
-interface KCondition {
+export interface KCondition {
     [guid: string]: Condition;
 }
 
@@ -87,7 +87,7 @@ interface Question {
     cast_if: string; //Condition guid 
 
 }
-interface KQuestion {
+export interface KQuestion {
     [guid: string]: Question;
 }
 
@@ -98,6 +98,6 @@ interface Logic {
     operation: Operation;
 }
 
-interface Klogic {
+export interface Klogic {
     [guid: string]: Logic;
 }
