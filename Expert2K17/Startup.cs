@@ -39,6 +39,9 @@ namespace Expert2K17
             });
 
             services.AddResponseCompression();
+
+            services.AddNodeServices();
+
             services.AddMvc();
         }
 
