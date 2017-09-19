@@ -1,14 +1,17 @@
 import * as React from 'react';
 import { Container } from 'reactstrap';
 import Navbar from './NavBar';
+import DocumentTitle from 'react-document-title';
 
 export class Layout extends React.Component<{}, {}> {
     public render() {
-        return <div>
-            <Navbar />
-            <Container fluid>
-                {this.props.children}
-            </Container>
-        </div>;
+        return <DocumentTitle title='ЭЗ ПЕЗ'>
+            <div>
+                <Navbar />
+                <Container fluid>
+                    {this.props.children}
+                </Container>
+            </div>
+        </DocumentTitle>;
     }
 }

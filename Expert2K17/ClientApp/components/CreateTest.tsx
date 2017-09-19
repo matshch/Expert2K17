@@ -11,6 +11,7 @@ import * as CounterStore from '../store/Counter';
 import * as WeatherForecasts from '../store/WeatherForecasts';
 import { NavLink, Route, Redirect } from 'react-router-dom';
 import { Nav, NavItem, Row, Container, Col, Button, Form, FormGroup, Label, Input, FormText, Media, Card, CardBlock, CardTitle, CardText, ListGroup, ListGroupItem, ListGroupItemText } from 'reactstrap'
+import DocumentTitle from 'react-document-title';
 
 type CounterProps =
     CounterStore.CounterState
@@ -34,18 +35,19 @@ export
         }
 
 
-        return <Container fluid>
-            <Row>
-                <Col sm={3}>
-                    <TestCreaterNav redirected={this.state.redirected} />
-                </Col>
-                <Col sm={9}>
-                    <Route path='/CreateTest/CreateSystem' component={TestCreaterSystem} />
-                    <Route path='/CreateTest/CreateAttribute' component={TestCreaterAttribute} />
-                </Col>
-            </Row>
-           
-        </Container>;
+        return <DocumentTitle title='Создание системы — ЭЗ ПЕЗ'>
+            <Container fluid>
+                <Row>
+                    <Col sm={3}>
+                        <TestCreaterNav redirected={this.state.redirected} />
+                    </Col>
+                    <Col sm={9}>
+                        <Route path='/CreateTest/CreateSystem' component={TestCreaterSystem} />
+                        <Route path='/CreateTest/CreateAttribute' component={TestCreaterAttribute} />
+                    </Col>
+                </Row>
+            </Container>
+        </DocumentTitle>;
     }
 }
 
