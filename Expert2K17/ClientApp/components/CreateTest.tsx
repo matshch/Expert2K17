@@ -11,6 +11,7 @@ import * as CounterStore from '../store/Counter';
 import * as WeatherForecasts from '../store/WeatherForecasts';
 import { NavLink, Route, Redirect } from 'react-router-dom';
 import { Nav, NavItem, Row, Container, Col, Button, Form, FormGroup, Label, Input, FormText, Media, Card, CardBlock, CardTitle, CardText, ListGroup, ListGroupItem, ListGroupItemText } from 'reactstrap'
+import DocumentTitle from 'react-document-title';
 
 type CounterProps =
     CounterStore.CounterState
@@ -34,18 +35,19 @@ export
         }
 
 
-        return <Container fluid>
-            <Row>
-                <Col sm={3}>
-                    <TestCreaterNav redirected={this.state.redirected} />
-                </Col>
-                <Col sm={9}>
-                    <Route path='/CreateTest/CreateSystem' component={TestCreaterSystem} />
-                    <Route path='/CreateTest/CreateAttribute' component={TestCreaterAttribute} />
-                </Col>
-            </Row>
-           
-        </Container>;
+        return <DocumentTitle title='Создание системы — ЭЗ ПЕЗ'>
+            <Container fluid>
+                <Row>
+                    <Col sm={3}>
+                        <TestCreaterNav redirected={this.state.redirected} />
+                    </Col>
+                    <Col sm={9}>
+                        <Route path='/CreateTest/CreateSystem' component={TestCreaterSystem} />
+                        <Route path='/CreateTest/CreateAttribute' component={TestCreaterAttribute} />
+                    </Col>
+                </Row>
+            </Container>
+        </DocumentTitle>;
     }
 }
 
@@ -132,12 +134,12 @@ export class TestCreaterSystem extends React.Component<{}>{
 }
 
 interface MainAttr {
-    attributes: [BasicAttribute];
+    attributes: BasicAttribute[];
 }
 
 interface BasicAttribute {
     name: string;
-    parameters: [string];
+    parameters: string[] | any;
 }
 
 
@@ -151,28 +153,51 @@ class TestCreaterAttribute extends React.Component<{}, MainAttr>{
             }]
         };
     }
+    name_callback: (name: string) => void = (name_) => {
+
+        let param: BasicAttribute[] = this.state.attributes.concat({ name: name_, parameters: [] })
+        this.setState({ attributes: param });
+    } 
+
     render() {
         return <Container fluid>
             
-            {this.state.attributes.map((val) => {
-                return <Attribute new={false} name={val.name} attr={val.parameters} />
+            {this.state.attributes.map((val,key) => {
+                return <Attribute new={false} index={key} name={val.name} added={this.name_callback} attr={val.parameters} />
             })}
+            <Attribute new={true} added={this.name_callback} name={''} attr={[]} />
         </Container>
     }
 }
 
 interface AttributeProps {
     new: boolean;
-    added?: (add: boolean) => void;
+    index?: number;
+    added: (name: string) => void;
     deleted?: (purge: boolean) => void;
-    name?: string;
-    attr: [string];
+    name: string;
+    attr: string[];
 }
 
+interface AttributeState {
+    name: string;
+}
 
-class Attribute extends React.Component<AttributeProps, {}>{
-    constructor() {
-        super();
+class Attribute extends React.Component<AttributeProps, AttributeState>{
+    constructor(props: AttributeProps) {
+        super(props);
+        if (!props.new) {
+            this.state = { name: props.name };
+        } else {
+            this.state = { name: '' };
+        }   
+
+    }
+    add_click: () => void = () => {
+        this.props.added(this.state.name)   
+    }
+    name_change = () => {
+
     }
 
     render() {
@@ -182,15 +207,22 @@ class Attribute extends React.Component<AttributeProps, {}>{
                     <FormGroup row>
                         <Label for="texter" sm={3}>Название</Label>
                         <Col sm={9}>
-                            <Input type="text" name="text" id="texter" value={this.props.name} placeholder="Название аттрибута"></Input>
+                            <Input type="text" name="text" id="texter" value={this.state.name} placeholder="Название аттрибута"></Input>
                         </Col>
                     </FormGroup>
                     <hr />
                     <ListGroup>
-                        {this.props.attr.map((val) => {
-                            return <ListGroupItem>{val}</ListGroupItem>
+                        {this.props.attr.map((val, key) => {
+                            return <ListGroupItem key={key}>{val}</ListGroupItem>
                         })}
                     </ListGroup>
+                    {(() => {
+                        if (this.props.new) {
+                            return <Button color="success">Создать</Button>
+                        } else {
+
+                        }
+                    })()}
                 </Form>
             </CardBlock>
         </Card>

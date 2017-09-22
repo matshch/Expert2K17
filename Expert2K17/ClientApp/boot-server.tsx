@@ -7,6 +7,7 @@ import { createMemoryHistory } from 'history';
 import { createServerRenderer, RenderResult } from 'aspnet-prerendering';
 import { routes } from './routes';
 import configureStore from './configureStore';
+import DocumentTitle from 'react-document-title';
 
 export default createServerRenderer(params => {
     return new Promise<RenderResult>((resolve, reject) => {
@@ -36,9 +37,11 @@ export default createServerRenderer(params => {
         // Once any async tasks are done, we can perform the final render
         // We also send the redux store state, so the client can continue execution where the server left off
         params.domainTasks.then(() => {
+            var render = renderToString(app);
+            var title = (DocumentTitle as any).rewind();
             resolve({
-                html: renderToString(app),
-                globals: { initialReduxState: store.getState() }
+                html: render,
+                globals: { initialReduxState: store.getState(), title }
             });
         }, reject); // Also propagate any errors back into the host application
     });

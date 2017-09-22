@@ -5,6 +5,7 @@
   "dependencies": {
     "@types/history": "^4.6.0",
     "@types/react": "^15.6.2",
+    "@types/react-document-title": "^2.0.0",
     "@types/react-dom": "^15.5.4",
     "@types/react-hot-loader": "^3.0.4",
     "@types/react-redux": "^5.0.8",
@@ -29,6 +30,7 @@
     "node-noop": "^1.0.0",
     "popper.js": "^1.12.5",
     "react": "^15.6.1",
+    "react-document-title": "^2.0.3",
     "react-dom": "^15.6.1",
     "react-hot-loader": "^3.0.0-beta.7",
     "react-redux": "^5.0.6",

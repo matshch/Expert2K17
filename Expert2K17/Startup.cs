@@ -1,6 +1,8 @@
 using Expert2K17.Data;
+using Expert2K17.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -20,9 +22,26 @@ namespace Expert2K17
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<Db>(options => options.UseNpgsql(Configuration.GetConnectionString("PostgreSQL")));
+            services.AddDbContext<Db>(options => 
+                options.UseNpgsql(Configuration.GetConnectionString("PostgreSQL")));
+
+            services.AddIdentity<User, IdentityRole>()
+                .AddEntityFrameworkStores<Db>()
+                .AddDefaultTokenProviders();
+
+            services.Configure<IdentityOptions>(options => {
+                options.Password.RequireDigit = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireLowercase = false;
+
+                options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            });
 
             services.AddResponseCompression();
+
+            services.AddNodeServices();
+
             services.AddMvc();
         }
 
@@ -45,6 +64,8 @@ namespace Expert2K17
             }
 
             app.UseStaticFiles();
+
+            app.UseAuthentication();
 
             app.UseMvc(routes =>
             {
