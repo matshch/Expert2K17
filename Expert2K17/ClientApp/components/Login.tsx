@@ -16,12 +16,12 @@ export default class Login extends React.Component<RouteComponentProps<{}>, { ty
         var str_1 = "";
         var str_2 = "";
         if (array[0] == 1) {
-            //this.setState({ type: true })
+            this.setState({ type: true })
         } else {
-            //this.setState({ type: false })
+            this.setState({ type: false })
         }
         if (array[1] == 1) {
-            //this.setState({ type: true })
+            this.setState({ type: true })
             str_1 = "fade-in"
         } else {
             str_1 = "fade-out";
@@ -40,7 +40,7 @@ export default class Login extends React.Component<RouteComponentProps<{}>, { ty
                 <div className="lg-card login ">
                     <Card>
                         <Form>
-                            <FormGroup className={"logFormGroup " + this.state.fadetype[0]} row onAnimationEnd={() => this.setState((state) => ({type: state.fadetype[0] == "fade-out"}))}>
+                            <FormGroup className={"logFormGroup " + this.state.fadetype[0]} row>
                                 <Label for="exampleEmail">Логин</Label>
                                 <Input size="xs" type="text" name="login" id="Login" placeholder="введите логин" />
                                 <Label for="examplePassword">Пароль</Label>
@@ -58,7 +58,7 @@ export default class Login extends React.Component<RouteComponentProps<{}>, { ty
                 <div className="lg-card register">
                     <Card>
                         <Form>
-                            <FormGroup className={"regFormGroup " + this.state.fadetype[1]} row onAnimationEnd={() => this.setState((state) => ({type: state.fadetype[1] == "fade-out"}))}>
+                            <FormGroup className={"regFormGroup " + this.state.fadetype[1]} row>
                                 <Label for="exampleEmail">Логин</Label>
                                 <Input size="xs" type="text" name="login" id="Login" placeholder="введите логин" />
                                 <Label for="exampleEmail">Имя</Label>
