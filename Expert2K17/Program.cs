@@ -5,12 +5,13 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Threading.Tasks;
 
 namespace Expert2K17
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var host = BuildWebHost(args);
             
@@ -20,7 +21,7 @@ namespace Expert2K17
                 try
                 {
                     var context = services.GetRequiredService<Db>();
-                    DbInitializer.Initialize(context);
+                    await DbInitializer.InitializeAsync(context);
                 }
                 catch (Exception ex)
                 {
