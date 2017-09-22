@@ -27,6 +27,7 @@ namespace Expert2K17
                 {
                     var logger = services.GetRequiredService<ILogger<Program>>();
                     logger.LogError(ex, "An error occurred while seeding the database.");
+                    throw; // Can't work without DB
                 }
             }
 
