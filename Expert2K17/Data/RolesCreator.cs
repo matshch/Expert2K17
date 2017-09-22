@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Threading.Tasks;
 
 namespace Expert2K17.Data
@@ -7,7 +8,7 @@ namespace Expert2K17.Data
     {
         public static async Task CreateAsync(RoleManager<IdentityRole> roleManager)
         {
-            string[] roleNames = { "Admin" };
+            var roleNames = Enum.GetNames(typeof(Roles));
             foreach (var roleName in roleNames)
             {
                 var roleExist = await roleManager.RoleExistsAsync(roleName);
