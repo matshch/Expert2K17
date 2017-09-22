@@ -28,15 +28,13 @@ h6 {
 body {
     min-width: 400px;
 	padding-top: 5rem;
-    width: 100wh;
-    height: 90vh;
+    height: 100%;
     background: linear-gradient(-45deg, #EE7752, #f590b7, #23A6D5, #23D5AB);
     background-size: 400% 400%;
     -webkit-animation: Gradient 60s ease infinite;
     -moz-animation: Gradient 60s ease infinite;
     animation: Gradient 60s ease infinite;
 }
-
 
 
 @-webkit-keyframes Gradient {
