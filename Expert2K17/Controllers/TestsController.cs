@@ -75,7 +75,7 @@ namespace Expert2K17.Controllers
                 Name = "Как добиться 120 FPS?",
                 Description = "Поможем вам понять, почему у вас так мало FPS.",
                 User = user3,
-                Image = new Uri("https://i.imgur.com/ji7dCGo.mp4")
+                Image = new Uri("https://i.imgur.com/gMi4k6B.png")
             };
             var test6 = new Test
             {
