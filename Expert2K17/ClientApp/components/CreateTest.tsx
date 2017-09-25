@@ -1,4 +1,4 @@
-﻿// A '.tsx' file enables JSX support in the TypeScript compiler, 
+﻿ // A '.tsx' file enables JSX support in the TypeScript compiler, 
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 
@@ -7,31 +7,25 @@ import * as React from 'react';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { ApplicationState } from '../store';
-import * as CounterStore from '../store/Counter';
+import * as Store from '../store/System';
 import * as WeatherForecasts from '../store/WeatherForecasts';
 import { NavLink, Route, Redirect } from 'react-router-dom';
 import { Nav, NavItem, Row, Container, Col, Button, Form, FormGroup, Label, Input, FormText, Media, Card, CardBlock, CardTitle, CardText, ListGroup, ListGroupItem, ListGroupItemText } from 'reactstrap'
 import DocumentTitle from 'react-document-title';
+import * as Interf from '../store/TestInterfaces'
 
 type CounterProps =
-    CounterStore.CounterState
-    & typeof CounterStore.actionCreators
-    & RouteComponentProps<{}>;
+    Interf.KSystem
+    & typeof Store.actionCreators
+    & RouteComponentProps<{guid:string}>;
 export
-    class TestCreater extends React.Component<CounterProps, { redirected: boolean }> {
+    class TestCreater extends React.Component<CounterProps, {}> {
     constructor() {
         super();
-        let redirect = false;
-
-        this.state = {
-            redirected: redirect
-        }
-    }
-    ComponentWillMount() {
     }
     render() {
-        if (this.props.location.pathname == '/CreateTest') {
-            return <Redirect to="/CreateTest/CreateSystem" />
+        if (this.props.location.pathname == '/EditTest') {
+            return <Redirect to="/EditTest/new" />
         }
 
 
@@ -39,19 +33,26 @@ export
             <Container fluid>
                 <Row>
                     <Col sm={3}>
-                        <TestCreaterNav redirected={this.state.redirected} />
+                        <TestCreaterNav link={this.props.match.params.guid} />
                     </Col>
                     <Col sm={9}>
-                        <Route path='/CreateTest/CreateSystem' component={TestCreaterSystem} />
-                        <Route path='/CreateTest/CreateAttribute' component={TestCreaterAttribute} />
+                        <Route path='/EditTest/new' component={TestCreaterSystem} />
+                        <Route path='/EditTest/:guid/CreateSystem' component={TestCreaterSystem} />
+                        <Route path='/EditTest/:guid/CreateAttribute' component={TestCreaterAttribute} />
                     </Col>
                 </Row>
             </Container>
         </DocumentTitle>;
     }
 }
+interface Naver {
+    link: string;
+}
+type NavProps =
+    Naver;
 
-export class TestCreaterNav extends React.Component<{ redirected: boolean }, {}>{
+
+export class TestCreaterNav extends React.Component<NavProps, {}>{
     constructor() {
         super();
 
@@ -67,16 +68,23 @@ export class TestCreaterNav extends React.Component<{ redirected: boolean }, {}>
                 <hr />
                 <Nav className="nav-pills" vertical>
                     <NavItem>
-                        <NavLink to={'/CreateTest/CreateSystem'} className='nav-link' exact activeClassName='active'>Система</NavLink>
+                            {
+                                (() => {
+                                    if (typeof this.props.link  != 'undefined') {
+                                        return <NavLink to={'/EditTest/' + this.props.link + '/CreateSystem'} className='nav-link' exact activeClassName='active'>Система</NavLink>
+                                    }
+                                    return <NavLink to={'/EditTest/CreateSystem'} className='nav-link' exact activeClassName='active'>Система</NavLink>
+                                })()
+                            }  
                     </NavItem>
                     <NavItem>
-                            <NavLink to={'/CreateTest/CreateAttribute'} className='nav-link' activeClassName='active'>Аттрибуты</NavLink>
+                            <NavLink to={'/EditTest/CreateAttribute'} className='nav-link' activeClassName='active'>Аттрибуты</NavLink>
                     </NavItem>
                     <NavItem>
-                        <NavLink to={'/CreateTest/CreateSystem2'} className='nav-link' activeClassName='active'>Объекты</NavLink>
+                            <NavLink to={'/EditTest/CreateSystem2'} className='nav-link' activeClassName='active'>Объекты</NavLink>
                     </NavItem>
                     <NavItem>
-                        <NavLink to={'/CreateTest/CreateSystem3'} className='nav-link' activeClassName='active'>Система</NavLink>
+                            <NavLink to={'/EditTest/CreateSystem3'} className='nav-link' activeClassName='active'>Система</NavLink>
                     </NavItem>
                 </Nav>
                 </CardBlock>
@@ -86,6 +94,7 @@ export class TestCreaterNav extends React.Component<{ redirected: boolean }, {}>
 }
 
 export class TestCreaterSystem extends React.Component<{}>{
+
     render() {
         return <Card className="createSideBar">
             <CardBlock>
@@ -106,7 +115,7 @@ export class TestCreaterSystem extends React.Component<{}>{
                     <Label for="imge" sm={3}>Картинка</Label>
                     <Col sm={9}>
                         <Input type="file" name="file" id="imge"></Input>
-                        <img className="img-fluid" ></img> //Доделать потом чтобы высота была
+                        <img className="img-fluid" ></img>
                     </Col>
                 </FormGroup>
                 <FormGroup row>
@@ -243,6 +252,6 @@ class Attribute extends React.Component<AttributeProps, AttributeState>{
 
 // Wire up the React component to the Redux store
 export default connect(
-    (state: ApplicationState) => state.counter, // Selects which state properties are merged into the component's props
-    CounterStore.actionCreators                 // Selects which action creators are merged into the component's props
+    (state: ApplicationState) => state.system, // Selects which state properties are merged into the component's props
+    Store.actionCreators                 // Selects which action creators are merged into the component's props
 )(TestCreater) as typeof TestCreater;

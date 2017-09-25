@@ -27,15 +27,11 @@ interface RequestWeatherForecastsAction {
     startDateIndex: number;
 }
 
-interface ReceiveWeatherForecastsAction {
-    type: 'RECEIVE_WEATHER_FORECASTS';
-    startDateIndex: number;
-    forecasts: WeatherForecast[];
-}
+
 
 // Declare a 'discriminated union' type. This guarantees that all references to 'type' properties contain one of the
 // declared type strings (and not any other arbitrary string).
-type KnownAction = RequestWeatherForecastsAction | ReceiveWeatherForecastsAction;
+type KnownAction = RequestWeatherForecastsAction;
 
 // ----------------
 // ACTION CREATORS - These are functions exposed to UI components that will trigger a state transition.
@@ -71,17 +67,6 @@ export const reducer: Reducer<WeatherForecastsState> = (state: WeatherForecastsS
                 forecasts: state.forecasts,
                 isLoading: true
             };
-        case 'RECEIVE_WEATHER_FORECASTS':
-            // Only accept the incoming data if it matches the most recent request. This ensures we correctly
-            // handle out-of-order responses.
-            if (action.startDateIndex === state.startDateIndex) {
-                return {
-                    startDateIndex: action.startDateIndex,
-                    forecasts: action.forecasts,
-                    isLoading: false
-                };
-            }
-            break;
         default:
             // The following line guarantees that every action in the KnownAction union has been covered by a case above
             const exhaustiveCheck: never = action;

@@ -12,7 +12,7 @@ export interface KSystem {
     [guid: string]: System;
 }
 
-interface Attributes {
+export interface Attributes {
     system_guid: string;
     name: string;
     //guid: string;
@@ -27,7 +27,7 @@ export interface KAttributes {
 interface Pair {
     [guid: string]: string;//Attribute -> value
 }
-interface Subject {
+export interface Subject {
     system_guid: string;
     name: string;
     //guid: string;
@@ -39,7 +39,7 @@ export interface KSubject {
 }
 
 
-interface Parameter {
+export interface Parameter {
     name: string;
     //guid: string;
     unitValue: boolean; 
@@ -64,7 +64,7 @@ enum Operation {
     Substract,
     Set
 }
-interface Condition {
+export interface Condition {
     left: string; // guid par/attr
     right: string; // value
     act: Operation;
@@ -77,7 +77,7 @@ export interface KCondition {
 
 
 
-interface Question {
+export interface Question {
     system_guid: string;
     question: string;
     //guid: string;
@@ -91,7 +91,7 @@ export interface KQuestion {
     [guid: string]: Question;
 }
 
-interface Logic {
+export interface Logic {
     conditions: Condition[];
    // guid: string;
     then: Condition;
