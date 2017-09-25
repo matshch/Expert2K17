@@ -4,7 +4,6 @@ import { Layout } from './components/Layout';
 import Home from './components/Home';
 import Login from './components/Login';
 import Profile from './components/Profile';
-import FetchData from './components/FetchData';
 import { TestCreater, TestCreaterSystem } from './components/CreateTest';
 
 export const routes = <Layout>
@@ -12,5 +11,4 @@ export const routes = <Layout>
     <Route path='/login' component={Login} />
     <Route path='/profile' component={Profile} />
     <Route path='/CreateTest' component={TestCreater} />
-    <Route path='/fetchdata/:startDateIndex?' component={ FetchData } />
 </Layout>;
