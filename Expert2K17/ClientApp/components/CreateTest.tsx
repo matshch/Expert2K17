@@ -37,7 +37,7 @@ export
                     </Col>
                     <Col sm={9}>
                         <Route path='/EditTest/new' component={TestCreaterSystem} />
-                        <Route path='/EditTest/:guid/CreateSystem' component={TestCreaterSystem} />
+                        <Route path='/EditTest/:guid/CreateSystem' component={TestEditorSystem} />
                         <Route path='/EditTest/:guid/CreateAttribute' component={TestCreaterAttribute} />
                     </Col>
                 </Row>
@@ -93,7 +93,8 @@ export class TestCreaterNav extends React.Component<NavProps, {}>{
     }
 }
 
-export class TestCreaterSystem extends React.Component<{}>{
+
+export class TestEditorSystem extends React.Component<{}, {}>{
 
     render() {
         return <Card className="createSideBar">
@@ -137,6 +138,61 @@ export class TestCreaterSystem extends React.Component<{}>{
                     </Col>
                 </Row>
             </Form>
+            </CardBlock>
+        </Card>
+    }
+}
+
+interface CreatorSystem {
+    name: string;
+    about: string;
+}
+
+
+export class TestCreaterSystem extends React.Component<{}, {}>{
+
+    render() {
+        return <Card className="createSideBar">
+            <CardBlock>
+                <Form>
+                    <FormGroup row>
+                        <Label for="text" sm={3}>Название</Label>
+                        <Col sm={9}>
+                            <Input type="text" name="text" id="text" placeholder="Название теста"></Input>
+                        </Col>
+                    </FormGroup>
+                    <FormGroup row>
+                        <Label for="description" sm={3}>О системе</Label>
+                        <Col sm={9}>
+                            <Input type="textarea" id="description" placeholder="Описаение"></Input>
+                        </Col>
+                    </FormGroup>
+                    <FormGroup row>
+                        <Label for="imge" sm={3}>Картинка</Label>
+                        <Col sm={9}>
+                            <Input type="file" name="file" id="imge"></Input>
+                            <img className="img-fluid" ></img>
+                        </Col>
+                    </FormGroup>
+                    <FormGroup row>
+                        <Label for="chb1" sm={3}>Публичный доступ</Label>
+                        <Col sm={9}>
+                            <Input type="checkbox" id="chb1" />
+                        </Col>
+                    </FormGroup>
+                    <FormGroup row>
+                        <Label for="chb2" sm={3}>Гостевой доступ</Label>
+                        <Col sm={9}>
+                            <Input type="checkbox" id="chb2" />
+                        </Col>
+                    </FormGroup>
+                    <Row>
+                        <Col sm={3} />
+                        <Col sm={9}>
+                            <Button color="success" className="pull-left">Создать</Button>
+                        </Col>
+                    </Row>
+                </Form>
             </CardBlock>
         </Card>
     }
