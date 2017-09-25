@@ -85,7 +85,15 @@ namespace Expert2K17.Controllers
                 User = user2,
                 Image = new Uri("https://imgs.xkcd.com/comics/real_programmers.png")
             };
-            return new Test[] { test1, test2, test3, test4, test5, test6 };
+            var test7 = new Test
+            {
+                Id = Guid.NewGuid(),
+                Name = "Какую вайфу выбрать?",
+                Description = "До сдачи проекта 1 день. На чём писать?",
+                User = user2,
+                Image = new Uri("https://media.giphy.com/media/LLjvtJwvzaTni/giphy.gif")
+            };
+            return new Test[] { test1, test2, test3, test4, test5, test6, test7 };
         }
 
         public class UserJSON

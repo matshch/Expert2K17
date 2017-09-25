@@ -6,6 +6,7 @@ export interface ListItemProps {
     title: string;
     subtitle: string;
     text: string;
+    image: string;
 }
 
 export default class ListItem extends React.Component<ListItemProps, {}> {
@@ -14,7 +15,7 @@ export default class ListItem extends React.Component<ListItemProps, {}> {
             <div className='flex-item'>
                 <Link to={'/'}>
                     <Card>
-                        <CardImg top width="300px" src="https://i.imgur.com/Ly4uhTA.png" alt="Card image cap" />
+                        <CardImg top width="300px" src={this.props.image}/>
                         <CardBlock>
                             <CardTitle>{this.props.title}</CardTitle>
                             <CardSubtitle>{this.props.subtitle}</CardSubtitle>

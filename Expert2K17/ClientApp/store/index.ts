@@ -1,9 +1,11 @@
 import * as WeatherForecasts from './WeatherForecasts';
 import * as Counter from './Counter';
+import * as Cards from './Cards';
 
 // The top-level state object
 export interface ApplicationState {
     counter: Counter.CounterState;
+    cards: Cards.CardsState;
     weatherForecasts: WeatherForecasts.WeatherForecastsState;
 }
 
@@ -12,6 +14,7 @@ export interface ApplicationState {
 // acts on the corresponding ApplicationState property type.
 export const reducers = {
     counter: Counter.reducer,
+    cards: Cards.reducer,
     weatherForecasts: WeatherForecasts.reducer
 };
 
