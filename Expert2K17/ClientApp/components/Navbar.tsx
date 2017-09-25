@@ -2,10 +2,9 @@ import * as React from 'react';
 import { Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, NavLink as NavBarLink } from 'reactstrap';
 import { NavLink, Link } from 'react-router-dom';
 
-export default class NavBar extends React.Component<{}, {isOpen: boolean}> {
+export default class NavBar extends React.Component<{}, { isOpen: boolean }> {
   constructor() {
     super();
-
     this.toggle = this.toggle.bind(this);
     this.state = {
       isOpen: false
@@ -40,8 +39,13 @@ export default class NavBar extends React.Component<{}, {isOpen: boolean}> {
                 </NavLink>
               </NavItem>
               <NavItem>
+                <NavLink to={'/panel'} className='nav-link' activeClassName='active'>
+                  Панель управления
+                </NavLink>
+              </NavItem>
+              <NavItem>
                 <NavLink to={'/profile'} className='nav-link' activeClassName='active'>
-                  ✞
+                  Профиль
                 </NavLink>
               </NavItem>
             </Nav>

@@ -9,29 +9,24 @@ import DocumentTitle from 'react-document-title';
 export class SideBar extends React.Component<{}, {}>{
     constructor() {
         super();
-
     }
     render() {
         return (
             <Card className="createSideBar">
                 <CardBlock>
                     <div>
-                        <h4>✞ Провославный инторфес адменки ✞</h4>
+                        <h4>Панель управления</h4>
                     </div>
-
                     <hr />
                     <Nav className="nav-pills" vertical>
                         <NavItem>
                             <NavLink to={'/profile'} className='nav-link' exact activeClassName='active'>Система</NavLink>
                         </NavItem>
                         <NavItem>
-                            <NavLink to={'/profile2'} className='nav-link' activeClassName='active'>Секреты Терехова</NavLink>
+                            <NavLink to={'/profile2'} className='nav-link' activeClassName='active'>Пользователи</NavLink>
                         </NavItem>
                         <NavItem>
-                            <NavLink to={'/profile3'} className='nav-link' activeClassName='active'>Анима</NavLink>
-                        </NavItem>
-                        <NavItem>
-                            <NavLink to={'/profile5'} className='nav-link' activeClassName='active'>Помолиться</NavLink>
+                            <NavLink to={'/profile3'} className='nav-link' activeClassName='active'>Тесты</NavLink>
                         </NavItem>
                     </Nav>
                 </CardBlock>
@@ -90,7 +85,7 @@ export class AdminInterface extends React.Component<{}, {}>{
 
 export default class Profile extends React.Component<RouteComponentProps<{}>, {}> {
     render() {
-        return (<DocumentTitle title='✞ Провославный инторфеЙс адменки ✞'>
+        return (<DocumentTitle title='Профиль'>
             <Container fluid>
                 <Row>
                     <Col sm={3}>
