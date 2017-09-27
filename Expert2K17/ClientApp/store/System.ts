@@ -32,17 +32,24 @@ export const actionCreators = {
 };
 
 
-export const unloadedState: KSystem = { };
+export const unloadedState: System = {
+    name: '',
+    user: '',
+    picture: '',
+    tldr: '',
+    guest: false,
+    pub: false,
+    guid: '',
+};
 
-export const reducer: Reducer<KSystem> = (state: KSystem, action: KnownAction) => {
+export const reducer: Reducer<System> = (state: System, action: KnownAction) => {
     switch (action.type) {
         case "SYNC_SYSTEM":
             return {
-                ...state,
-                [Guid.MakeNew().ToString()]: action.system
+                ...state               
             };
         case "SYNC_CONDITION":
-            return {};
+            return { ...state };
         default:
             // The following line guarantees that every action in the KnownAction union has been covered by a case above
             const exhaustiveCheck: never = action;

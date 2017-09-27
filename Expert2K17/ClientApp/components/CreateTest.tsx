@@ -352,7 +352,7 @@ class Attribute extends React.Component<AttributeProps, AttributeState>{
 
 
 
-let connectedTestSystemCreater = connect((store: ApplicationState) => store.system.current, Store.actionCreators)(TestCreaterSystem);
+let connectedTestSystemCreater = connect((store: ApplicationState) => store.system, Store.actionCreators)(TestCreaterSystem);
 
 
 

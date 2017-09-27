@@ -6,7 +6,7 @@ import * as SystemI from './TestInterfaces'
 // The top-level state object
 export interface ApplicationState {
     cards: Cards.CardsState;
-    system: SystemI.KSystem;
+    system: SystemI.System;
 }
 
 // Whenever an action is dispatched, Redux will update each top-level application state property using

@@ -2,9 +2,7 @@
 
 export interface System {
     name: string;
-    user: string;
     picture: string;
-    co_users: string[];
     tldr: string;
     guest: boolean;
     pub: boolean;
