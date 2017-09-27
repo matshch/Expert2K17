@@ -1,4 +1,4 @@
-﻿using Expert2K17.Models;
+using Expert2K17.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;

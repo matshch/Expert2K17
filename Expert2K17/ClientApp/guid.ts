@@ -1,4 +1,4 @@
-﻿export default class Guid {
+export default class Guid {
     constructor(public guid: string) {
         this._guid = guid;
     }

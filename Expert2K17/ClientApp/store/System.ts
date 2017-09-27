@@ -1,4 +1,4 @@
-﻿import { KSystem, System, KCondition, Condition } from './TestInterfaces'
+import { KSystem, System, KCondition, Condition } from './TestInterfaces'
 import { fetch, addTask } from 'domain-task';
 import { Action, Reducer, ActionCreator } from 'redux';
 import { AppThunkAction } from './';

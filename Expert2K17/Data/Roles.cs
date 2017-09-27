@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace Expert2K17.Data
 {

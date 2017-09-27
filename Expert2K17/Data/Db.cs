@@ -1,4 +1,4 @@
-﻿using Expert2K17.Models;
+using Expert2K17.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
