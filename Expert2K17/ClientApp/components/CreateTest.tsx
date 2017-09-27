@@ -35,7 +35,7 @@ export
                         <TestCreaterNav link={this.props.match.params.guid} />
                     </Col>
                     <Col sm={9}>
-                        <Route path='/EditTest/new' component={TestCreaterSystem} />
+                        <Route path='/EditTest/new' component={connectedTestSystemCreater} />
                         <Route path='/EditTest/:guid/CreateSystem' component={TestEditorSystem} />
                         <Route path='/EditTest/:guid/CreateAttribute' component={TestCreaterAttribute} />
                     </Col>
@@ -144,11 +144,63 @@ export class TestEditorSystem extends React.Component<{}, {}>{
 
 interface CreatorSystem {
     name: string;
-    about: string;
+    picture: FileList | null;
+    tldr: string;
+    guest: boolean;
+    pub: boolean;
 }
 
+type TestCreaterSystemT = typeof Store.actionCreators
+    &
+    Interf.System;
 
-export class TestCreaterSystem extends React.Component<{}, {}>{
+export class TestCreaterSystem extends React.Component<TestCreaterSystemT, CreatorSystem>{
+    constructor() {
+        super();
+        this.state = {
+            name: '',
+            picture: null,
+            tldr: '',
+            guest: false,
+            pub: false
+        }
+    
+    }
+
+    nameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        this.setState({
+            ...this.state,
+            name: e.target.value
+        });
+    }
+    tldrChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        this.setState({
+            ...this.state,
+            tldr: e.target.value
+        })
+    }
+    pictureChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        this.setState({
+            ...this.state,
+            picture: e.target.files
+        })
+    }
+    guestChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        this.setState({
+            ...this.state,
+            guest: e.target.checked
+        })
+    }
+    pubChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        this.setState({
+            ...this.state,
+            pub: e.target.checked
+        })
+    }
+
+    saveTest = () => {
+
+    }
 
     render() {
         return <Card className="createSideBar">
@@ -157,19 +209,19 @@ export class TestCreaterSystem extends React.Component<{}, {}>{
                     <FormGroup row>
                         <Label for="text" sm={3}>Название</Label>
                         <Col sm={9}>
-                            <Input type="text" name="text" id="text" placeholder="Название теста"></Input>
+                            <Input type="text" onChange={this.nameChange} name="text" id="text" placeholder="Название теста"></Input>
                         </Col>
                     </FormGroup>
                     <FormGroup row>
                         <Label for="description" sm={3}>О системе</Label>
                         <Col sm={9}>
-                            <Input type="textarea" id="description" placeholder="Описаение"></Input>
+                            <Input type="textarea" onChange={this.tldrChange} id="description" placeholder="Описание"></Input>
                         </Col>
                     </FormGroup>
                     <FormGroup row>
                         <Label for="imge" sm={3}>Картинка</Label>
                         <Col sm={9}>
-                            <Input type="file" name="file" id="imge"></Input>
+                            <Input type="file" onChange={this.pictureChange} name="file" id="imge"></Input>
                             <img className="img-fluid" ></img>
                         </Col>
                     </FormGroup>
@@ -300,7 +352,7 @@ class Attribute extends React.Component<AttributeProps, AttributeState>{
 
 
 
-
+let connectedTestSystemCreater = connect((store: ApplicationState) => store.system.current, Store.actionCreators)(TestCreaterSystem);
 
 
 

@@ -6,10 +6,12 @@ export interface System {
     picture: string;
     co_users: string[];
     tldr: string;
-    //guid: string;
+    guest: boolean;
+    pub: boolean;
+    guid: string;
 }
 export interface KSystem {
-    [guid: string]: System;
+    current: System;
 }
 
 export interface Attributes {
