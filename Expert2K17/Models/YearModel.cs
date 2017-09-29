@@ -8,7 +8,10 @@ namespace Expert2K17.Models
 {
     public class YearModel
     {
-        [Key]
+        public int Id { get; set; }
+        /// <remarks>
+        /// Unique by model builder
+        /// </remarks>
         public string Year { get; set; }
         public virtual IEnumerable<GroupModel> Groups { get; set; }
 

@@ -10,5 +10,11 @@ namespace Expert2K17.Data
 
         public DbSet<YearModel> Years { get; set; }
         public DbSet<GroupModel> Groups { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+            builder.Entity<YearModel>().HasIndex(e => e.Year).IsUnique();
+        }
     }
 }
