@@ -8,7 +8,7 @@ namespace Expert2K17.Controllers
     [Route("api/[controller]")]
     public class GroupsController : Controller
     {
-        public readonly Db _db;
+        private readonly Db _db;
 
         public GroupsController(Db db)
         {
