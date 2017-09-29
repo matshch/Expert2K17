@@ -35,13 +35,13 @@ namespace Expert2K17.Controllers
         // POST api/login
         // login
         [HttpPost]
-        public async Task<LoginResult> Post(string login, string password, bool rememberMe = true)
+        public async Task<LoginResult> Post([FromBody]LoginData data)
         {
-            var result = await _signInManager.PasswordSignInAsync(login, password, rememberMe, lockoutOnFailure: true);
+            var result = await _signInManager.PasswordSignInAsync(data.UserName, data.Password, data.RememberMe != false, lockoutOnFailure: true);
             var myResult = new LoginResult(result);
             if (result.Succeeded)
             {
-                var user = await _signInManager.UserManager.FindByNameAsync(login);
+                var user = await _signInManager.UserManager.FindByNameAsync(data.UserName);
                 var userId = user.Id;
                 myResult.User = await GetUserDataAsync(userId);
             }
@@ -132,6 +132,13 @@ namespace Expert2K17.Controllers
             public string Year { get; set; }
 
             public bool IsAdmin { get; set; }
+        }
+
+        public class LoginData
+        {
+            public string UserName { get; set; }
+            public string Password { get; set; }
+            public bool? RememberMe { get; set; }
         }
 
         public class RegisterData
