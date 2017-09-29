@@ -3,6 +3,8 @@ using Expert2K17.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Expert2K17.Controllers
@@ -42,6 +44,30 @@ namespace Expert2K17.Controllers
                 var user = await _signInManager.UserManager.FindByNameAsync(login);
                 var userId = user.Id;
                 myResult.User = await GetUserDataAsync(userId);
+            }
+            return myResult;
+        }
+
+        // PUT api/register
+        // register
+        [HttpPut]
+        public async Task<RegisterResult> Put([FromBody]RegisterData data)
+        {
+            var user = new User
+            {
+                UserName = data.UserName,
+                Surname = data.Surname,
+                Name = data.Name,
+                Patronymic = data.Patronymic
+            };
+            var group = await _db.Groups.Where(e => e.Group == data.Group && e.Year.Year == data.Year).FirstOrDefaultAsync();
+            user.Group = group;
+            var result = await _userManager.CreateAsync(user, data.Password);
+            var myResult = new RegisterResult(result);
+            if (result.Succeeded)
+            {
+                await _signInManager.SignInAsync(user, isPersistent: true);
+                myResult.User = await GetUserDataAsync(user.Id);
             }
             return myResult;
         }
@@ -99,6 +125,31 @@ namespace Expert2K17.Controllers
 
             public string Group { get; set; }
             public string Year { get; set; }
+        }
+
+        public class RegisterData
+        {
+            public string UserName { get; set; }
+            public string Password { get; set; }
+
+            public string Surname { get; set; }
+            public string Name { get; set; }
+            public string Patronymic { get; set; }
+
+            public string Group { get; set; }
+            public string Year { get; set; }
+        }
+
+        public class RegisterResult : IdentityResult
+        {
+            public UserData User { get; set; }
+            public new IEnumerable<IdentityError> Errors { get; set; }
+
+            public RegisterResult(IdentityResult result)
+            {
+                Succeeded = result.Succeeded;
+                Errors = result.Errors;
+            }
         }
     }
 }
