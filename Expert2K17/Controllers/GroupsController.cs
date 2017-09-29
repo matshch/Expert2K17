@@ -17,15 +17,21 @@ namespace Expert2K17.Controllers
 
         // GET: api/groups
         [HttpGet]
-        public IEnumerable<object> Get()
+        public IEnumerable<YearModel> Get()
         {
             var years = from y in _db.Years
-                        select new
+                        select new YearModel
                         {
-                            y.Year,
+                            Year = y.Year,
                             Groups = y.Groups.Select(e => e.Group)
                         };
             return years.ToList();
+        }
+
+        public class YearModel
+        {
+            public string Year { get; set; }
+            public IEnumerable<string> Groups { get; set; }
         }
     }
 }
