@@ -3,6 +3,7 @@ using Expert2K17.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,12 +16,14 @@ namespace Expert2K17.Controllers
         private readonly Db _db;
         private readonly SignInManager<User> _signInManager;
         private readonly UserManager<User> _userManager;
+        private readonly PromoteToAdminOptions _promoteToAdminOptions;
 
-        public LoginController(Db db, SignInManager<User> signInManager, UserManager<User> userManager)
+        public LoginController(Db db, SignInManager<User> signInManager, UserManager<User> userManager, IOptions<PromoteToAdminOptions> promoteToAdminOptionsAccessor)
         {
             _db = db;
             _signInManager = signInManager;
             _userManager = userManager;
+            _promoteToAdminOptions = promoteToAdminOptionsAccessor.Value;
         }
 
         // GET: api/login
@@ -78,6 +81,32 @@ namespace Expert2K17.Controllers
         public async Task Delete()
         {
             await _signInManager.SignOutAsync();
+        }
+
+        // PATCH api/login
+        // PromoteToAdmin
+        [HttpPatch]
+        public async Task<IActionResult> Patch(string token)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return Unauthorized();
+            }
+            if (token != _promoteToAdminOptions.PromoteToAdminToken)
+            {
+                return BadRequest();
+            }
+            if (await _userManager.IsInRoleAsync(user, Role.Admin))
+            {
+                return Ok("Already admin");
+            }
+            var result = await _userManager.AddToRoleAsync(user, Role.Admin);
+            if (result.Succeeded)
+            {
+                return Ok("Now admin");
+            }
+            return BadRequest(result.Errors);
         }
 
         private async Task<UserData> GetUserDataAsync(string userId)
