@@ -1,5 +1,6 @@
 using Expert2K17.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Expert2K17.Data
@@ -10,7 +11,7 @@ namespace Expert2K17.Data
         {
             await context.Database.MigrateAsync();
 
-            if (context.Years.Find("2017") == null)
+            if (!context.Years.Any())
             {
                 var year = new YearModel { Year = "2017" };
                 context.Years.Add(year);
