@@ -75,19 +75,6 @@ namespace Expert2K17.Controllers
             }
         }
 
-        public class UserData
-        {
-            public string Id { get; set; }
-            public string UserName { get; set; }
-
-            public string Surname { get; set; }
-            public string Name { get; set; }
-            public string Patronymic { get; set; }
-
-            public string Group { get; set; }
-            public string Year { get; set; }
-        }
-
         public class LoginResult : Microsoft.AspNetCore.Identity.SignInResult
         {
             public UserData User { get; set; }
@@ -99,6 +86,19 @@ namespace Expert2K17.Controllers
                 IsLockedOut = result.IsLockedOut;
                 IsNotAllowed = result.IsNotAllowed;
             }
+        }
+
+        public class UserData
+        {
+            public string Id { get; set; }
+            public string UserName { get; set; }
+
+            public string Surname { get; set; }
+            public string Name { get; set; }
+            public string Patronymic { get; set; }
+
+            public string Group { get; set; }
+            public string Year { get; set; }
         }
     }
 }
