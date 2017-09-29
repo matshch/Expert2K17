@@ -19,6 +19,7 @@ namespace Expert2K17.Data
                 context.Groups.Add(new GroupModel { Group = "»”5-73", Year = year });
                 context.Groups.Add(new GroupModel { Group = "»”5-74", Year = year });
                 context.Groups.Add(new GroupModel { Group = "–“5-71", Year = year });
+                await context.SaveChangesAsync();
             }
         }
     }
