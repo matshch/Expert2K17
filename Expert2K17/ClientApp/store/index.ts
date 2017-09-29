@@ -1,12 +1,15 @@
 import * as Cards from './Cards';
 import * as SystemS from './System'
 import * as SystemI from './TestInterfaces'
+import * as AttributeS from './Attribute'
+
 
 
 // The top-level state object
 export interface ApplicationState {
     cards: Cards.CardsState;
     system: SystemI.System;
+    attributes: SystemI.KKAttributes;
 }
 
 // Whenever an action is dispatched, Redux will update each top-level application state property using
@@ -14,7 +17,8 @@ export interface ApplicationState {
 // acts on the corresponding ApplicationState property type.
 export const reducers = {
     cards: Cards.reducer,
-    system: SystemS.reducer
+    system: SystemS.reducer,
+    attributes: AttributeS.reducer
 };
 
 // This type can be used as a hint on action creators so that its 'dispatch' and 'getState' params are

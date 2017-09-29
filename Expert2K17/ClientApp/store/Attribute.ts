@@ -1,4 +1,4 @@
-import { KSystem, System, KCondition, Condition } from './TestInterfaces'
+﻿import { KAttributes, Attributes, KKAttributes } from './TestInterfaces'
 import { fetch, addTask } from 'domain-task';
 import { Action, Reducer, ActionCreator } from 'redux';
 import { AppThunkAction } from './';
@@ -8,53 +8,45 @@ import Guid from '../guid';
 // -----------------
 // ACTIONS - These are serializable (hence replayable) descriptions of state transitions.
 // They do not themselves have any side-effects; they just describe something that is going to happen.
-export 
-interface SyncSystemAction {
-    type: 'SYNC_SYSTEM';
-    system: FormData;
+export
+    interface SyncConditionAction {
+    type: 'SYNC_ATTRIBUTE';
+    attribute: Attributes;
 }
-interface AddSystemAction {
-    type: 'ADD_SYSTEM';
-    system: FormData;
+interface AddConditionAction {
+    type: 'ADD_ATTRIBUTE';
+    attribute: Attributes;
 }
 // Declare a 'discriminated union' type. This guarantees that all references to 'type' properties contain one of the
 // declared type strings (and not any other arbitrary string).
-type KnownAction = SyncSystemAction | AddSystemAction;
+type KnownAction = SyncConditionAction | AddConditionAction;
 
 // ----------------
 // REDUCER - For a given state and action, returns the new state. To support time travel, this must not mutate the old state.
 
 export const actionCreators = {
-    addSystem: (sys: FormData): AppThunkAction<KnownAction> => (dispatch, getState) => {
-        dispatch({ type: 'ADD_SYSTEM', system: sys});       
+    addCondition: (attr: Attributes): AppThunkAction<KnownAction> => (dispatch, getState) => {
+        dispatch({ type: 'ADD_ATTRIBUTE', attribute: attr });
     },
-    syncSystem: (sys: FormData): AppThunkAction<KnownAction> => (dispatch, getState) => {
-        dispatch({ type: 'SYNC_SYSTEM', system: sys });
+    syncCondition: (attr: Attributes): AppThunkAction<KnownAction> => (dispatch, getState) => {
+        dispatch({ type: 'SYNC_ATTRIBUTE', attribute: attr });
     },
-    addAttribute: (attr: FormData): AppThunkAction<KnownAction> => (dispatch, getState) => {
-
-    }
 };
 
 
 
 
-export const unloadedState: System = {
-    name: '',
-    user: '',
-    picture: '',
-    tldr: '',
-    pub: false,
-    guid: '',
+export const unloadedState: KKAttributes = {
+    attr: {}
 };
 
-export const reducer: Reducer<System> = (state: System, action: KnownAction) => {
+export const reducer: Reducer<KKAttributes> = (state: KKAttributes, action: KnownAction) => {
     switch (action.type) {
-        case "ADD_SYSTEM":
+        case "ADD_ATTRIBUTE":
             return {
-                ...state               
+                ...state
             };
-        case "SYNC_SYSTEM":
+        case "SYNC_ATTRIBUTE":
             return {
                 ...state
             };
