@@ -74,6 +74,7 @@ namespace Expert2K17.Controllers
 
         // DELETE api/login
         // logout
+        [HttpDelete]
         public async Task Delete()
         {
             await _signInManager.SignOutAsync();
