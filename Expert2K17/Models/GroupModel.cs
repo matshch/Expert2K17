@@ -6,7 +6,7 @@ namespace Expert2K17.Models
 {
     public class GroupModel
     {
-        [Key]
+        public int Id { get; set; }
         public string Group { get; set; }
         [Required]
         public virtual YearModel Year { get; set; }
