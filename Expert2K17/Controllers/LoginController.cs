@@ -27,6 +27,34 @@ namespace Expert2K17.Controllers
         public async Task<UserData> GetAsync()
         {
             var userId = _userManager.GetUserId(User);
+            return await GetUserDataAsync(userId);
+        }
+
+        // POST api/login
+        // login
+        [HttpPost]
+        public async Task<LoginResult> Post(string login, string password, bool rememberMe = true)
+        {
+            var result = await _signInManager.PasswordSignInAsync(login, password, rememberMe, lockoutOnFailure: true);
+            var myResult = new LoginResult(result);
+            if (result.Succeeded)
+            {
+                var user = await _signInManager.UserManager.FindByNameAsync(login);
+                var userId = user.Id;
+                myResult.User = await GetUserDataAsync(userId);
+            }
+            return myResult;
+        }
+
+        // DELETE api/login
+        // logout
+        public async Task Delete()
+        {
+            await _signInManager.SignOutAsync();
+        }
+
+        private async Task<UserData> GetUserDataAsync(string userId)
+        {
             var user = await _db.Users.Include(e => e.Group.Year).FirstOrDefaultAsync(e => e.Id == userId);
             if (user != null)
             {
@@ -47,38 +75,6 @@ namespace Expert2K17.Controllers
             }
         }
 
-        // POST api/values
-        // login
-        [HttpPost]
-        public async Task<object> Post(string login, string password, bool rememberMe = true)
-        {
-            var result = await _signInManager.PasswordSignInAsync(login, password, rememberMe, lockoutOnFailure: true);
-            if (result.Succeeded)
-            {
-                var user = await _signInManager.UserManager.FindByNameAsync(login);
-                return user;
-            }
-            else if (result.RequiresTwoFactor)
-            {
-                return "Wow, you required 2FA. How?";
-            }
-            else if (result.IsLockedOut)
-            {
-                return "Your account is locked out. Try again later.";
-            }
-            else
-            {
-                return "Mdeeee, wrong login or password.";
-            }
-        }
-
-        // DELETE api/login
-        // logout
-        public async Task Delete()
-        {
-            await _signInManager.SignOutAsync();
-        }
-
         public class UserData
         {
             public string Id { get; set; }
@@ -90,6 +86,19 @@ namespace Expert2K17.Controllers
 
             public string Group { get; set; }
             public string Year { get; set; }
+        }
+
+        public class LoginResult : Microsoft.AspNetCore.Identity.SignInResult
+        {
+            public UserData User { get; set; }
+
+            public LoginResult(Microsoft.AspNetCore.Identity.SignInResult result)
+            {
+                Succeeded = result.Succeeded;
+                RequiresTwoFactor = result.RequiresTwoFactor;
+                IsLockedOut = result.IsLockedOut;
+                IsNotAllowed = result.IsNotAllowed;
+            }
         }
     }
 }
