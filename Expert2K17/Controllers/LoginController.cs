@@ -84,15 +84,20 @@ namespace Expert2K17.Controllers
             var user = await _db.Users.Include(e => e.Group.Year).FirstOrDefaultAsync(e => e.Id == userId);
             if (user != null)
             {
+                var isAdmin = await _userManager.IsInRoleAsync(user, Role.Admin);
                 return new UserData
                 {
                     Id = user.Id,
                     UserName = user.UserName,
+
                     Name = user.Name,
                     Surname = user.Surname,
                     Patronymic = user.Patronymic,
+
                     Group = user.Group?.Group,
-                    Year = user.Year?.Year
+                    Year = user.Year?.Year,
+
+                    IsAdmin = isAdmin
                 };
             }
             else
@@ -125,6 +130,8 @@ namespace Expert2K17.Controllers
 
             public string Group { get; set; }
             public string Year { get; set; }
+
+            public bool IsAdmin { get; set; }
         }
 
         public class RegisterData
