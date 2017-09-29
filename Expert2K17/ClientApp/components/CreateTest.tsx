@@ -14,7 +14,7 @@ import DocumentTitle from 'react-document-title';
 import * as Interf from '../store/TestInterfaces'
 
 type CounterProps =
-    Interf.KSystem
+    Interf.System
     & typeof Store.actionCreators
     & RouteComponentProps<{guid:string}>;
 export

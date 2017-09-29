@@ -2,6 +2,7 @@ import { Action, Reducer } from 'redux';
 
 export interface System {
     name: string;
+    user: string;
     picture: string;
     tldr: string;
     guest: boolean;
