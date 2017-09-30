@@ -22,7 +22,7 @@ export class Home extends React.Component<HomeProps, {}> {
     }
 
     render() {
-    	if (this.props.loading)
+    	if (this.props.loading && this.props.SomeUselessObject.length == 0)
     		return <p>Loading this shit cards</p>;
     	var cards = this.props.SomeUselessObject.map(e => this.renderListItem(e.name, e.description, e.user.nickname, e.image));
         return (
@@ -35,4 +35,4 @@ export class Home extends React.Component<HomeProps, {}> {
 export default connect(
     (state: ApplicationState) => state.cards,
     CardsStore.actionCreators
-)(Home) as typeof Home;
+)(Home);

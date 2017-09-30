@@ -361,4 +361,4 @@ let connectedTestSystemCreater = connect((store: ApplicationState) => store.syst
 export default connect(
     (state: ApplicationState) => state.system, // Selects which state properties are merged into the component's props
     Store.actionCreators                 // Selects which action creators are merged into the component's props
-)(TestCreater) as typeof TestCreater;
+)(TestCreater);
