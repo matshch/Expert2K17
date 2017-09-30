@@ -56,7 +56,8 @@
         script = $"<script>{globalsScript}</script>";
     }
 }
-<div id="react-app">@Html.Raw(result.Html)@Html.Raw(script)</div>
+<div id="react-app">@Html.Raw(result.Html)</div>
+@Html.Raw(script)
 
 @section scripts {
     <script src="~/dist/main-client.js" asp-append-version="true"></script>

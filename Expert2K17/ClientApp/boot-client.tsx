@@ -18,10 +18,16 @@ const history = createBrowserHistory({ basename: baseUrl });
 const initialState = (window as any).initialReduxState as ApplicationState;
 const store = configureStore(history, initialState);
 
-function renderApp() {
+function renderApp(hydrate = false) {
     // This code starts up the React app when it runs in a browser. It sets up the routing configuration
     // and injects the app into a DOM element.
-    ReactDOM.render(
+
+    var renderer = ReactDOM.render;
+    if (hydrate) {
+        // TODO: remove "as any" when hydrate will be in type
+        renderer = (ReactDOM as any).hydrate;
+    }
+    renderer(
         <AppContainer>
             <Provider store={ store }>
                 <ConnectedRouter history={ history } children={ routes } />
@@ -31,7 +37,7 @@ function renderApp() {
     );
 }
 
-renderApp();
+renderApp(true);
 
 // Allow Hot Module Replacement
 if (module.hot) {
