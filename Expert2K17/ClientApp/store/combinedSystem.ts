@@ -6,17 +6,23 @@ import { AppThunkAction } from './';
 import Guid from '../guid';
 import * as SystemS from './System';
 import * as AttributeS from './System';
+import * as SubjectS from './Subject';
+import * as PairS from './Pair';
 
 
 
 export interface SystemCreateState {
     system: SystemI.System;
     attributes: SystemI.Attribute[];
+    subjects: SystemI.Subject[];
+    pairs: SystemI.Pair[];
 }
 
 export const reducers = {
     system: SystemS.reducer,
-    attributes: AttributeS.reducer
+    attributes: AttributeS.reducer,
+    subjects: SubjectS.reducer,
+    pairs: PairS.reducer
 };
 
 interface LoadPreviousAction {

@@ -58,27 +58,27 @@ export class TestEditorSystem extends React.Component<TestCreaterSystemT, Creato
             <CardBlock>
                 <Form>
                     <FormGroup row>
-                        <Label for="text" sm={3}>Название</Label>
-                        <Col sm={9}>
+                        <Label for="text" lg={3}>Название</Label>
+                        <Col lg={9}>
                             <Input type="text" name="text" value={this.state.name} onChange={this.nameChange} id="text" placeholder="Название теста"></Input>
                         </Col>
                     </FormGroup>
                     <FormGroup row>
-                        <Label for="description" sm={3}>О системе</Label>
-                        <Col sm={9}>
+                        <Label for="description" lg={3}>О системе</Label>
+                        <Col lg={9}>
                             <Input type="textarea" value={this.state.tldr} onChange={this.tldrChange} id="description" placeholder="Описаение"></Input>
                         </Col>
                     </FormGroup>
                     <FormGroup row>
-                        <Label for="imge" sm={3}>Картинка</Label>
-                        <Col sm={9}>
+                        <Label for="imge" lg={3}>Картинка</Label>
+                        <Col lg={9}>
                             <img className="img-fluid" src={this.props.picture} ></img>
                             <Input type="file" name="file" onChange={this.pictureChange} id="imge"></Input>
                         </Col>
                     </FormGroup>
                     <Row>
-                        <Col sm={3} />
-                        <Col sm={9}>
+                        <Col lg={3} />
+                        <Col lg={9}>
                             <Button color="success" onClick={this.saveTest} className="pull-left">Сохранить изменения</Button>
                         </Col>
                     </Row>
@@ -158,32 +158,32 @@ export class TestCreaterSystem extends React.Component<TestCreaterSystemT, Creat
             <CardBlock>
                 <Form>
                     <FormGroup row>
-                        <Label for="text" sm={3}>Название</Label>
-                        <Col sm={9}>
+                        <Label for="text" lg={3}>Название</Label>
+                        <Col lg={9}>
                             <Input type="text" onChange={this.nameChange} name="text" id="text" placeholder="Название теста"></Input>
                         </Col>
                     </FormGroup>
                     <FormGroup row>
-                        <Label for="description" sm={3}>О системе</Label>
-                        <Col sm={9}>
+                        <Label for="description" lg={3}>О системе</Label>
+                        <Col lg={9}>
                             <Input type="textarea" onChange={this.tldrChange} id="description" placeholder="Описание"></Input>
                         </Col>
                     </FormGroup>
                     <FormGroup row>
-                        <Label for="imge" sm={3}>Картинка</Label>
-                        <Col sm={9}>
+                        <Label for="imge" lg={3}>Картинка</Label>
+                        <Col lg={9}>
                             <Input type="file" onChange={this.pictureChange} name="file" id="imge"></Input>
                         </Col>
                     </FormGroup>
                     <FormGroup row>
-                        <Label for="chb1" sm={3}>Публичный доступ</Label>
-                        <Col sm={9}>
+                        <Label for="chb1" lg={3}>Публичный доступ</Label>
+                        <Col lg={9}>
                             <Input type="checkbox" onChange={this.pubChange} id="chb1" />
                         </Col>
                     </FormGroup>
                     <Row>
-                        <Col sm={3} />
-                        <Col sm={9}>
+                        <Col lg={3} />
+                        <Col lg={9}>
                             <Button color="success" onClick={this.saveTest} className="pull-left">Создать</Button>
                         </Col>
                     </Row>

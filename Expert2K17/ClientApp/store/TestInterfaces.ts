@@ -9,7 +9,7 @@ export interface System {
     guid: string;
 }
 export interface KSystem {
-    current: System;
+    system: System;
 }
 
 export interface Attribute {
@@ -23,22 +23,21 @@ export interface KAttributes {
     attr: Attribute[];    
 }
 
-export interface KKAttributes {
-    attr: KAttributes
-}
 
-interface Pair {
-    [guid: string]: string;//Attribute -> value
+export interface Pair {
+    //[guid: string]: string;//Attribute -> value
+    attributeGuid: string;
+    value: string;
+    subjectGuids: string[];
 }
 export interface Subject {
     system_guid: string;
     name: string;
-    //guid: string;
-    pairs: Pair;
+    guid: string;
 }
 
 export interface KSubject {
-    [guid: string]: Subject;
+    subjects: Subject[];
 }
 
 

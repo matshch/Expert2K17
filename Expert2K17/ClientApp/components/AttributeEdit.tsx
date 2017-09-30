@@ -111,7 +111,7 @@ function getAttributeProps(store: ApplicationState, props: NeededAttributeProps)
     if (props.index != -1) {
         return { ...store.combinedSystem.attributes[props.index], sys: store.combinedSystem.system };
     } else {
-        let state = {
+        let state: Interf.Attribute = {
             system_guid: '',
             name: '',
             values: [],

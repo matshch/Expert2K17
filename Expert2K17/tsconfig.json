@@ -9,6 +9,7 @@
     "sourceMap": true,
     "skipDefaultLibCheck": true,
     "strict": true,
+    "strictNullChecks": false,
     "lib": ["es6", "dom"],
     "types": ["webpack-env"]
   },
