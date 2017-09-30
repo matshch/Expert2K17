@@ -5,7 +5,6 @@ export interface System {
     user: string;
     picture: string;
     tldr: string;
-    guest: boolean;
     pub: boolean;
     guid: string;
 }
@@ -24,6 +23,9 @@ export interface KAttributes {
     [guid: string]: Attributes;    
 }
 
+export interface KKAttributes {
+    attr: KAttributes
+}
 
 interface Pair {
     [guid: string]: string;//Attribute -> value

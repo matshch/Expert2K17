@@ -4,16 +4,15 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
-using Microsoft.EntityFrameworkCore.Storage;
-using Microsoft.EntityFrameworkCore.Storage.Internal;
 using System;
 
 namespace Expert2K17.Migrations
 {
     [DbContext(typeof(Db))]
-    partial class DbModelSnapshot : ModelSnapshot
+    [Migration("20170929090801_UserGroups")]
+    partial class UserGroups
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -22,17 +21,15 @@ namespace Expert2K17.Migrations
 
             modelBuilder.Entity("Expert2K17.Models.GroupModel", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<string>("Group")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Group")
+                    b.Property<string>("Year1")
                         .IsRequired();
 
-                    b.Property<int>("YearId");
+                    b.HasKey("Group");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("YearId");
+                    b.HasIndex("Year1");
 
                     b.ToTable("Groups");
                 });
@@ -52,13 +49,11 @@ namespace Expert2K17.Migrations
 
                     b.Property<bool>("EmailConfirmed");
 
-                    b.Property<int?>("GroupId");
+                    b.Property<string>("Group1");
 
                     b.Property<bool>("LockoutEnabled");
 
                     b.Property<DateTimeOffset?>("LockoutEnd");
-
-                    b.Property<string>("Name");
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256);
@@ -68,15 +63,11 @@ namespace Expert2K17.Migrations
 
                     b.Property<string>("PasswordHash");
 
-                    b.Property<string>("Patronymic");
-
                     b.Property<string>("PhoneNumber");
 
                     b.Property<bool>("PhoneNumberConfirmed");
 
                     b.Property<string>("SecurityStamp");
-
-                    b.Property<string>("Surname");
 
                     b.Property<bool>("TwoFactorEnabled");
 
@@ -85,7 +76,7 @@ namespace Expert2K17.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("GroupId");
+                    b.HasIndex("Group1");
 
                     b.HasIndex("NormalizedEmail")
                         .HasName("EmailIndex");
@@ -99,15 +90,10 @@ namespace Expert2K17.Migrations
 
             modelBuilder.Entity("Expert2K17.Models.YearModel", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<string>("Year")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Year");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Year")
-                        .IsUnique();
+                    b.HasKey("Year");
 
                     b.ToTable("Years");
                 });
@@ -223,7 +209,7 @@ namespace Expert2K17.Migrations
                 {
                     b.HasOne("Expert2K17.Models.YearModel", "Year")
                         .WithMany("Groups")
-                        .HasForeignKey("YearId")
+                        .HasForeignKey("Year1")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
@@ -231,7 +217,7 @@ namespace Expert2K17.Migrations
                 {
                     b.HasOne("Expert2K17.Models.GroupModel", "Group")
                         .WithMany("Users")
-                        .HasForeignKey("GroupId");
+                        .HasForeignKey("Group1");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

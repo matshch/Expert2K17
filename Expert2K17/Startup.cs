@@ -38,6 +38,9 @@ namespace Expert2K17
                 options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
             });
 
+            services.AddOptions();
+            services.Configure<PromoteToAdminOptions>(Configuration);
+
             services.AddResponseCompression();
 
             services.AddNodeServices();
