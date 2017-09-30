@@ -9,7 +9,7 @@ import * as AttributeS from './Attribute'
 export interface ApplicationState {
     cards: Cards.CardsState;
     system: SystemI.System;
-    attributes: SystemI.KKAttributes;
+    attributes: SystemI.Attributes[];
 }
 
 // Whenever an action is dispatched, Redux will update each top-level application state property using

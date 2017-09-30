@@ -13,6 +13,7 @@ import { Nav, NavItem, Row, Container, Col, Button, Form, FormGroup, Label, Inpu
 import DocumentTitle from 'react-document-title';
 import * as Interf from '../store/TestInterfaces';
 import * as Systemer from './SystemCreate';
+import * as Attributer from './AttributeEdit';
 
 
 type CounterProps =
@@ -39,7 +40,7 @@ export
                     <Col sm={9}>
                         <Route path='/EditTest/new' component={Systemer.ConnectedTestSystemCreater} />
                         <Route path='/EditTest/:guid/CreateSystem' component={Systemer.ConnectedTestSystemEditor} />
-                        <Route path='/EditTest/:guid/CreateAttribute' component={TestCreaterAttribute} />
+                        <Route path='/EditTest/:guid/CreateAttribute' component={Attributer.ConnectedTestAttributeEditor} />
                     </Col>
                 </Row>
             </Container>
@@ -113,4 +114,4 @@ let ConnectedTestCreaterNav = connect((store: ApplicationState) => store.system)
 export default connect(
     (state: ApplicationState) => state.system, // Selects which state properties are merged into the component's props
     Store.actionCreators                 // Selects which action creators are merged into the component's props
-)(TestCreater) as typeof TestCreater;
+)(TestCreater);

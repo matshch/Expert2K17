@@ -1,4 +1,4 @@
-﻿import { KAttributes, Attributes, KKAttributes } from './TestInterfaces'
+﻿import { KAttributes, Attributes } from './TestInterfaces'
 import { fetch, addTask } from 'domain-task';
 import { Action, Reducer, ActionCreator } from 'redux';
 import { AppThunkAction } from './';
@@ -36,11 +36,11 @@ export const actionCreators = {
 
 
 
-export const unloadedState: KKAttributes = {
-    attr: {}
-};
+export const unloadedState: Attributes[] = 
+    []
+;
 
-export const reducer: Reducer<KKAttributes> = (state: KKAttributes, action: KnownAction) => {
+export const reducer: Reducer<Attributes[]> = (state: Attributes[], action: KnownAction) => {
     switch (action.type) {
         case "ADD_ATTRIBUTE":
             return {

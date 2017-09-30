@@ -13,7 +13,7 @@ import * as Interf from '../store/TestInterfaces';
 
 
 interface attributes {
-    attr: Interf.KAttributes
+    attr: Interf.Attributes[]
     sys: Interf.System;
 
 }
@@ -27,54 +27,49 @@ class TestCreaterAttribute extends React.Component<CreateAttribute, {}>{
     constructor() {
         super();
     }
-    name_callback: (name: string) => void = (name_) => {
-        
-    }
 
     render() {
         return <Container fluid>
 
-            {Object.keys(this.props.attr).map((val, key) => {
-                return <Attribute key={key} added={this.name_callback} attr={this.props.attr[val]} sys={this.props.sys} />
+            {this.props.attr.map((val, key) => {
+                return <ConnectedAttribute key={key} index={key} />
             })}
-            <Attribute added={this.name_callback} attr={null} sys={this.props.sys} />
+            <ConnectedAttribute index={-1} />
         </Container>
     }
 }
 
 
 interface AttrAdditionalProps {
-    added: (name: string) => void;
-}
-
-interface PrimaryProps {
-    attr: Interf.Attributes | null;
+    index: number;
     sys: Interf.System;
 }
 
 
+
 type AttributeProps =
-    AttrAdditionalProps
+    AttrAdditionalProps  
     &
-    PrimaryProps;
+    Interf.Attributes
+    &
+    typeof Store.actionCreators;
 
 type AttributeT =
     Interf.Attributes
 
-class Attribute extends React.Component<AttributeProps, AttributeT>{
+class Attribute extends React.Component<AttributeProps, {}>{
     constructor() {
         super();
-        this.state = {
-            system_guid: '',
-            name: '',
-            values: [],
-            unitValue: false
-        }
     }
-    name_change = () => {
+    name_change = (e: React.ChangeEvent<HTMLInputElement>) => {
 
     }
-
+    unitChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        this.setState({
+            ...this.state,
+            unitValue: e.target.checked
+        });
+    }
     render() {
         return <Card className="createSideBar">
             <CardBlock>
@@ -82,15 +77,21 @@ class Attribute extends React.Component<AttributeProps, AttributeT>{
                     <FormGroup row>
                         <Label for="texter" sm={3}>Название</Label>
                         <Col sm={9}>
-                            <Input type="text" name="text" id="texter" value={this.state.name} placeholder="Название аттрибута"></Input>
+                            <Input type="text" name="text" id="texter" value={this.props.name} placeholder="Название аттрибута"></Input>
+                        </Col>
+                    </FormGroup>
+                    <FormGroup row>
+                        <Label for="chb1" sm={3}>Числовые значения</Label>
+                        <Col sm={9}>
+                            <Input type="checkbox" checked={this.props.unitValue} onChange={this.unitChange} id="chb1" />
                         </Col>
                     </FormGroup>
                     {(() => {
-                        if (this.props.attr != null) {
+                        if (this.props.index != -1) {
                             return (<div>
                                 <hr />
                                 <ListGroup>
-                                    {this.props.attr.values.map((val, key) => {
+                                    {this.props.values.map((val, key) => {
                                         return <ListGroupItem key={key}>{val}</ListGroupItem>
                                     })}
                                 </ListGroup>
@@ -98,13 +99,30 @@ class Attribute extends React.Component<AttributeProps, AttributeT>{
                             </div>)
                         }
                     })()}
-                    
-                    
+                                    
                 </Form>
             </CardBlock>
         </Card>
     }
 }
 
+function getAttributeProps(store: ApplicationState, props: AttributeProps) {
+    if (props.index != -1) {
+        return { ...store.attributes[props.index], sys: store.system };
+    } else {
+        let state = {
+            system_guid: '',
+            name: '',
+            values: [],
+            unitValue: false,
+            guid: ''
+        }
+        return { ...state, sys: store.system };
+    }
 
-export let ConnectedTestAttributeEditor = connect((store: ApplicationState) => { return { ...store.attributes, sys: store.system }; }, Store.actionCreators)(TestCreaterAttribute);
+
+}
+
+
+export let ConnectedTestAttributeEditor = connect((store: ApplicationState) => { return { attr: store.attributes, sys: store.system } }, Store.actionCreators)(TestCreaterAttribute);
+let ConnectedAttribute = connect(getAttributeProps, Store.actionCreators)(Attribute) as any

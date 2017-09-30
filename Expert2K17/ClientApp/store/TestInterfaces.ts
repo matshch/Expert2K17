@@ -15,12 +15,12 @@ export interface KSystem {
 export interface Attributes {
     system_guid: string;
     name: string;
-    //guid: string;
+    guid: string;
     values: string[];
     unitValue: boolean;
 }
 export interface KAttributes {
-    [guid: string]: Attributes;    
+    attr: Attributes[];    
 }
 
 export interface KKAttributes {
