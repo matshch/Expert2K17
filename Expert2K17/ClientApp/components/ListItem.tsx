@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import { Card, CardImg, CardText, CardBlock, CardTitle, CardSubtitle, Button } from 'reactstrap';
+import '../css/font-awesome.min.css';
 
 export interface ListItemProps {
     title: string;
@@ -19,6 +20,25 @@ export default class ListItem extends React.Component<ListItemProps, {}> {
                         <CardBlock>
                             <CardTitle>{this.props.title}</CardTitle>
                             <CardSubtitle>{this.props.subtitle}</CardSubtitle>
+                            <CardText>{this.props.text}</CardText>
+                        </CardBlock>
+                    </Card>
+                </Link>
+            </div>
+        );
+    }
+}
+
+export class FirstListItem extends React.Component<{text: string}, {}> {
+    public render() {
+        return (
+            <div className='flex-item createTest'>
+                <Link to={'/'}>
+                    <Card>
+                        <div className="card-img-top"><i className="fa fa-file-text-o" aria-hidden="true"></i></div>
+                        <CardBlock>
+                            <CardTitle>Создать свой тест</CardTitle>
+                            <CardSubtitle>Нажмите на эту карточку, если вы хотите создать тест.</CardSubtitle>
                             <CardText>{this.props.text}</CardText>
                         </CardBlock>
                     </Card>
