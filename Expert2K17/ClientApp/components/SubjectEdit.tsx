@@ -26,7 +26,13 @@ class TestCreaterSubject extends React.Component<CreateAttribute, {}>{
 
     render() {
         return <Container fluid>
+            {(() => {
+                this.props.subjects.map((val, key) => {
+                    return <ConnectedSubject index={key} />
+                })
 
+            })}
+            <ConnectedSubject index={-1} />
         </Container>
     }
 }
@@ -66,10 +72,22 @@ class Subject extends React.Component<SubjectPropsType, {}>{
                     <FormGroup row>
                         <Label for="texter" sm={3}>Название</Label>
                         <Col sm={9}>
-                            <Input type="text" name="text" id="texter" value={this.props.subject.name} placeholder="Название аттрибута"></Input>
+                            <Input type="text" name="text" id="texter" value={this.props.subject.name} placeholder="Название атрибута"></Input>
                         </Col>
                     </FormGroup> 
-                    {}
+                    {(() => {
+                        if (this.props.subject.guid != '') {
+                            return this.props.attr.map((val, key) => {
+                                return <SubjectToAttribute attr={val} subject={this.props.subject} pairs={this.props.pairs.filter((pair) => {
+                                    if (pair.attributeGuid == val.guid) {
+                                        return true;
+                                    } 
+                                    return false;
+                                })} />
+                            })
+                        }
+
+                    })}
 
 
                 </Form>
@@ -80,20 +98,18 @@ class Subject extends React.Component<SubjectPropsType, {}>{
 
 interface AdditionalPairs {
 
-    pairs: Interf.Pair[]
+    pairs: Interf.Pair[];
+    subject: Interf.Subject;
+    attr: Interf.Attribute;
 }
 
 
 interface STACallbacks {
-    added: (value: string, attrGuid: string) => void;
+    added?: (value: string, attrGuid: string) => void;
 
 }
 type SubjecterAttribute =
-    Interf.Attribute
-    &
     AdditionalPairs
-    &
-    Interf.KSubject
     &
     STACallbacks;
     
@@ -112,7 +128,7 @@ class SubjectToAttribute extends React.Component<SubjecterAttribute, {} > {
 
     makeOptions = () => {
         return this.props.pairs.filter((e) => {
-            if (e.attributeGuid == this.props.guid)
+            if (e.attributeGuid == this.props.attr.guid)
             { return true }
             else
             { return false }
@@ -126,7 +142,7 @@ class SubjectToAttribute extends React.Component<SubjecterAttribute, {} > {
 
     onVChange = (item: any) => {
         if (!!item && !!item.newOption as any) {
-            this.props.added(item.value, this.props.guid );
+            this.props.added(item.value, this.props.attr.guid );
         }
     }
 
@@ -135,7 +151,7 @@ class SubjectToAttribute extends React.Component<SubjecterAttribute, {} > {
             <CardBlock>
                 <Row>
                     <Col lg={6}>
-                        <Label>{this.props.name}</Label>
+                        <Label>{this.props.attr.name}</Label>
                     </Col>
                     <Col lg={6}>
                         <ComboBox.SimpleSelect options={this.makeOptions()} createFromSearch={

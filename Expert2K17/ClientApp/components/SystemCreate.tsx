@@ -49,6 +49,7 @@ export class TestEditorSystem extends React.Component<TestCreaterSystemT, Creato
             formData.append('name', this.state.name);
             formData.append('about', this.state.tldr);
             formData.append('guid', this.props.guid);
+            formData.append('pub', (this.state.pub == true ? 'true' : 'false'));
         }
         this.props.addSystem(formData);
     }
@@ -145,7 +146,6 @@ export class TestCreaterSystem extends React.Component<TestCreaterSystemT, Creat
 
             formData.append('name', this.state.name);
             formData.append('about', this.state.tldr);
-            formData.append('pub', (this.state.pub == true ? 'true' : 'false'));
         }
         this.props.syncSystem(formData);
     }
