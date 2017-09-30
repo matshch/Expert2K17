@@ -43,7 +43,7 @@ export const unloadedState: System = {
     name: '',
     user: '',
     picture: '',
-    tldr: '',
+    about: '',
     pub: false,
     guid: '',
 };

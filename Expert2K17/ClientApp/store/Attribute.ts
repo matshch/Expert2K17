@@ -1,4 +1,4 @@
-﻿import { KAttributes, Attributes } from './TestInterfaces'
+﻿import { KAttributes, Attribute } from './TestInterfaces'
 import { fetch, addTask } from 'domain-task';
 import { Action, Reducer, ActionCreator } from 'redux';
 import { AppThunkAction } from './';
@@ -11,11 +11,11 @@ import Guid from '../guid';
 export
     interface SyncConditionAction {
     type: 'SYNC_ATTRIBUTE';
-    attribute: Attributes;
+    attribute: Attribute;
 }
 interface AddConditionAction {
     type: 'ADD_ATTRIBUTE';
-    attribute: Attributes;
+    attribute: Attribute;
 }
 // Declare a 'discriminated union' type. This guarantees that all references to 'type' properties contain one of the
 // declared type strings (and not any other arbitrary string).
@@ -25,10 +25,10 @@ type KnownAction = SyncConditionAction | AddConditionAction;
 // REDUCER - For a given state and action, returns the new state. To support time travel, this must not mutate the old state.
 
 export const actionCreators = {
-    addCondition: (attr: Attributes): AppThunkAction<KnownAction> => (dispatch, getState) => {
+    addCondition: (attr: Attribute): AppThunkAction<KnownAction> => (dispatch, getState) => {
         dispatch({ type: 'ADD_ATTRIBUTE', attribute: attr });
     },
-    syncCondition: (attr: Attributes): AppThunkAction<KnownAction> => (dispatch, getState) => {
+    syncCondition: (attr: Attribute): AppThunkAction<KnownAction> => (dispatch, getState) => {
         dispatch({ type: 'SYNC_ATTRIBUTE', attribute: attr });
     },
 };
@@ -36,11 +36,11 @@ export const actionCreators = {
 
 
 
-export const unloadedState: Attributes[] = 
+export const unloadedState: Attribute[] = 
     []
 ;
 
-export const reducer: Reducer<Attributes[]> = (state: Attributes[], action: KnownAction) => {
+export const reducer: Reducer<Attribute[]> = (state: Attribute[], action: KnownAction) => {
     switch (action.type) {
         case "ADD_ATTRIBUTE":
             return {

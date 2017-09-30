@@ -4,7 +4,7 @@ export interface System {
     name: string;
     user: string;
     picture: string;
-    tldr: string;
+    about: string;
     pub: boolean;
     guid: string;
 }
@@ -12,7 +12,7 @@ export interface KSystem {
     current: System;
 }
 
-export interface Attributes {
+export interface Attribute {
     system_guid: string;
     name: string;
     guid: string;
@@ -20,7 +20,7 @@ export interface Attributes {
     unitValue: boolean;
 }
 export interface KAttributes {
-    attr: Attributes[];    
+    attr: Attribute[];    
 }
 
 export interface KKAttributes {

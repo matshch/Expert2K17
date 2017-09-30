@@ -13,7 +13,7 @@ import * as Interf from '../store/TestInterfaces';
 
 
 interface attributes {
-    attr: Interf.Attributes[]
+    attr: Interf.Attribute[]
     sys: Interf.System;
 
 }
@@ -50,12 +50,12 @@ interface AttrAdditionalProps {
 type AttributeProps =
     AttrAdditionalProps  
     &
-    Interf.Attributes
+    Interf.Attribute
     &
     typeof Store.actionCreators;
 
 type AttributeT =
-    Interf.Attributes
+    Interf.Attribute
 
 class Attribute extends React.Component<AttributeProps, {}>{
     constructor() {
@@ -65,10 +65,7 @@ class Attribute extends React.Component<AttributeProps, {}>{
 
     }
     unitChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        this.setState({
-            ...this.state,
-            unitValue: e.target.checked
-        });
+
     }
     render() {
         return <Card className="createSideBar">
@@ -112,7 +109,7 @@ interface NeededAttributeProps {
 
 function getAttributeProps(store: ApplicationState, props: NeededAttributeProps) {
     if (props.index != -1) {
-        return { ...store.attributes[props.index], sys: store.system };
+        return { ...store.combinedSystem.attributes[props.index], sys: store.combinedSystem.system };
     } else {
         let state = {
             system_guid: '',
@@ -121,12 +118,12 @@ function getAttributeProps(store: ApplicationState, props: NeededAttributeProps)
             unitValue: false,
             guid: ''
         }
-        return { ...state, sys: store.system };
+        return { ...state, sys: store.combinedSystem.system };
     }
 
 
 }
 
 
-export let ConnectedTestAttributeEditor = connect((store: ApplicationState) => { return { attr: store.attributes, sys: store.system } }, Store.actionCreators)(TestCreaterAttribute);
+export let ConnectedTestAttributeEditor = connect((store: ApplicationState) => { return { attr: store.combinedSystem.attributes, sys: store.combinedSystem.system } }, Store.actionCreators)(TestCreaterAttribute);
 let ConnectedAttribute = connect(getAttributeProps, Store.actionCreators)(Attribute)
