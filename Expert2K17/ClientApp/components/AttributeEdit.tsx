@@ -106,7 +106,11 @@ class Attribute extends React.Component<AttributeProps, {}>{
     }
 }
 
-function getAttributeProps(store: ApplicationState, props: AttributeProps) {
+interface NeededAttributeProps {
+    index: number;
+}
+
+function getAttributeProps(store: ApplicationState, props: NeededAttributeProps) {
     if (props.index != -1) {
         return { ...store.attributes[props.index], sys: store.system };
     } else {
@@ -125,4 +129,4 @@ function getAttributeProps(store: ApplicationState, props: AttributeProps) {
 
 
 export let ConnectedTestAttributeEditor = connect((store: ApplicationState) => { return { attr: store.attributes, sys: store.system } }, Store.actionCreators)(TestCreaterAttribute);
-let ConnectedAttribute = connect(getAttributeProps, Store.actionCreators)(Attribute) as any
+let ConnectedAttribute = connect(getAttributeProps, Store.actionCreators)(Attribute)
