@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
+import { Spinner } from 'react-spinkit';
 import { connect } from 'react-redux';
 import { ApplicationState } from '../store';
 import * as CardsStore from '../store/Cards';
@@ -24,7 +25,7 @@ export class Home extends React.Component<HomeProps, {}> {
 
     render() {
     	if (this.props.loading && this.props.SomeUselessObject.length == 0)
-    		return <p>Loading this shit cards</p>;
+    		return <Spinner name="ball-scale-multiple" />;
     	var cards = this.props.SomeUselessObject.map(e => this.renderListItem(e.name, e.description, e.user.nickname, e.image));
         return (
             <div className='flex-container home'>
