@@ -13,7 +13,7 @@ import * as Interf from '../store/TestInterfaces';
 
 
 interface attributes {
-    attr: Interf.Attributes[]
+    attr: Interf.Attribute[]
     sys: Interf.System;
 
 }
@@ -50,12 +50,12 @@ interface AttrAdditionalProps {
 type AttributeProps =
     AttrAdditionalProps  
     &
-    Interf.Attributes
+    Interf.Attribute
     &
     typeof Store.actionCreators;
 
 type AttributeT =
-    Interf.Attributes
+    Interf.Attribute
 
 class Attribute extends React.Component<AttributeProps, {}>{
     constructor() {
@@ -65,10 +65,7 @@ class Attribute extends React.Component<AttributeProps, {}>{
 
     }
     unitChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        this.setState({
-            ...this.state,
-            unitValue: e.target.checked
-        });
+
     }
     render() {
         return <Card className="createSideBar">

@@ -16,7 +16,7 @@ export class TestEditorSystem extends React.Component<TestCreaterSystemT, Creato
         this.state = {
             name: this.props.name,
             picture: null,
-            tldr: this.props.tldr,
+            tldr: this.props.about,
             pub: this.props.pub
         }
     }
@@ -39,13 +39,6 @@ export class TestEditorSystem extends React.Component<TestCreaterSystemT, Creato
             picture: e.target.files
         })
     }
-    pubChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        this.setState({
-            ...this.state,
-            pub: e.target.checked
-        })
-    }
-
     saveTest = () => {
         let formData = new FormData();
         if (this.state.name != '') {
@@ -54,8 +47,7 @@ export class TestEditorSystem extends React.Component<TestCreaterSystemT, Creato
             }
 
             formData.append('name', this.state.name);
-            formData.append('tldr', this.state.tldr);
-            formData.append('pub', (this.state.pub == true ? 'true' : 'false'));
+            formData.append('about', this.state.tldr);
             formData.append('guid', this.props.guid);
         }
         this.props.addSystem(formData);
@@ -82,12 +74,6 @@ export class TestEditorSystem extends React.Component<TestCreaterSystemT, Creato
                         <Col sm={9}>
                             <img className="img-fluid" src={this.props.picture} ></img>
                             <Input type="file" name="file" onChange={this.pictureChange} id="imge"></Input>
-                        </Col>
-                    </FormGroup>
-                    <FormGroup row>
-                        <Label for="chb1" sm={3}>Публикация</Label>
-                        <Col sm={9}>
-                            <Input type="checkbox" checked={this.state.pub} onChange={this.pubChange} id="chb1" />
                         </Col>
                     </FormGroup>
                     <Row>
@@ -158,7 +144,7 @@ export class TestCreaterSystem extends React.Component<TestCreaterSystemT, Creat
             }
 
             formData.append('name', this.state.name);
-            formData.append('tldr', this.state.tldr);
+            formData.append('about', this.state.tldr);
             formData.append('pub', (this.state.pub == true ? 'true' : 'false'));
         }
         this.props.syncSystem(formData);
