@@ -3,18 +3,14 @@ import { Action, Reducer, ActionCreator } from 'redux';
 import { AppThunkAction } from './';
 
 export interface LoginState {
-    SomeUselessObject: LoginObject[];
+    ResponseObject: any[];
     loading: boolean;
 }
 
 export interface LoginObject {
-    UserName: string,
-    Password: string,
-    Surname: string,
-    Name: string,
-    Patronymic: string,
-    Group: string,
-    Year: string;
+    username: string,
+    password: string,
+    rememberMe: boolean
 }
 
 interface UselessAction {
@@ -29,11 +25,15 @@ interface GetLoginResponse {
 type KnownActions = UselessAction | GetLoginResponse;
 
 export const actionCreators = {
-    Register: (inputObject): AppThunkAction<KnownActions> => (dispatch, getState) => {
+    LogIn: (inputObject: LoginObject): AppThunkAction<KnownActions> => (dispatch, getState) => {
         let fetchTask = fetch("/api/login", {
-            method: "PUT",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            method: "POST",
             body: JSON.stringify(inputObject)
-        }).then(response => response.json() as Promise<LoginObject[]>).then(data => {
+        }).then(response => response.json() as Promise<any>).then(data => {
             dispatch({ type: 'GET_LOGIN_RESPONSE', data: data });
         });
         addTask(fetchTask);
@@ -44,12 +44,12 @@ export const actionCreators = {
 export const reducer: Reducer<LoginState> = (state: LoginState, action: KnownActions) => {
     switch (action.type) {
         case 'GET_LOGIN_RESPONSE':
-            return { SomeUselessObject: action.data, loading: false };
+            return { ResponseObject: action.data, loading: false };
         case 'USELESS_ACTION':
             return { ...state, loading: true };
         default:
             const exhaustiveCheck: never = action;
     }
 
-    return state || { SomeUselessObject: [], loading: false };
+    return state || { ResponseObject: [], loading: false };
 };

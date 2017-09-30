@@ -21,6 +21,8 @@ export interface ApplicationState {
 // acts on the corresponding ApplicationState property type.
 export const reducers = {
     cards: Cards.reducer,
+    login: Login.reducer,
+    register: Register.reducer,
     system: SystemS.reducer,
     attributes: AttributeS.reducer
 };

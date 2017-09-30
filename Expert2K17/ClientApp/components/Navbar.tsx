@@ -34,6 +34,11 @@ export default class NavBar extends React.Component<{}, { isOpen: boolean }> {
                 </NavLink>
               </NavItem>
               <NavItem>
+                <NavLink to={'/register'} className='nav-link' activeClassName='active'>
+                  Зарегистрироваться
+                </NavLink>
+              </NavItem>
+              <NavItem>
                 <NavLink to={'/login'} className='nav-link' activeClassName='active'>
                   Войти
                 </NavLink>
