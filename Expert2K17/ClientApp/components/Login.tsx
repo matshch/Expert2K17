@@ -1,9 +1,15 @@
 import * as React from 'react';
 import { Card, CardBlock, ButtonGroup, Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
 import { RouteComponentProps } from 'react-router-dom';
+import * as LoginStore from '../store/Login';
 import '../css/cards.css';
 
-export default class Login extends React.Component<RouteComponentProps<{}>, { type: boolean, fadetype: string[] }> {
+type LoginProps =
+    LoginStore.LoginState
+    & typeof LoginStore.actionCreators
+    & RouteComponentProps<{}>;
+
+export class Login extends React.Component<LoginProps, { type: boolean, fadetype: string[] }> {
     constructor() {
         super();
         this.state = {
@@ -60,18 +66,18 @@ export default class Login extends React.Component<RouteComponentProps<{}>, { ty
                         <Form>
                             <FormGroup className={"regFormGroup " + this.state.fadetype[1]} row>
                                 <Label for="exampleEmail">Логин</Label>
-                                <Input size="xs" type="text" name="login" id="Login" placeholder="введите логин" />
+                                <Input ref="login" size="xs" type="text" placeholder="введите логин" />
                                 <Label for="exampleEmail">Имя</Label>
-                                <Input size="xs" type="text" name="login" id="Name" placeholder="введите имя" />
+                                <Input ref="name" size="xs" type="text" placeholder="введите имя" />
                                 <Label for="exampleEmail">Фамилия</Label>
-                                <Input size="xs" type="text" name="login" id="LastName" placeholder="введите фамилию" />
+                                <Input ref="lastname" size="xs" type="text" placeholder="введите фамилию" />
                                 <Label for="examplePassword">Пароль</Label>
-                                <Input size="xs" type="password" name="password" id="Password" placeholder="введите пароль" />
+                                <Input ref="password1" size="xs" type="password" placeholder="введите пароль" />
                                 <Label for="examplePassword">Повторите пароль</Label>
-                                <Input size="xs" type="password" name="password" id="Password" placeholder="повторно введите пароль" />
+                                <Input ref="password2" size="xs" type="password" placeholder="повторно введите пароль" />
                                 <ButtonGroup className="btn-block">
                                     <Button block onClick={() => this.setStateFade([1, 1, 0])}>Войти</Button>
-                                    <Button onClick={() => this.setStateFade([0, -1, -1])} color="primary">Зарегистрироваться</Button>
+                                    <Button onClick={() => this.props.Register({Name:this.refs.name.value, Surname:this.refs.surname.value, Password:this.refs.password1==this.refs.password1 ? this.refs.password1 : null})} color="primary">Зарегистрироваться</Button>
                                 </ButtonGroup>
                             </FormGroup>
                         </Form>
@@ -80,3 +86,8 @@ export default class Login extends React.Component<RouteComponentProps<{}>, { ty
         }
     }
 }
+
+export default connect(
+    (state: ApplicationState) => state.login,
+    LoginStore.actionCreators
+)(Login) as typeof Login;

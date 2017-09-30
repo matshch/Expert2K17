@@ -15,7 +15,7 @@ export class SideBar extends React.Component<{}, {}>{
             <Card className="createSideBar">
                 <CardBlock>
                     <div>
-                        <h4>Панель управления</h4>
+                        <h4>Профиль</h4>
                     </div>
                     <hr />
                     <Nav className="nav-pills" vertical>

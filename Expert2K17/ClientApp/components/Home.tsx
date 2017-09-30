@@ -8,9 +8,9 @@ import '../css/flex.css';
 import '../css/cards.css';
 
 type HomeProps =
-    CardsStore.CardsState        // ... state we've requested from the Redux store
+    CardsStore.CardsState
     & typeof CardsStore.actionCreators
-    & RouteComponentProps<{}>; // ... plus incoming routing parameters
+    & RouteComponentProps<{}>;
 
 export class Home extends React.Component<HomeProps, {}> {
 	componentWillMount() {

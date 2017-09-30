@@ -20,7 +20,7 @@ export class SideBar extends React.Component<{}, {}>{
                     <hr />
                     <Nav className="nav-pills" vertical>
                         <NavItem>
-                            <NavLink to={'/panel'} className='nav-link' exact activeClassName='active'>Система</NavLink>
+                            <NavLink to={'/panel'} exact className='nav-link' activeClassName='active'>Система</NavLink>
                         </NavItem>
                         <NavItem>
                             <NavLink to={'/panel/users'} className='nav-link' activeClassName='active'>Пользователи</NavLink>
@@ -83,7 +83,9 @@ export default class Panel extends React.Component<RouteComponentProps<{}>, {}> 
                         <SideBar />
                     </Col>
                     <Col sm={9}>
-                        <Tests/>
+                        <Route path='/panel/' exact component={System} />
+                        <Route path='/panel/users' component={Users} />
+                        <Route path='/panel/tests' component={Tests} />
                     </Col>
                 </Row>
             </Container>
