@@ -29,7 +29,9 @@ export
         if (this.props.location.pathname == '/EditTest') {
             return <Redirect to="/EditTest/new" />
         }
+        if (this.props.match.params.guid != this.props.guid) {
 
+        }
 
         return <DocumentTitle title='Создание системы — ЭЗ ПЕЗ'>
             <Container fluid>
@@ -104,7 +106,7 @@ export class TestCreaterNav extends React.Component<NavProps, {}>{
 
 
 
-let ConnectedTestCreaterNav = connect((store: ApplicationState) => store.system)(TestCreaterNav);
+let ConnectedTestCreaterNav = connect((store: ApplicationState) => store.combinedSystem.system)(TestCreaterNav);
 
 
 
@@ -112,6 +114,6 @@ let ConnectedTestCreaterNav = connect((store: ApplicationState) => store.system)
 
 // Wire up the React component to the Redux store
 export default connect(
-    (state: ApplicationState) => state.system, // Selects which state properties are merged into the component's props
+    (state: ApplicationState) => state.combinedSystem.system, // Selects which state properties are merged into the component's props
     Store.actionCreators                 // Selects which action creators are merged into the component's props
 )(TestCreater);

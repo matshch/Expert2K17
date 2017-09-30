@@ -195,6 +195,6 @@ export class TestCreaterSystem extends React.Component<TestCreaterSystemT, Creat
 
 
 
-export let ConnectedTestSystemCreater = connect((store: ApplicationState) => store.system, Store.actionCreators)(TestCreaterSystem);
-export let ConnectedTestSystemEditor = connect((store: ApplicationState) => store.system, Store.actionCreators)(TestEditorSystem);
+export let ConnectedTestSystemCreater = connect((store: ApplicationState) => store.combinedSystem.system, Store.actionCreators)(TestCreaterSystem);
+export let ConnectedTestSystemEditor = connect((store: ApplicationState) => store.combinedSystem.system, Store.actionCreators)(TestEditorSystem);
 
