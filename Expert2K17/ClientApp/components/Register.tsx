@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Col, Card, CardBlock, ButtonGroup, Button, Form, FormGroup, Label, Input, FormText, ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
+import { Alert, Col, Card, CardBlock, ButtonGroup, Button, Form, FormGroup, Label, Input, FormText, ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import { connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router-dom';
 import { ApplicationState } from '../store';
@@ -11,7 +11,7 @@ type RegisterProps =
     & typeof RegisterStore.actionCreators
     & RouteComponentProps<{}>;
 
-export class Register extends React.Component<RegisterProps, { username: string, group: string, year: string, name: string, surname: string, patronymic: string, fpassword: string, spassword: string }> {
+export class Register extends React.Component<RegisterProps, { shitpass: boolean, username: string, group: string, year: string, name: string, surname: string, patronymic: string, fpassword: string, spassword: string }> {
     constructor() {
         super();
         this.state = {
@@ -22,7 +22,8 @@ export class Register extends React.Component<RegisterProps, { username: string,
             fpassword: "",
             spassword: "",
             year: "",
-            group: ""
+            group: "",
+            shitpass: false
         };
     }
 
@@ -32,6 +33,7 @@ export class Register extends React.Component<RegisterProps, { username: string,
 
     SubmitRegister = () => {
         if (this.state.fpassword == this.state.spassword) {
+            this.setState({ shitpass: false })
             this.props.Register({
                 "UserName": this.state.username,
                 "Password": this.state.fpassword,
@@ -42,7 +44,7 @@ export class Register extends React.Component<RegisterProps, { username: string,
                 "Year": this.state.year
             })
         } else {
-            alert("Пароли не совпадают!")
+            this.setState({ shitpass: true })
         }
     }
 
@@ -142,6 +144,24 @@ export class Register extends React.Component<RegisterProps, { username: string,
                                 <Label for="secondPass">Повторите пароль</Label>
                                 <Input id="secondPass" onChange={this.secPasswordChanged} size="xs" type="password" placeholder="повторно введите пароль" />
                             </Col>
+                            {
+                                (() => {
+                                    if (this.props.ResponseObject["succeeded"] === false || this.state.shitpass === true) {
+                                        return (
+                                            <Alert color="danger">
+                                                {this.props.ResponseObject["errors"].map((e: any) => <p><strong>Ошибка</strong> {e["description"]}</p>)}
+                                                {
+                                                    (() => {
+                                                        if (this.state.shitpass === true) {
+                                                            return (
+                                                                <p><strong>Ошибка</strong> пароли не совпадают.</p>
+                                                            )
+                                                        }
+                                                    })()}
+                                            </Alert>
+                                        )
+                                    }
+                                })()}
                             <Button block onClick={this.SubmitRegister} color="primary">Зарегистрироваться</Button>
                         </FormGroup>
                     </Form>

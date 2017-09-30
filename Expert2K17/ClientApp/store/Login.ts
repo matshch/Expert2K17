@@ -3,7 +3,7 @@ import { Action, Reducer, ActionCreator } from 'redux';
 import { AppThunkAction } from './';
 
 export interface LoginState {
-    ResponseObject: any[];
+    ResponseObject: any;
     loading: boolean;
 }
 

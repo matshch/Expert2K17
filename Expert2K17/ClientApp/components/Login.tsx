@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Row, Col, Card, CardBlock, ButtonGroup, Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
+import { Alert, Row, Col, Card, CardBlock, ButtonGroup, Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
 import { connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router-dom';
 import { ApplicationState } from '../store';
@@ -72,7 +72,16 @@ export class Login extends React.Component<LoginProps, { username: string, passw
                                     </div>
                                 </Row>
                             </Label>
-
+                            {
+                                (() => {
+                                    if (this.props.ResponseObject["succeeded"] === false) {
+                                        return (
+                                            <Alert color="danger">
+                                                <strong>Ошибка</strong> Неправильные имя пользователя или пароль.
+                                            </Alert>
+                                        )
+                                    }
+                                })()}
                             <Button onClick={this.SubmitLogin} block color="primary">Войти</Button>
                         </FormGroup>
                     </Form>

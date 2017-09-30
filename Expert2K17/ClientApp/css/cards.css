@@ -17,6 +17,7 @@
     text-align: justify;
 }
 
+
 .home .card {
     background-color: rgba(255, 255, 255, 0.5) !important;
     max-width: 302px;
@@ -113,6 +114,12 @@
     width: 100%;
     vertical-align: bottom;
     font-size: 16pt;
+}
+
+.login .alert {
+    margin-top: 10px !important;
+    width: 100%;
+    margin: 0;
 }
 
 @-webkit-keyframes Gradient {

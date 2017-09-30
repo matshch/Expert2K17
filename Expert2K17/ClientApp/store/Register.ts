@@ -3,7 +3,7 @@ import { Action, Reducer, ActionCreator } from 'redux';
 import { AppThunkAction } from './';
 
 export interface RegisterState {
-    ResponseObject: any[];
+    ResponseObject: any;
     GroupsYearsObject: GroupsYearsObject[];
     loading: boolean;
 }
