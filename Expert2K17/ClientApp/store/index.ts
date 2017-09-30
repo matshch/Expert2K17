@@ -1,4 +1,6 @@
 import * as Cards from './Cards';
+import * as Login from './Login';
+import * as Register from './Register';
 import * as SystemS from './System'
 import * as SystemI from './TestInterfaces'
 import * as AttributeS from './Attribute'
@@ -8,6 +10,8 @@ import * as AttributeS from './Attribute'
 // The top-level state object
 export interface ApplicationState {
     cards: Cards.CardsState;
+    login: Login.LoginState;
+    register: Register.RegisterState;
     system: SystemI.System;
     attributes: SystemI.Attribute[];
 }

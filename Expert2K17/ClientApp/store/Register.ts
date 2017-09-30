@@ -2,12 +2,12 @@ import { fetch, addTask } from 'domain-task';
 import { Action, Reducer, ActionCreator } from 'redux';
 import { AppThunkAction } from './';
 
-export interface LoginState {
-    SomeUselessObject: LoginObject[];
+export interface RegisterState {
+    SomeUselessObject: RegisterObject[];
     loading: boolean;
 }
 
-export interface LoginObject {
+export interface RegisterObject {
     UserName: string,
     Password: string,
     Surname: string,
@@ -21,29 +21,29 @@ interface UselessAction {
     type: 'USELESS_ACTION';
 }
 
-interface GetLoginResponse {
-    type: 'GET_LOGIN_RESPONSE';
-    data: LoginObject[]
+interface GetRegisterResponse {
+    type: 'GET_REGISTER_RESPONSE';
+    data: RegisterObject[]
 }
 
-type KnownActions = UselessAction | GetLoginResponse;
+type KnownActions = UselessAction | GetRegisterResponse;
 
 export const actionCreators = {
     Register: (inputObject): AppThunkAction<KnownActions> => (dispatch, getState) => {
-        let fetchTask = fetch("/api/login", {
+        let fetchTask = fetch("/api/register", {
             method: "PUT",
             body: JSON.stringify(inputObject)
-        }).then(response => response.json() as Promise<LoginObject[]>).then(data => {
-            dispatch({ type: 'GET_LOGIN_RESPONSE', data: data });
+        }).then(response => response.json() as Promise<RegisterObject[]>).then(data => {
+            dispatch({ type: 'GET_REGISTER_RESPONSE', data: data });
         });
         addTask(fetchTask);
         dispatch({ type: 'USELESS_ACTION' });
     }
 };
 
-export const reducer: Reducer<LoginState> = (state: LoginState, action: KnownActions) => {
+export const reducer: Reducer<RegisterState> = (state: RegisterState, action: KnownActions) => {
     switch (action.type) {
-        case 'GET_LOGIN_RESPONSE':
+        case 'GET_REGISTER_RESPONSE':
             return { SomeUselessObject: action.data, loading: false };
         case 'USELESS_ACTION':
             return { ...state, loading: true };
