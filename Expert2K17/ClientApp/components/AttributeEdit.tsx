@@ -109,7 +109,7 @@ interface NeededAttributeProps {
 
 function getAttributeProps(store: ApplicationState, props: NeededAttributeProps) {
     if (props.index != -1) {
-        return { ...store.attributes[props.index], sys: store.system };
+        return { ...store.combinedSystem.attributes[props.index], sys: store.combinedSystem.system };
     } else {
         let state = {
             system_guid: '',
@@ -118,12 +118,12 @@ function getAttributeProps(store: ApplicationState, props: NeededAttributeProps)
             unitValue: false,
             guid: ''
         }
-        return { ...state, sys: store.system };
+        return { ...state, sys: store.combinedSystem.system };
     }
 
 
 }
 
 
-export let ConnectedTestAttributeEditor = connect((store: ApplicationState) => { return { attr: store.attributes, sys: store.system } }, Store.actionCreators)(TestCreaterAttribute);
+export let ConnectedTestAttributeEditor = connect((store: ApplicationState) => { return { attr: store.combinedSystem.attributes, sys: store.combinedSystem.system } }, Store.actionCreators)(TestCreaterAttribute);
 let ConnectedAttribute = connect(getAttributeProps, Store.actionCreators)(Attribute)
