@@ -28,6 +28,7 @@ module.exports = (env) => {
                 'bootstrap/dist/css/bootstrap.css',
                 'domain-task',
                 'event-source-polyfill',
+                'font-awesome/css/font-awesome.css',
                 'history',
                 'react',
                 'react-dom',

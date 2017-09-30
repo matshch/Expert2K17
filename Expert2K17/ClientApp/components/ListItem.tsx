@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import { Card, CardImg, CardText, CardBlock, CardTitle, CardSubtitle, Button } from 'reactstrap';
-import '../css/font-awesome.min.css';
 
 export interface ListItemProps {
     title: string;
