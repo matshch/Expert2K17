@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { ApplicationState } from '../store';
 import * as CardsStore from '../store/Cards';
 import ListItem from './ListItem';
+import {FirstListItem} from './ListItem';
 import '../css/flex.css';
 import '../css/cards.css';
 
@@ -27,6 +28,7 @@ export class Home extends React.Component<HomeProps, {}> {
     	var cards = this.props.SomeUselessObject.map(e => this.renderListItem(e.name, e.description, e.user.nickname, e.image));
         return (
             <div className='flex-container home'>
+                <FirstListItem text="username"/>
             	{cards}
             </div>);
     }
