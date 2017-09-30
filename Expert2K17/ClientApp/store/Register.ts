@@ -23,8 +23,8 @@ export interface GroupsYearsObject {
     groups: string[]
 }
 
-interface UselessAction {
-    type: 'USELESS_ACTION';
+interface UselessRegisterAction {
+    type: 'USELESS_REGISTER_ACTION';
 }
 
 interface GetRegisterResponse {
@@ -37,7 +37,7 @@ interface GetGroupsYearsResponse {
     data: GroupsYearsObject[]
 }
 
-type KnownActions = UselessAction | GetRegisterResponse | GetGroupsYearsResponse;
+type KnownActions = UselessRegisterAction | GetRegisterResponse | GetGroupsYearsResponse;
 
 export const actionCreators = {
     Register: (inputObject: RegisterObject): AppThunkAction<KnownActions> => (dispatch, getState) => {
@@ -52,14 +52,14 @@ export const actionCreators = {
             dispatch({ type: 'GET_REGISTER_RESPONSE', data: data });
         });
         addTask(fetchTask);
-        dispatch({ type: 'USELESS_ACTION' });
+        dispatch({ type: 'USELESS_REGISTER_ACTION' });
     },
     GetGroupsYears: (): AppThunkAction<KnownActions> => (dispatch, getState) => {
         let fetchTask = fetch("/api/groups").then(response => response.json() as Promise<GroupsYearsObject[]>).then(data => {
             dispatch({ type: 'GET_GROUPSYEARS_RESPONSE', data: data });
         });
         addTask(fetchTask);
-        dispatch({ type: 'USELESS_ACTION' });
+        dispatch({ type: 'USELESS_REGISTER_ACTION' });
     }
 };
 
@@ -69,7 +69,7 @@ export const reducer: Reducer<RegisterState> = (state: RegisterState, action: Kn
             return { ...state, ResponseObject: action.data, loading: false };
         case 'GET_GROUPSYEARS_RESPONSE':
             return { ...state, GroupsYearsObject: action.data, loading: false };
-        case 'USELESS_ACTION':
+        case 'USELESS_REGISTER_ACTION':
             return { ...state, loading: true };
         default:
             const exhaustiveCheck: never = action;

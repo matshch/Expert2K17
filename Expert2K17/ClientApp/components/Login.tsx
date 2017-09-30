@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Alert, Row, Col, Card, CardBlock, ButtonGroup, Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
+import * as Spinner from 'react-spinkit';
 import { connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router-dom';
 import { ApplicationState } from '../store';
@@ -51,6 +52,8 @@ export class Login extends React.Component<LoginProps, { username: string, passw
     }
 
     render() {
+        if (this.props.loading)
+            return <Spinner name="ball-scale-multiple"/>
         return (
             <div className="login">
                 <Card>

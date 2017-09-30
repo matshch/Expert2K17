@@ -13,8 +13,8 @@ export interface LoginObject {
     rememberMe: boolean
 }
 
-interface UselessAction {
-    type: 'USELESS_ACTION';
+interface UselessLoginAction {
+    type: 'USELESS_LOGIN_ACTION';
 }
 
 interface GetLoginResponse {
@@ -22,7 +22,7 @@ interface GetLoginResponse {
     data: LoginObject[]
 }
 
-type KnownActions = UselessAction | GetLoginResponse;
+type KnownActions = UselessLoginAction | GetLoginResponse;
 
 export const actionCreators = {
     LogIn: (inputObject: LoginObject): AppThunkAction<KnownActions> => (dispatch, getState) => {
@@ -37,7 +37,7 @@ export const actionCreators = {
             dispatch({ type: 'GET_LOGIN_RESPONSE', data: data });
         });
         addTask(fetchTask);
-        dispatch({ type: 'USELESS_ACTION' });
+        dispatch({ type: 'USELESS_LOGIN_ACTION' });
     }
 };
 
@@ -45,7 +45,7 @@ export const reducer: Reducer<LoginState> = (state: LoginState, action: KnownAct
     switch (action.type) {
         case 'GET_LOGIN_RESPONSE':
             return { ResponseObject: action.data, loading: false };
-        case 'USELESS_ACTION':
+        case 'USELESS_LOGIN_ACTION':
             return { ...state, loading: true };
         default:
             const exhaustiveCheck: never = action;

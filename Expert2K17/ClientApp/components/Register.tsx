@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Alert, Col, Card, CardBlock, ButtonGroup, Button, Form, FormGroup, Label, Input, FormText, ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import { connect } from 'react-redux';
+import * as Spinner from 'react-spinkit';
 import { RouteComponentProps } from 'react-router-dom';
 import { ApplicationState } from '../store';
 import * as RegisterStore from '../store/Register';
@@ -105,6 +106,8 @@ export class Register extends React.Component<RegisterProps, { shitpass: boolean
     }
 
     render() {
+        if (this.props.loading)
+            return <Spinner name="ball-scale-multiple" />
         let year = this.props.GroupsYearsObject.find(e => e.year == this.state.year)
         let groups = [""]
         if (year != undefined) groups = year.groups

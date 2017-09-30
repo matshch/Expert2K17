@@ -1,17 +1,17 @@
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
-import { Spinner } from 'react-spinkit';
+import * as Spinner from 'react-spinkit';
 import { connect } from 'react-redux';
 import { ApplicationState } from '../store';
-import * as CardsStore from '../store/Cards';
+import * as HomeStore from '../store/Home';
 import ListItem from './ListItem';
 import {FirstListItem} from './ListItem';
 import '../css/flex.css';
 import '../css/cards.css';
 
 type HomeProps =
-    CardsStore.CardsState
-    & typeof CardsStore.actionCreators
+    HomeStore.HomeState
+    & typeof HomeStore.actionCreators
     & RouteComponentProps<{}>;
 
 export class Home extends React.Component<HomeProps, {}> {
@@ -19,14 +19,14 @@ export class Home extends React.Component<HomeProps, {}> {
         this.props.GetCards();
     }
 
-    renderListItem(t: string, st: string, tx: string, img: string) {
-        return <ListItem title={t} subtitle={st} text={tx} image={img}/>;
+    renderListItem(key: string, t: string, st: string, tx: string, img: string) {
+        return <ListItem key={key} title={t} subtitle={st} text={tx} image={img}/>;
     }
 
     render() {
-    	if (this.props.loading && this.props.SomeUselessObject.length == 0)
-    		return <Spinner name="ball-scale-multiple" />;
-    	var cards = this.props.SomeUselessObject.map(e => this.renderListItem(e.name, e.description, e.user.nickname, e.image));
+    	if (this.props.loading && this.props.ResponseObject.length == 0)
+    		return <Spinner name="ball-scale-multiple"/>
+    	var cards = this.props.ResponseObject.map(e => this.renderListItem(e.id, e.name, e.description, e.user.nickname, e.image));
         return (
             <div className='flex-container home'>
                 <FirstListItem text="username"/>
@@ -36,6 +36,6 @@ export class Home extends React.Component<HomeProps, {}> {
 }
 
 export default connect(
-    (state: ApplicationState) => state.cards,
-    CardsStore.actionCreators
+    (state: ApplicationState) => state.home,
+    HomeStore.actionCreators
 )(Home);

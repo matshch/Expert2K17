@@ -2,8 +2,8 @@ import { fetch, addTask } from 'domain-task';
 import { Action, Reducer, ActionCreator } from 'redux';
 import { AppThunkAction } from './';
 
-export interface CardsState {
-    SomeUselessObject: CardObject[];
+export interface HomeState {
+    ResponseObject: CardObject[];
     loading: boolean;
 }
 
@@ -23,8 +23,8 @@ export interface CardObject {
     user: User;
 }
 
-interface UselessAction {
-    type: 'USELESS_ACTION';
+interface UselessCardsAction {
+    type: 'USELESS_CARDS_ACTION';
 }
 
 interface GetAllCards {
@@ -32,7 +32,7 @@ interface GetAllCards {
     data: CardObject[]
 }
 
-type KnownActions = UselessAction | GetAllCards;
+type KnownActions = UselessCardsAction | GetAllCards;
 
 export const actionCreators = {
     GetCards: (): AppThunkAction<KnownActions> => (dispatch, getState) => {
@@ -42,19 +42,19 @@ export const actionCreators = {
                     dispatch({type: 'GET_ALL_CARDS', data: data});
                 });
             addTask(fetchTask);
-            dispatch({ type: 'USELESS_ACTION'});
+            dispatch({ type: 'USELESS_CARDS_ACTION'});
         }
 };
 
-export const reducer: Reducer<CardsState> = (state: CardsState, action: KnownActions) => {
+export const reducer: Reducer<HomeState> = (state: HomeState, action: KnownActions) => {
     switch (action.type) {
         case 'GET_ALL_CARDS':
-            return { SomeUselessObject: action.data, loading: false };
-        case 'USELESS_ACTION':
+            return { ResponseObject: action.data, loading: false };
+        case 'USELESS_CARDS_ACTION':
             return { ...state, loading: true };
         default:
             const exhaustiveCheck: never = action;
     }
 
-    return state || { SomeUselessObject: [], loading: false };
+    return state || { ResponseObject: [], loading: false };
 };

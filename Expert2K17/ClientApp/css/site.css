@@ -1,86 +1,118 @@
-@font-face {
+@font-face
+{
     font-family: RobotoCondensed;
+
     src: url(../fonts/RobotoCondensed-Regular.ttf);
 }
 
-@font-face {
+@font-face
+{
     font-family: Lobster;
+
     src: url(../fonts/Lobster-Regular.ttf);
 }
 
-@font-face {
+@font-face
+{
     font-family: OpenSans-SemiBoldItalic;
+
     src: url(../fonts/OpenSans-SemiBoldItalic.ttf);
 }
 
-*:not(.navbar *) {
+*:not(.navbar *)
+{
     font-family: RobotoCondensed !important;
 }
 
-html {
+html,
+body,
+body > div,
+.container-fluid,
+body > div > div
+{
+    width: 100%;
     height: 100%;
 }
 
-.home h4,.navbar {
+.sk-spinner
+{
+    position: absolute !important;
+    top: 50%;
+    left: 50%;
+
+    transform: scale(10) translateY(-30px) !important;
+}
+
+.home h4,
+.navbar
+{
     font-family: Lobster !important;
 }
 
-h6 {
+h6
+{
     font-family: OpenSans-SemiBoldItalic !important;
 }
 
-body {
+body
+{
     min-width: 400px;
-	padding-top: 5rem;
-    height: 100%;
-    background: linear-gradient(-45deg, #EE7752, #f590b7, #23A6D5, #23D5AB);
-    background-size: 400% 400%;
+    min-height: 400px;
+    padding-top: 5rem;
+
     -webkit-animation: Gradient 60s ease infinite;
-    -moz-animation: Gradient 60s ease infinite;
-    animation: Gradient 60s ease infinite;
+       -moz-animation: Gradient 60s ease infinite;
+            animation: Gradient 60s ease infinite;
+
+    background: linear-gradient(-45deg, #ee7752, #f590b7, #23a6d5, #23d5ab);
+    background-size: 400% 400%;
 }
 
 
-@-webkit-keyframes Gradient {
-    0% {
-        background-position: 0% 50%
+@-webkit-keyframes Gradient
+{
+    0%
+    {
+        background-position: 0 50%;
     }
-    50% {
-        background-position: 100% 50%
+    50%
+    {
+        background-position: 100% 50%;
     }
-    100% {
-        background-position: 0% 50%
-    }
-}
-
-@-moz-keyframes Gradient {
-    0% {
-        background-position: 0% 50%
-    }
-    50% {
-        background-position: 100% 50%
-    }
-    100% {
-        background-position: 0% 50%
+    100%
+    {
+        background-position: 0 50%;
     }
 }
 
-@keyframes Gradient {
-    0% {
-        background-position: 0% 50%
+@-moz-keyframes Gradient
+{
+    0%
+    {
+        background-position: 0 50%;
     }
-    50% {
-        background-position: 100% 50%
+    50%
+    {
+        background-position: 100% 50%;
     }
-    100% {
-        background-position: 0% 50%
+    100%
+    {
+        background-position: 0 50%;
     }
 }
 
-.createSideBar {
-    background-color: rgba(255,255,255,0.6)
-}
-
-.createSideBar.card {
-    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3);
+@keyframes Gradient
+{
+    0%
+    {
+        background-position: 0 50%;
+    }
+    50%
+    {
+        background-position: 100% 50%;
+    }
+    100%
+    {
+        background-position: 0 50%;
+    }
 }

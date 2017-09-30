@@ -1,4 +1,4 @@
-import * as Cards from './Cards';
+import * as Home from './Home';
 import * as Login from './Login';
 import * as Register from './Register';
 import * as SystemS from './System'
@@ -9,7 +9,7 @@ import * as combinedSystems from './combinedSystem';
 
 // The top-level state object
 export interface ApplicationState {
-    cards: Cards.CardsState;
+    home: Home.HomeState;
     login: Login.LoginState;
     register: Register.RegisterState;
     combinedSystem: combinedSystems.SystemCreateState;
@@ -19,7 +19,7 @@ export interface ApplicationState {
 // the reducer with the matching name. It's important that the names match exactly, and that the reducer
 // acts on the corresponding ApplicationState property type.
 export const reducers = {
-    cards: Cards.reducer,
+    home: Home.reducer,
     login: Login.reducer,
     register: Register.reducer,
     combinedSystem: combinedSystems.reducer
