@@ -52,9 +52,19 @@ namespace Expert2K17.Controllers
         public async Task<CreateSystemResponse> Create(CreateSystem system)
         {
             var response = new CreateSystemResponse();
-            if (system.Name == null || system.Name.Length == 0)
+            if (string.IsNullOrEmpty(system.Name))
             {
                 response.Error = "Введите название системы";
+                return response;
+            }
+            if (system.About.Length > 40)
+            {
+                response.Error = "Слишком длинное название системы";
+                return response;
+            }
+            if (system.About.Length > 140)
+            {
+                response.Error = "Слишком длинное описание системы";
                 return response;
             }
             var user = await _userManager.GetUserAsync(User);
