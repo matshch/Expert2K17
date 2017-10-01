@@ -189,7 +189,15 @@ class SubjectToAttribute extends React.Component<SubjecterAttribute, {} > {
                 }           
         })
     }
-
+    makeOptions1 = () => {
+        return [{
+            label: 'asasd1',
+            value: 'sada1'
+        }, {
+            label: 'sas2',
+            value: 'sas2'
+        }]
+    }
     onVChange = (item: any) => {
         if (!!item && !!item.newOption as any) {
             this.props.added(item.value, this.props.attr.guid );
@@ -204,18 +212,18 @@ class SubjectToAttribute extends React.Component<SubjecterAttribute, {} > {
                         <Label>{this.props.attr.name}</Label>
                     </Col>
                     <Col lg={6}>
-                        <ComboBox.SimpleSelect options={this.makeOptions()} createFromSearch={
-                            (options, search) => {
-                                if (search.length == 0 || (options.map(function (option) {
-                                    return option.label;
-                                })).indexOf(search) > -1)
-                                    return null as OptionValue;
-                                else
-                                    return { label: search, value: search };
+                        <ComboBox.SimpleSelect options={this.makeOptions1()} 
+                            createFromSearch={
+                                (options, search) => {
+                                    if (search.length == 0 || (options.map(function (option) {
+                                        return option.label;
+                                    })).indexOf(search) > -1)
+                                        return null as OptionValue;
+                                    else
+                                        return { label: search, value: search };
+                                }
                             }
-                        }
                             onValueChange={this.onVChange}
-
                             renderOption={function (item: any) {
                                 return <div className="simple-option" style={{ display: "flex", alignItems: "center" }}>
                                     <div style={{

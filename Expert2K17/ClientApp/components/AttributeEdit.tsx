@@ -99,7 +99,7 @@ class Attribute extends React.Component<AttributeProps, {}>{
                     <hr />
                     <ListGroup>
                         {this.props.pairs.map((val, key) => {
-                            return <ListGroupItem key={key}>{val}</ListGroupItem>
+                            return <ListGroupItem key={key}>{val.value}</ListGroupItem>
                         })}
                     </ListGroup>
                                     
