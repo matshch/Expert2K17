@@ -29,6 +29,24 @@ namespace Expert2K17.Controllers
             _userManager = userManager;
         }
 
+        // GET: api/system/get/cee8e768-6490-45a8-9848-090c7a89878a
+        [HttpGet("{id}")]
+        public async Task<CreateSystemResponse> Get(Guid id)
+        {
+            var response = new CreateSystemResponse();
+            var (system, error) = await GetPrepare(id.ToString());
+
+            if (error != null)
+            {
+                response.Error = error;
+                return response;
+            }
+
+            response.Json = system.AutosavedJson;
+            response.Succeded = true;
+            return response;
+        }
+
         // POST: api/system/create
         [HttpPost]
         public async Task<CreateSystemResponse> Create(CreateSystem system)
@@ -128,26 +146,38 @@ namespace Expert2K17.Controllers
             return response;
         }
 
-        private async Task<ValueTuple<MyResponse, string, Test, SystemJson>> SavePrepare()
+        private async Task<ValueTuple<Test, string>> GetPrepare(string id)
         {
-            var response = new MyResponse();
-            var reader = new StreamReader(Request.Body, Encoding.UTF8).ReadToEndAsync();
             var userGetter = _userManager.GetUserAsync(User);
 
-            var request = await reader;
-            var obj = JsonConvert.DeserializeObject<TestJson>(request);
-            var system = await _db.Tests.Include(e => e.User).FirstOrDefaultAsync(e => e.Id.ToString() == obj.system.guid);
+            var system = await _db.Tests.Include(e => e.User).FirstOrDefaultAsync(e => e.Id.ToString() == id);
             if (system == null)
             {
-                response.Error = "Система не найдена";
-                return (response, request, system, obj.system);
+                return (null, "Система не найдена");
             }
 
             var user = await userGetter;
             if (system.User.Id != user.Id)
             {
-                response.Error = "Система не принадлежит вам";
-                return (response, request, system, obj.system);
+                return (null, "Система не принадлежит вам");
+            }
+
+            return (system, null);
+        }
+
+        private async Task<ValueTuple<MyResponse, string, Test, SystemJson>> SavePrepare()
+        {
+            var response = new MyResponse();
+            var reader = new StreamReader(Request.Body, Encoding.UTF8).ReadToEndAsync();
+            
+            var request = await reader;
+            var obj = JsonConvert.DeserializeObject<TestJson>(request);
+
+            var (system, error) = await GetPrepare(obj.system.guid);
+            if (error != null)
+            {
+                response.Error = error;
+                return (response, null, null, null);
             }
 
             return (response, request, system, obj.system);
