@@ -64,6 +64,8 @@ body
 
     background: linear-gradient(-45deg, #ee7752, #f590b7, #23a6d5, #23d5ab);
     background-size: 500% 500%;
+
+    margin-bottom: 2rem;
 }
 
 .profileCover
