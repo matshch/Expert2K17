@@ -23,6 +23,8 @@ module.exports = (env) => {
                 'react-dom',
                 'react-router-dom',
                 'react-redux',
+                'react-selectize',
+                'react-selectize/dist/index.css',
                 'redux',
                 'redux-thunk',
                 'react-router-redux'
