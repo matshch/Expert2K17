@@ -132,7 +132,10 @@ namespace Expert2K17.Controllers
                     Group = user.Group?.Group,
                     Year = user.Year?.Year,
 
-                    IsAdmin = isAdmin
+                    IsAdmin = isAdmin,
+
+                    Userpic = user.Userpic,
+                    Cover = user.Cover
                 };
             }
             else
@@ -173,6 +176,9 @@ namespace Expert2K17.Controllers
             public string Year { get; set; }
 
             public bool IsAdmin { get; set; }
+
+            public string Userpic { get; set; }
+            public string Cover { get; set; }
         }
 
         public class LoginData
