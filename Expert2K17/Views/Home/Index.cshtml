@@ -2,13 +2,12 @@
 @using Microsoft.AspNetCore.Http.Features
 @using Microsoft.AspNetCore.NodeServices
 @using Microsoft.AspNetCore.SpaServices.Prerendering
+@inject IApplicationLifetime applicationLifetime
+@inject IHostingEnvironment hostEnv
+@inject INodeServices nodeServices
 @{
-    var serviceProvider = ViewContext.HttpContext.RequestServices;
-    var hostEnv = (IHostingEnvironment)serviceProvider.GetService(typeof(IHostingEnvironment));
-    var nodeServices = (INodeServices)serviceProvider.GetService(typeof(INodeServices));
     var applicationBasePath = hostEnv.ContentRootPath;
 
-    var applicationLifetime = (IApplicationLifetime)serviceProvider.GetService(typeof(IApplicationLifetime));
     var applicationStoppingToken = applicationLifetime.ApplicationStopping;
 
     var httpContext = ViewContext.HttpContext;
