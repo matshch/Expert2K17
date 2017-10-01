@@ -42,6 +42,7 @@ type KnownActions = UselessRegisterAction | GetRegisterResponse | GetGroupsYears
 export const actionCreators = {
     Register: (inputObject: RegisterObject): AppThunkAction<KnownActions> => (dispatch, getState) => {
         let fetchTask = fetch("/api/login", {
+            credentials: 'same-origin',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'

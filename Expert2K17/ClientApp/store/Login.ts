@@ -30,6 +30,7 @@ type ReducerActions = UselessLoginAction | GetLoginResponse;
 export const actionCreators = {
     LogIn: (inputObject: LoginObject): AppThunkAction<KnownActions> => (dispatch, getState) => {
         let fetchTask = fetch("/api/login", {
+            credentials: 'same-origin',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'

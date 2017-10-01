@@ -24,11 +24,12 @@ type KnownActions = UselessProfileAction | GetProfileResponse;
 
 export const actionCreators = {
     GetTestsList: (): AppThunkAction<KnownActions> => (dispatch, getState) => {
-        let fetchTask = fetch("/api/system/get").then(response => response.json() as Promise<any>).then(data => {
-            dispatch({ type: 'GET_PROFILE_RESPONSE', data: data });
-        });
-        addTask(fetchTask);
+        // let fetchTask = fetch("/api/system/get", {credentials: 'same-origin'}).then(response => response.json() as Promise<any>).then(data => {
+        //     dispatch({ type: 'GET_PROFILE_RESPONSE', data: data });
+        // });
+        // addTask(fetchTask);
         dispatch({ type: 'USELESS_PROFILE_ACTION' });
+        dispatch({ type: 'GET_PROFILE_RESPONSE', data: [] });
     }
 };
 

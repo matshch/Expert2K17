@@ -33,7 +33,7 @@ type KnownActions = UselessUserAction | SetUser;
 
 export const actionCreators = {
     GetUser: (): AppThunkAction<KnownActions> => (dispatch, getState) => {
-            let fetchTask = fetch(`/api/login`)
+            let fetchTask = fetch(`/api/login`, {credentials: 'same-origin'})
                 .then(response => response.json() as Promise<{user:UserObject}>)
                 .then(data => {
                     dispatch({type: 'SET_USER', data: data.user});
