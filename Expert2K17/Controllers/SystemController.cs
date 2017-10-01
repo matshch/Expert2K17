@@ -5,8 +5,11 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using System;
 using System.IO;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Expert2K17.Controllers
@@ -93,6 +96,63 @@ namespace Expert2K17.Controllers
             return response;
         }
 
+        // POST: api/system/autosave
+        [HttpPost]
+        public async Task<MyResponse> Autosave()
+        {
+            var (response, request, system, _) = await SavePrepare();
+            if (response.Error != "") return response;
+
+            system.AutosavedJson = request;
+            await _db.SaveChangesAsync();
+
+            response.Succeded = true;
+            return response;
+        }
+
+        // POST: api/system/save
+        [HttpPost]
+        public async Task<MyResponse> Save()
+        {
+            var (response, request, system, obj) = await SavePrepare();
+            if (response.Error != "") return response;
+
+            system.Name = obj.name;
+            system.Description = obj.about;
+            system.Published = obj.pub;
+            system.AutosavedJson = request;
+            system.PublishedJson = request;
+            await _db.SaveChangesAsync();
+
+            response.Succeded = true;
+            return response;
+        }
+
+        private async Task<ValueTuple<MyResponse, string, Test, SystemJson>> SavePrepare()
+        {
+            var response = new MyResponse();
+            var reader = new StreamReader(Request.Body, Encoding.UTF8).ReadToEndAsync();
+            var userGetter = _userManager.GetUserAsync(User);
+
+            var request = await reader;
+            var obj = JsonConvert.DeserializeObject<TestJson>(request);
+            var system = await _db.Tests.Include(e => e.User).FirstOrDefaultAsync(e => e.Id.ToString() == obj.system.guid);
+            if (system == null)
+            {
+                response.Error = "Система не найдена";
+                return (response, request, system, obj.system);
+            }
+
+            var user = await userGetter;
+            if (system.User.Id == null)
+            {
+                response.Error = "Система не принадлежит вам";
+                return (response, request, system, obj.system);
+            }
+
+            return (response, request, system, obj.system);
+        }
+
         public class CreateSystem
         {
             public string Name { get; set; }
@@ -121,6 +181,12 @@ namespace Expert2K17.Controllers
             public bool Succeded { get; set; } = false;
             public string Error { get; set; } = "";
             public string Json { get; set; } = null;
+        }
+
+        public class MyResponse
+        {
+            public bool Succeded { get; set; } = false;
+            public string Error { get; set; } = "";
         }
     }
 }
