@@ -8,6 +8,8 @@ module.exports = (env) => {
     const isDevBuild = !(env && env.prod);
     const extractCSS = new ExtractTextPlugin('site.css');
 
+    const fileExt = /\.(png|jpg|jpeg|gif|woff|woff2|eot|ttf|svg)$/;
+
     // Configuration in common to both client-side and server-side bundles
     const sharedConfig = () => ({
         stats: { modules: false },
@@ -18,16 +20,7 @@ module.exports = (env) => {
         },
         module: {
             rules: [
-                { test: /\.tsx?$/, include: /ClientApp/, use: 'awesome-typescript-loader?silent=true' },
-                { test: /\.(png|jpg|jpeg|gif|woff|woff2|eot|ttf|svg)$/, use: 
-                    {
-                        loader: "url-loader",
-                        options: {
-                            limit: 25000,
-                            publicPath: ''
-                        }
-                    }
-                }
+                { test: /\.tsx?$/, include: /ClientApp/, use: 'awesome-typescript-loader?silent=true' }
             ]
         },
         plugins: [
@@ -45,7 +38,16 @@ module.exports = (env) => {
         entry: { 'main-client': './ClientApp/boot-client.tsx' },
         module: {
             rules: [
-                { test: /\.css$/, use: extractCSS.extract({ use: isDevBuild ? 'css-loader' : 'css-loader?minimize' }) }
+                { test: /\.css$/, use: extractCSS.extract({ use: isDevBuild ? 'css-loader' : 'css-loader?minimize' }) },
+                { test: fileExt, use: 
+                    {
+                        loader: "url-loader",
+                        options: {
+                            limit: 25000,
+                            publicPath: ''
+                        }
+                    }
+                }
             ]
         },
         output: { path: path.join(__dirname, clientBundleOutputDir) },
@@ -73,7 +75,15 @@ module.exports = (env) => {
         entry: { 'main-server': './ClientApp/boot-server.tsx' },
         module: {
             rules: [
-                { test: /\.css$/, use: isDevBuild ? 'css-loader' : 'css-loader?minimize' }
+                { test: /\.css$/, use: isDevBuild ? 'css-loader' : 'css-loader?minimize' },
+                { test: fileExt, use: 
+                    {
+                        loader: "file-loader",
+                        options: {
+                            emitFile: false
+                        }
+                    }
+                }
             ]
         },
         plugins: [

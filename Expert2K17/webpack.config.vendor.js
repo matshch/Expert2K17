@@ -7,22 +7,11 @@ module.exports = (env) => {
     const isDevBuild = !(env && env.prod);
     const extractCSS = new ExtractTextPlugin('vendor.css');
 
+    const fileExt = /\.(png|woff|woff2|eot|ttf|svg)(\?|$)/;
+
     const sharedConfig = {
         stats: { modules: false },
         resolve: { extensions: [ '.js' ] },
-        module: {
-            rules: [
-                { test: /\.(png|woff|woff2|eot|ttf|svg)(\?|$)/, use: 
-                    {
-                        loader: "url-loader",
-                        options: {
-                            limit: 100000,
-                            publicPath: ''
-                        }
-                    }
-                }
-            ]
-        },
         entry: {
             vendor: [
                 'bootstrap/dist/css/bootstrap.css',
@@ -56,7 +45,16 @@ module.exports = (env) => {
         output: { path: path.join(__dirname, 'wwwroot', 'dist') },
         module: {
             rules: [
-                { test: /\.css(\?|$)/, use: extractCSS.extract({ use: isDevBuild ? 'css-loader' : 'css-loader?minimize' }) }
+                { test: /\.css(\?|$)/, use: extractCSS.extract({ use: isDevBuild ? 'css-loader' : 'css-loader?minimize' }) },
+                { test: fileExt, use: 
+                    {
+                        loader: "url-loader",
+                        options: {
+                            limit: 100000,
+                            publicPath: ''
+                        }
+                    }
+                }
             ]
         },
         plugins: [
@@ -78,7 +76,17 @@ module.exports = (env) => {
             libraryTarget: 'commonjs2',
         },
         module: {
-            rules: [ { test: /\.css(\?|$)/, use: isDevBuild ? 'css-loader' : 'css-loader?minimize' } ]
+            rules: [
+            	{ test: /\.css(\?|$)/, use: isDevBuild ? 'css-loader' : 'css-loader?minimize' },
+                { test: fileExt, use: 
+                    {
+                        loader: "file-loader",
+                        options: {
+                            emitFile: false
+                        }
+                    }
+                }
+            ]
         },
         entry: { vendor: ['aspnet-prerendering', 'react-dom/server'] },
         plugins: [
