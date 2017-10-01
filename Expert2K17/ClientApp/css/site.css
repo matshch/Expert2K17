@@ -61,6 +61,7 @@ h6
 
 body
 {
+    margin-bottom: 2rem;
     padding-top: 5rem;
 
     -webkit-animation: Gradient 60s ease infinite;
@@ -69,8 +70,6 @@ body
 
     background: linear-gradient(-45deg, #ee7752, #f590b7, #23a6d5, #23d5ab);
     background-size: 500% 500%;
-
-    margin-bottom: 2rem;
 }
 
 .profileCover
@@ -148,6 +147,21 @@ body
     font-size: 14pt;
 
     background-color: rgba(255, 255, 255, .3);
+}
+
+.profile input {
+    display: none;
+}
+
+.profileEditButtons
+{
+    position: absolute;
+    top: 5px;
+    right: 5px;
+}
+
+.profileEditButtons .btn{
+    background-color: rgba(255, 255, 255, .5) !important;
 }
 
 
