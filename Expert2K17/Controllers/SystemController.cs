@@ -57,10 +57,14 @@ namespace Expert2K17.Controllers
                 response.Error = "Введите название системы";
                 return response;
             }
-            if (system.About.Length > 40)
+            if (system.Name.Length > 40)
             {
                 response.Error = "Слишком длинное название системы";
                 return response;
+            }
+            if (system.About == null)
+            {
+                system.About = "";
             }
             if (system.About.Length > 140)
             {
