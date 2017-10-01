@@ -33,8 +33,6 @@
     "node-noop": "^1.0.0",
     "popper.js": "^1.12.5",
     "react": "^16.0.0",
-    "react-addons-css-transition-group": "^15.6.2",
-    "react-addons-shallow-compare": "^15.6.2",
     "react-document-title": "^2.0.3",
     "react-dom": "^16.0.0",
     "react-dom-factories": "^1.0.2",
