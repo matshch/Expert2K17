@@ -5,11 +5,13 @@ import { StaticRouter } from 'react-router-dom';
 import { replace } from 'react-router-redux';
 import { createMemoryHistory } from 'history';
 import { createServerRenderer, RenderResult } from 'aspnet-prerendering';
+import fetchPatch from './custom/fetch';
 import { routes } from './routes';
 import configureStore from './configureStore';
 import DocumentTitle from 'react-document-title';
 
 export default createServerRenderer(params => {
+    fetchPatch(params.data.cookie);
     return new Promise<RenderResult>((resolve, reject) => {
         // Prepare Redux store with in-memory history, and dispatch a navigation event
         // corresponding to the incoming URL
@@ -28,6 +30,7 @@ export default createServerRenderer(params => {
         );
         renderToString(app);
 
+        console.log(routerContext.url);
         // If there's a redirection, just send this information back to the host application
         if (routerContext.url) {
             resolve({ redirectUrl: routerContext.url });

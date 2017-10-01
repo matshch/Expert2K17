@@ -17,6 +17,8 @@
     var request = httpContext.Request;
     var unencodedAbsoluteUrl = $"{request.Scheme}://{request.Host}{unencodedPathAndQuery}";
 
+    var cookie = httpContext.Request.Headers["Cookie"].ToString();
+
     var moduleName = "ClientApp/dist/main-server";
     var result = await Prerenderer.RenderToString(
                 applicationBasePath,
@@ -25,7 +27,7 @@
                 new JavaScriptModuleExport(moduleName),
                 unencodedAbsoluteUrl,
                 unencodedPathAndQuery,
-                default(object),
+                new { cookie },
                 default(int),
                 request.PathBase.ToString());
 

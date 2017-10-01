@@ -23,9 +23,9 @@ export class Profile extends React.Component<ProfileProps, {}> {
     }
 
     render() {
-        if (this.props.user == null)
+        if (this.props.user === null)
             return <Redirect to="/login"/>
-        if (this.props.loading || this.props.userLoading)
+        if (this.props.user === undefined || (this.props.ResponseObject.length === 0 && this.props.loading))
             return <Spinner name="ball-scale-multiple"/>
         return (
             <DocumentTitle title='Профиль'>
