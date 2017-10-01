@@ -58,7 +58,8 @@ function CollectState(state: SystemCreateState) {
 export const reducer: Reducer<SystemCreateState> = (state: SystemCreateState, action: KnownAction) => {
     switch (action.type) {
         default:
-            if (state.system.guid == '') {
+            let new_state = defaultReducer(state, action);
+            if (new_state.system.guid != '') {
                 let fetchTask = fetch("/api/system/autosave", {
                     credentials: 'same-origin',
                     headers: {
@@ -66,7 +67,7 @@ export const reducer: Reducer<SystemCreateState> = (state: SystemCreateState, ac
                         'Content-Type': 'application/json'
                     },
                     method: "POST",
-                    body: CollectState(state)
+                    body: CollectState(new_state)
                 }).then(response => response.json() as Promise<any>).then(data => {
                     
                 });
