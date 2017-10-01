@@ -28,7 +28,7 @@ export
         super();
     }
     render() {
-        if (this.props.location.pathname == '/EditTest') {
+        if (this.props.location.pathname == '/CreateTest' || this.props.location.pathname == '/CreateTest/EditTest') {
             return <Redirect to="/CreateTest/EditTest/new" />
         }
         if (this.props.match.params.guid != this.props.guid) {

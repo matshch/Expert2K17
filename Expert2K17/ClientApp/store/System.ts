@@ -10,11 +10,11 @@ import Guid from '../guid';
 // They do not themselves have any side-effects; they just describe something that is going to happen.
 export 
 interface SyncSystemAction {
-    type: 'SYNC_SUBJECT';
+    type: 'SYNC_SYSTEM';
     system: System;
 }
 interface AddSystemAction {
-    type: 'ADD_SUBJECT';
+    type: 'ADD_SYSTEM';
     system: System;
 }
 interface LoadSystemAction {
@@ -32,23 +32,19 @@ type KnownAction = SyncSystemAction | AddSystemAction | LoadSystemAction;
 export const actionCreators = {
     addSystem: (sys: FormData): AppThunkAction<KnownAction> => (dispatch, getState) => {
         let fetchTask = fetch("/api/system/create", {
-            credentials: 'same-origin',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
+            credentials: 'same-origin',         
             method: "POST",
             body: sys
         }).then(response => response.json() as Promise<any>).then(data => {
             if (data.succeded) {
                 let new_data = JSON.parse(data.json);
-                dispatch({ type: 'ADD_SUBJECT', system: new_data });       
+                dispatch({ type: 'ADD_SYSTEM', system: new_data.system });       
             }
         });
         addTask(fetchTask);      
     },
     syncSystem: (sys: System): AppThunkAction<KnownAction> => (dispatch, getState) => {
-        dispatch({ type: "SYNC_SUBJECT", system: sys });
+        dispatch({ type: "SYNC_SYSTEM", system: sys });
     },
     saveSystem: (attr: System): AppThunkAction<KnownAction> => (dispatch, getState) => {
 
@@ -86,18 +82,15 @@ export const unloadedState: System = {
 
 export const reducer: Reducer<System> = (state: System, action: KnownAction) => {
     switch (action.type) {
-        case "ADD_SUBJECT":
-            return {
-                ...action.system               
-            };
-        case "SYNC_SUBJECT":
-            return {
-                ...action.system
-            };
+        case "ADD_SYSTEM":
+            return action.system               
+            ;
+        case "SYNC_SYSTEM":
+            return action.system
+            ;
         case "LOAD_SYSTEM":
-            return {
-                ...action.system
-            };
+            return action.system
+            ;
         default:
             // The following line guarantees that every action in the KnownAction union has been covered by a case above
             const exhaustiveCheck: never = action;

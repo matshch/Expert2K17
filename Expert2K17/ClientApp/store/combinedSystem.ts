@@ -31,7 +31,7 @@ interface LoadPreviousAction {
     type: 'LOAD_SYSTEM_PREVIOUS';
 }
 interface AddSystemAction {
-    type: 'SYNC_SUBJECT';
+    type: 'SYNC_SUBJECT1';
 }
 
 export const actionCreators = {
@@ -39,7 +39,7 @@ export const actionCreators = {
         dispatch({ type: 'LOAD_SYSTEM_PREVIOUS'});
     },
     syncSystem: (): AppThunkAction<KnownAction> => (dispatch, getState) => {
-        dispatch({ type: 'SYNC_SUBJECT' });
+        dispatch({ type: 'SYNC_SUBJECT1' });
     },
     addAttribute: (attr: FormData): AppThunkAction<KnownAction> => (dispatch, getState) => {
 
