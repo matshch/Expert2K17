@@ -34,7 +34,7 @@ class TestCreaterAttribute extends React.Component<CreateAttribute, {}>{
             {this.props.attr.map((val, key) => {
                 return <ConnectedAttribute key={key} index={key} />
             })}
-            <ConnectedAttribute index={-1} />
+            <ConnectedNewAttribute />
         </Container>
     }
 }
@@ -43,14 +43,15 @@ class TestCreaterAttribute extends React.Component<CreateAttribute, {}>{
 interface AttrAdditionalProps {
     index: number;
     sys: Interf.System;
+    attr: Interf.Attribute;
+    pairs: Interf.Pair[];
+
 }
 
 
 
 type AttributeProps =
     AttrAdditionalProps  
-    &
-    Interf.Attribute
     &
     typeof Store.actionCreators;
 
@@ -62,10 +63,22 @@ class Attribute extends React.Component<AttributeProps, {}>{
         super();
     }
     name_change = (e: React.ChangeEvent<HTMLInputElement>) => {
-
+        this.props.syncAttribute(
+            {
+                ...this.props.attr,
+                name: e.target.value
+            },
+            this.props.attr.guid
+        )
     }
     unitChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-
+        this.props.syncAttribute(
+            {
+                ...this.props.attr,
+                unitValue: e.target.checked
+            },
+            this.props.attr.guid
+        )
     }
     render() {
         return <Card className="createSideBar">
@@ -74,28 +87,21 @@ class Attribute extends React.Component<AttributeProps, {}>{
                     <FormGroup row>
                         <Label for="texter" sm={3}>Название</Label>
                         <Col sm={9}>
-                            <Input type="text" name="text" id="texter" value={this.props.name} placeholder="Название аттрибута"></Input>
+                            <Input type="text" name="text" id="texter" value={this.props.attr.name} placeholder="Название аттрибута"></Input>
                         </Col>
                     </FormGroup>
                     <FormGroup row>
                         <Label for="chb1" sm={3}>Числовые значения</Label>
                         <Col sm={9}>
-                            <Input type="checkbox" checked={this.props.unitValue} onChange={this.unitChange} id="chb1" />
+                            <Input type="checkbox" checked={this.props.attr.unitValue} onChange={this.unitChange} id="chb1" />
                         </Col>
                     </FormGroup>
-                    {(() => {
-                        if (this.props.index != -1) {
-                            return (<div>
-                                <hr />
-                                <ListGroup>
-                                    {this.props.values.map((val, key) => {
-                                        return <ListGroupItem key={key}>{val}</ListGroupItem>
-                                    })}
-                                </ListGroup>
-                                <Button color="success">Создать</Button>
-                            </div>)
-                        }
-                    })()}
+                    <hr />
+                    <ListGroup>
+                        {this.props.pairs.map((val, key) => {
+                            return <ListGroupItem key={key}>{val}</ListGroupItem>
+                        })}
+                    </ListGroup>
                                     
                 </Form>
             </CardBlock>
@@ -103,27 +109,88 @@ class Attribute extends React.Component<AttributeProps, {}>{
     }
 }
 
-interface NeededAttributeProps {
-    index: number;
-}
 
-function getAttributeProps(store: ApplicationState, props: NeededAttributeProps) {
-    if (props.index != -1) {
-        return { ...store.combinedSystem.attributes[props.index], sys: store.combinedSystem.system };
-    } else {
-        let state: Interf.Attribute = {
+class NewAttribute extends React.Component<typeof Store.actionCreators, Interf.Attribute>{
+    constructor() {
+        super();
+       this.state = {
             system_guid: '',
             name: '',
             values: [],
             unitValue: false,
             guid: ''
         }
-        return { ...state, sys: store.combinedSystem.system };
+    }
+    name_change = (e: React.ChangeEvent<HTMLInputElement>) => {
+        this.setState(
+            {
+                ...this.state,
+                name: e.target.value
+            }
+        )
+    }
+    unitChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        this.setState(
+            {
+                ...this.state,
+                unitValue: e.target.checked
+            }
+        )
     }
 
+    addAttribute = () => {
+        this.props.addAttribute(this.state);
+        this.setState({
+            system_guid: '',
+            name: '',
+            values: [],
+            unitValue: false,
+            guid: ''
+        });
+    }
 
+    render() {
+        return <Card className="createSideBar">
+            <CardBlock>
+                <Form>
+                    <FormGroup row>
+                        <Label for="texter" sm={3}>Название</Label>
+                        <Col sm={9}>
+                            <Input type="text" name="text" id="texter" value={this.state.name} placeholder="Название аттрибута"></Input>
+                        </Col>
+                    </FormGroup>
+                    <FormGroup row>
+                        <Label for="chb1" sm={3}>Числовые значения</Label>
+                        <Col sm={9}>
+                            <Input type="checkbox" checked={this.state.unitValue} onChange={this.unitChange} id="chb1" />
+                        </Col>
+                    </FormGroup>
+                    <Button color="success" onClick={this.addAttribute}>Создать</Button>
+                </Form>
+            </CardBlock>
+        </Card>
+    }
 }
+interface NeededAttributeProps {
+    index: number;
+}
+
+function getAttributeProps(store: ApplicationState, props: NeededAttributeProps) {
+    
+        let pairs = store.combinedSystem.pairs.filter((e) => {
+            if (e.attributeGuid == store.combinedSystem.attributes[props.index].guid) {
+                return true;
+
+            }
+            return false;
+        })
+        return { attr: store.combinedSystem.attributes[props.index], pairs: pairs, sys: store.combinedSystem.system };
+   
+}
+
+
 
 
 export let ConnectedTestAttributeEditor = connect((store: ApplicationState) => { return { attr: store.combinedSystem.attributes, sys: store.combinedSystem.system } }, Store.actionCreators)(TestCreaterAttribute);
 let ConnectedAttribute = connect(getAttributeProps, Store.actionCreators)(Attribute)
+let ConnectedNewAttribute = connect(() => { return {}}, Store.actionCreators)(NewAttribute)

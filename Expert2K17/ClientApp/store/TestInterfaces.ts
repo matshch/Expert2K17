@@ -43,13 +43,13 @@ export interface KSubject {
 
 export interface Parameter {
     name: string;
-    //guid: string;
+    guid: string;
     unitValue: boolean; 
     values: string[];
 }
 
 export interface KParameter {
-    [guid: string]: string;
+    parameters: Parameter[];
 }
 
 interface Answer {
@@ -71,7 +71,7 @@ export interface Condition {
     right: string; // value
     act: Operation;
     parameter: boolean; // 0 - par -> 1 - attr
-    //guid: string;   
+    guid: string;   
 }
 export interface KCondition {
     [guid: string]: Condition;
@@ -82,7 +82,7 @@ export interface KCondition {
 export interface Question {
     system_guid: string;
     question: string;
-    //guid: string;
+    guid: string;
     parameter_guid: string;
     answers: Answer[];
     cast_after: string; //Question_guid
@@ -90,16 +90,16 @@ export interface Question {
 
 }
 export interface KQuestion {
-    [guid: string]: Question;
+    questions: Question[];
 }
 
 export interface Logic {
     conditions: Condition[];
-   // guid: string;
+    guid: string;
     then: Condition;
     operation: Operation;
 }
 
 export interface Klogic {
-    [guid: string]: Logic;
+    logics: Logic[];
 }

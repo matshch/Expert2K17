@@ -10,50 +10,32 @@ import { NavLink, Route, Redirect } from 'react-router-dom';
 import { Nav, NavItem, Row, Container, Col, Button, Form, FormGroup, Label, Input, FormText, Media, Card, CardBlock, CardTitle, CardText, ListGroup, ListGroupItem, ListGroupItemText } from 'reactstrap'
 import DocumentTitle from 'react-document-title';
 import * as Interf from '../store/TestInterfaces';
-export class TestEditorSystem extends React.Component<TestCreaterSystemT, CreatorSystem>{
+export class TestEditorSystem extends React.Component<TestEditSystemT, {}>{
     constructor() {
         super();
-        this.state = {
-            name: this.props.name,
-            picture: null,
-            tldr: this.props.about,
-            pub: this.props.pub
-        }
     }
 
     nameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        this.setState({
-            ...this.state,
+        this.props.syncSystem({
+            ...this.props.system,
             name: e.target.value
         });
     }
     tldrChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        this.setState({
-            ...this.state,
-            tldr: e.target.value
-        })
+        this.props.syncSystem({
+            ...this.props.system,
+            about: e.target.value
+        });
     }
     pictureChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        this.setState({
-            ...this.state,
-            picture: e.target.files
-        })
+        
     }
-    saveTest = () => {
-        let formData = new FormData();
-        if (this.state.name != '') {
-            if (this.state.picture != null) {
-                formData.append('picture', this.state.picture[0]);
-            }
-
-            formData.append('name', this.state.name);
-            formData.append('about', this.state.tldr);
-            formData.append('guid', this.props.guid);
-            formData.append('pub', (this.state.pub == true ? 'true' : 'false'));
-        }
-        this.props.addSystem(formData);
+    pubChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        this.props.syncSystem({
+            ...this.props.system,
+            pub: e.target.checked
+        });
     }
-
     render() {
         return <Card className="createSideBar">
             <CardBlock>
@@ -61,28 +43,28 @@ export class TestEditorSystem extends React.Component<TestCreaterSystemT, Creato
                     <FormGroup row>
                         <Label for="text" lg={3}>Название</Label>
                         <Col lg={9}>
-                            <Input type="text" name="text" value={this.state.name} onChange={this.nameChange} id="text" placeholder="Название теста"></Input>
+                            <Input type="text" name="text" value={this.props.system.name} onChange={this.nameChange} id="text" placeholder="Название теста"></Input>
                         </Col>
                     </FormGroup>
                     <FormGroup row>
                         <Label for="description" lg={3}>О системе</Label>
                         <Col lg={9}>
-                            <Input type="textarea" value={this.state.tldr} onChange={this.tldrChange} id="description" placeholder="Описаение"></Input>
+                            <Input type="textarea" value={this.props.system.about} onChange={this.tldrChange} id="description" placeholder="Описаение"></Input>
                         </Col>
                     </FormGroup>
                     <FormGroup row>
                         <Label for="imge" lg={3}>Картинка</Label>
                         <Col lg={9}>
-                            <img className="img-fluid" src={this.props.picture} ></img>
+                            <img className="img-fluid" src={this.props.system.picture} ></img>
                             <Input type="file" name="file" onChange={this.pictureChange} id="imge"></Input>
                         </Col>
                     </FormGroup>
-                    <Row>
-                        <Col lg={3} />
+                    <FormGroup row>
+                        <Label for="chb1" lg={3}>Публичный доступ</Label>
                         <Col lg={9}>
-                            <Button color="success" onClick={this.saveTest} className="pull-left">Сохранить изменения</Button>
+                            <Input type="checkbox" checked={this.props.system.pub} onChange={this.pubChange} id="chb1" />
                         </Col>
-                    </Row>
+                    </FormGroup>
                 </Form>
             </CardBlock>
         </Card>
@@ -95,7 +77,9 @@ interface CreatorSystem {
     tldr: string;
     pub: boolean;
 }
-
+type TestEditSystemT = typeof Store.actionCreators
+    &
+    Interf.KSystem;
 type TestCreaterSystemT = typeof Store.actionCreators
     &
     Interf.System;
@@ -130,12 +114,6 @@ export class TestCreaterSystem extends React.Component<TestCreaterSystemT, Creat
             picture: e.target.files
         })
     }
-    pubChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        this.setState({
-            ...this.state,
-            pub: e.target.checked
-        })
-    }
 
     saveTest = () => {
         let formData = new FormData();
@@ -147,7 +125,7 @@ export class TestCreaterSystem extends React.Component<TestCreaterSystemT, Creat
             formData.append('name', this.state.name);
             formData.append('about', this.state.tldr);
         }
-        this.props.syncSystem(formData);
+        this.props.addSystem(formData);
     }
 
     render() {
@@ -174,17 +152,11 @@ export class TestCreaterSystem extends React.Component<TestCreaterSystemT, Creat
                         <Col lg={9}>
                             <Input type="file" onChange={this.pictureChange} name="file" id="imge"></Input>
                         </Col>
-                    </FormGroup>
-                    <FormGroup row>
-                        <Label for="chb1" lg={3}>Публичный доступ</Label>
-                        <Col lg={9}>
-                            <Input type="checkbox" onChange={this.pubChange} id="chb1" />
-                        </Col>
-                    </FormGroup>
+                    </FormGroup>                   
                     <Row>
                         <Col lg={3} />
                         <Col lg={9}>
-                            <Button color="success" onClick={this.saveTest} className="pull-left">Создать</Button>
+                            <Button color="success" onClick={this.saveTest} className="pull-left">Создать тест</Button>
                         </Col>
                     </Row>
                 </Form>
@@ -196,5 +168,5 @@ export class TestCreaterSystem extends React.Component<TestCreaterSystemT, Creat
 
 
 export let ConnectedTestSystemCreater = connect((store: ApplicationState) => store.combinedSystem.system, Store.actionCreators)(TestCreaterSystem);
-export let ConnectedTestSystemEditor = connect((store: ApplicationState) => store.combinedSystem.system, Store.actionCreators)(TestEditorSystem);
+export let ConnectedTestSystemEditor = connect((store: ApplicationState) => { return { system: store.combinedSystem.system} }, Store.actionCreators)(TestEditorSystem);
 

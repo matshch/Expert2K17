@@ -32,7 +32,7 @@ class TestCreaterSubject extends React.Component<CreateAttribute, {}>{
                 })
 
             })}
-            <ConnectedSubject index={-1} />
+            <ConnectedNewSubject/>
         </Container>
     }
 }
@@ -60,10 +60,10 @@ class Subject extends React.Component<SubjectPropsType, {}>{
         super();
     }
     name_change = (e: React.ChangeEvent<HTMLInputElement>) => {
-
-    }
-    unitChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-
+        this.props.syncSubject({
+            ...this.props.subject,
+            name: e.target.value
+        });
     }
     render() {
         return <Card className="createSideBar">
@@ -72,7 +72,7 @@ class Subject extends React.Component<SubjectPropsType, {}>{
                     <FormGroup row>
                         <Label for="texter" sm={3}>Название</Label>
                         <Col sm={9}>
-                            <Input type="text" name="text" id="texter" value={this.props.subject.name} placeholder="Название атрибута"></Input>
+                            <Input type="text" name="text" id="texter" value={this.props.subject.name} placeholder="Название объекта"></Input>
                         </Col>
                     </FormGroup> 
                     {(() => {
@@ -88,8 +88,50 @@ class Subject extends React.Component<SubjectPropsType, {}>{
                         }
 
                     })}
+                </Form>
+            </CardBlock>
+        </Card>
+    }
+}
 
 
+class NewSubject extends React.Component<typeof Store.actionCreators, Interf.Subject>{
+    constructor() {
+        super();
+        this.state = {
+            system_guid: '',
+            name: '',
+            guid: ''
+        }
+    }
+    name_change = (e: React.ChangeEvent<HTMLInputElement>) => {
+        this.setState(
+            {
+                ...this.state,
+                name: e.target.value
+            }
+        )
+    }
+    saveSubject = () => {
+        this.props.addSubject(this.state);
+        this.setState({
+            system_guid: '',
+            name: '',
+            guid: ''
+        })
+    }
+
+    render() {
+        return <Card className="createSideBar">
+            <CardBlock>
+                <Form>
+                    <FormGroup row>
+                        <Label for="texter" sm={3}>Название</Label>
+                        <Col sm={9}>
+                            <Input type="text" name="text" id="texter" value={this.state.name} placeholder="Название объекта"></Input>
+                        </Col>
+                    </FormGroup>
+                    <Button color="success" onClick={this.saveSubject}>Создать</Button>
                 </Form>
             </CardBlock>
         </Card>
@@ -213,6 +255,7 @@ function getStore(store: ApplicationState, props: NeededAttributeProps) {
     }
 }
 
+let ConnectedNewSubject = connect(() => { return {}}, Store.actionCreators)(NewSubject);
 
 let ConnectedSubject = connect(getStore, Store.actionCreators)(Subject);
 export default connect((store: ApplicationState) => { return { system: store.combinedSystem.system, subjects: store.combinedSystem.subjects } }, Store.actionCreators)(TestCreaterSubject);

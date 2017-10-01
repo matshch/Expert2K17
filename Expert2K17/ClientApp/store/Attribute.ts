@@ -12,6 +12,7 @@ export
     interface SyncConditionAction {
     type: 'SYNC_ATTRIBUTE';
     attribute: Attribute;
+    guid: string;
 }
 interface AddConditionAction {
     type: 'ADD_ATTRIBUTE';
@@ -25,11 +26,15 @@ type KnownAction = SyncConditionAction | AddConditionAction;
 // REDUCER - For a given state and action, returns the new state. To support time travel, this must not mutate the old state.
 
 export const actionCreators = {
-    addCondition: (attr: Attribute): AppThunkAction<KnownAction> => (dispatch, getState) => {
+    addAttribute: (attr: Attribute): AppThunkAction<KnownAction> => (dispatch, getState) => {
+        let new_attr: Attribute = {
+            ...attr,
+            guid: Guid.MakeNew().ToString()
+        }
         dispatch({ type: 'ADD_ATTRIBUTE', attribute: attr });
     },
-    syncCondition: (attr: Attribute): AppThunkAction<KnownAction> => (dispatch, getState) => {
-        dispatch({ type: 'SYNC_ATTRIBUTE', attribute: attr });
+    syncAttribute: (attr: Attribute, guid_: string): AppThunkAction<KnownAction> => (dispatch, getState) => {
+        dispatch({ type: 'SYNC_ATTRIBUTE', attribute: attr, guid: guid_ });
     },
 };
 
@@ -43,13 +48,14 @@ export const unloadedState: Attribute[] =
 export const reducer: Reducer<Attribute[]> = (state: Attribute[], action: KnownAction) => {
     switch (action.type) {
         case "ADD_ATTRIBUTE":
-            return {
-                ...state
-            };
+            return [...state.slice(0, state.length - 1), action.attribute];
         case "SYNC_ATTRIBUTE":
-            return {
-                ...state
-            };
+            return state.map((e, index) => {
+                if (e.guid == action.guid) {
+                    return { ...action.attribute };
+                }
+                return e
+            });
         default:
             // The following line guarantees that every action in the KnownAction union has been covered by a case above
             const exhaustiveCheck: never = action;

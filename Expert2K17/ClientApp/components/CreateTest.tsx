@@ -14,6 +14,8 @@ import DocumentTitle from 'react-document-title';
 import * as Interf from '../store/TestInterfaces';
 import * as Systemer from './SystemCreate';
 import * as Attributer from './AttributeEdit';
+import * as Subjecter from './SubjectEdit';
+
 
 
 type CounterProps =
@@ -43,6 +45,8 @@ export
                         <Route path='/EditTest/new' component={Systemer.ConnectedTestSystemCreater} />
                         <Route path='/EditTest/:guid/CreateSystem' component={Systemer.ConnectedTestSystemEditor} />
                         <Route path='/EditTest/:guid/CreateAttribute' component={Attributer.ConnectedTestAttributeEditor} />
+                        <Route path='/EditTest/:guid/CreateSubject' component={Subjecter.default} />
+
                     </Col>
                 </Row>
             </Container>
@@ -79,15 +83,15 @@ export class TestCreaterNav extends React.Component<NavProps, {}>{
                                     if (typeof this.props.link  != 'undefined') {
                                         return <NavLink to={'/EditTest/' + this.props.link + '/CreateSystem'} className='nav-link' exact activeClassName='active'>Система</NavLink>
                                     }
-                                    return <NavLink to={'/EditTest/CreateSystem'} className='nav-link' exact activeClassName='active'>Система</NavLink>
+                                    return <NavLink to={'/EditTest/new'} className='nav-link' exact activeClassName='active'>Система</NavLink>
                                 })()
                             }  
                     </NavItem>
                     <NavItem>
-                            <NavLink to={'/EditTest/CreateAttribute'} className='nav-link' activeClassName='active'>Аттрибуты</NavLink>
+                            <NavLink to={'/EditTest/CreateAttribute'} className='nav-link' activeClassName='active'>Атрибуты</NavLink>
                     </NavItem>
                     <NavItem>
-                            <NavLink to={'/EditTest/CreateSystem2'} className='nav-link' activeClassName='active'>Объекты</NavLink>
+                            <NavLink to={'/EditTest/CreateSubject'} className='nav-link' activeClassName='active'>Объекты</NavLink>
                     </NavItem>
                     <NavItem>
                             <NavLink to={'/EditTest/CreateSystem3'} className='nav-link' activeClassName='active'>Система</NavLink>
