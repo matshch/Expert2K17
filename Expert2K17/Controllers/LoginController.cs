@@ -29,10 +29,15 @@ namespace Expert2K17.Controllers
         // GET: api/login
         // Returns current user information
         [HttpGet]
-        public async Task<UserData> GetAsync()
+        public async Task<UserLogin> GetAsync()
         {
             var userId = _userManager.GetUserId(User);
-            return await GetUserDataAsync(userId);
+            var user = await GetUserDataAsync(userId);
+            return new UserLogin
+            {
+                IsLogged = user != null,
+                User = user
+            };
         }
 
         // POST api/login
@@ -147,6 +152,12 @@ namespace Expert2K17.Controllers
                 IsLockedOut = result.IsLockedOut;
                 IsNotAllowed = result.IsNotAllowed;
             }
+        }
+
+        public class UserLogin
+        {
+            public bool IsLogged { get; set; }
+            public UserData User { get; set; }
         }
 
         public class UserData
