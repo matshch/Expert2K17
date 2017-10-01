@@ -34,6 +34,11 @@ body > div > div
     min-height: 100%;
 }
 
+.react-selectize .dropdown-menu {
+    display: block;
+    padding: 0;
+}
+
 .sk-spinner
 {
     position: fixed !important;
