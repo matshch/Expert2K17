@@ -26,15 +26,28 @@ export class Profile extends React.Component<ProfileProps, { showPictureButtons:
         this.props.GetUser();
     }
 
+    coverPictureChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
+        let formData = new FormData();
+        formData.append('picture', e.target.files[0]);
+        this.props.SetCover(formData);
+    }
+
+    profilePictureChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
+        let formData = new FormData();
+        formData.append('picture', e.target.files[0]);
+        this.props.SetUserpic(formData)
+    }
+
     SubmitUserpic = () => {
-        this.file.click()
+        this.file1.click()
     }
 
     SubmitCover = () => {
-        this.file.click()
+        this.file2.click()
     }
 
-    private file : HTMLInputElement;
+    private file1 : HTMLInputElement;
+    private file2 : HTMLInputElement;
 
     render() {
         if (this.props.user === null)
@@ -62,13 +75,14 @@ export class Profile extends React.Component<ProfileProps, { showPictureButtons:
                             <CardSubtitle><h4>{this.props.user.surname} {this.props.user.name} {this.props.user.patronymic}</h4><p>{this.props.user.group} {this.props.user.year}</p></CardSubtitle>
                             <h5>Список созданных тестов:</h5>
                             <ListGroup>
-                                {this.props.ResponseObject.map((e: any) => <ListGroupItem>{e["name"]}</ListGroupItem>)}
+                                {/* {this.props.ResponseObject.map((e: any) => <ListGroupItem>{e["name"]}</ListGroupItem>)} */}
                                 <ListGroupItem>Какую аниму глянуть?</ListGroupItem>
                                 <ListGroupItem>Какие обои выбрать?</ListGroupItem>
                                 <ListGroupItem>Какую вайфу выбрать?</ListGroupItem>
                             </ListGroup>
                         </CardBlock>
-                        <input ref={(input)=>this.file=input} type="file" />
+                        <input ref={(input)=>this.file1=input} onChange={this.profilePictureChanged} type="file" />
+                        <input ref={(input)=>this.file2=input} onChange={this.coverPictureChanged} type="file" />
                     </Card>
                 </div>
             </DocumentTitle>

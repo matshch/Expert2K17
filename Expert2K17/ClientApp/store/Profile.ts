@@ -42,14 +42,14 @@ export const actionCreators = {
         dispatch({ type: 'GET_PROFILE_RESPONSE', data: [] });
     },
     SetCover: (picture: FormData): AppThunkAction<KnownActions> => (dispatch, getState) => {
-        let fetchTask = fetch("/api/profile/setCover", { credentials: 'same-origin', body: picture }).then(response => response.json() as Promise<any>).then(data => {
+        let fetchTask = fetch("/api/profile/setCover", { credentials: 'same-origin', method: "POST", body: picture }).then(response => response.json() as Promise<any>).then(data => {
             dispatch({ type: 'SET_PROFILE_COVER', data: data["picture"] });
         });
         addTask(fetchTask);
     },
     SetUserpic: (picture: FormData): AppThunkAction<KnownActions> => (dispatch, getState) => {
-        let fetchTask = fetch("/api/profile/setUserpic", { credentials: 'same-origin', body: picture }).then(response => response.json() as Promise<any>).then(data => {
-            dispatch({ type: 'SET_PROFILE_COVER', data: data["picture"] });
+        let fetchTask = fetch("/api/profile/setUserpic", { credentials: 'same-origin', method: "POST", body: picture }).then(response => response.json() as Promise<any>).then(data => {
+            dispatch({ type: 'SET_PROFILE_USERPIC', data: data["picture"] });
         });
         addTask(fetchTask);
     }
