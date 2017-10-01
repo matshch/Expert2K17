@@ -74,7 +74,6 @@ namespace Expert2K17.Controllers
                 system = new SystemJson
                 {
                     name = obj.Name,
-                    user = obj.User.Id,
                     picture = obj.Picture,
                     about = obj.Description,
                     pub = obj.Published,
@@ -110,7 +109,6 @@ namespace Expert2K17.Controllers
         public class SystemJson
         {
             public string name { get; set; }
-            public string user { get; set; }
             public string picture { get; set; }
             public string about { get; set; }
             public bool pub { get; set; }
