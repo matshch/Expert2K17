@@ -144,7 +144,7 @@ namespace Expert2K17.Controllers
             }
 
             var user = await userGetter;
-            if (system.User.Id == null)
+            if (system.User.Id != user.Id)
             {
                 response.Error = "Система не принадлежит вам";
                 return (response, request, system, obj.system);
