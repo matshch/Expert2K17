@@ -26,14 +26,16 @@ export class Profile extends React.Component<ProfileProps, { showPictureButtons:
         this.props.GetUser();
     }
 
-    SubmitUserpic() {
+    SubmitUserpic = () => {
         this.file.click()
     }
 
-    SubmitCover() {
+    SubmitCover = () => {
         this.file.click()
     }
-    file: any = null;
+
+    private file : HTMLInputElement;
+
     render() {
         if (this.props.user === null)
             return <Redirect to="/login" />
