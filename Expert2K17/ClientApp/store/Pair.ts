@@ -26,9 +26,21 @@ interface AddPairAction {
     value: string;
     subjectGuid: string;
 }
+interface UnPairAction {
+    type: 'UN_PAIR';
+    index: number;
+    innerIndex: number;
+}
+
+interface SetPairAction {
+    type: 'SET_PAIR';
+    attrGuid: string;
+    value: string;
+    subjectGuid: string;
+}
 // Declare a 'discriminated union' type. This guarantees that all references to 'type' properties contain one of the
 // declared type strings (and not any other arbitrary string).
-type KnownAction = SyncSystemAction | AddSystemAction | AddPairAction;
+type KnownAction = SyncSystemAction | AddSystemAction | AddPairAction | UnPairAction | SetPairAction;
 
 // ----------------
 // REDUCER - For a given state and action, returns the new state. To support time travel, this must not mutate the old state.
@@ -57,8 +69,30 @@ export const reducer: Reducer<Pair[]> = (state: Pair[], action: KnownAction) => 
             return {
                 ...state
             };
+        case "UN_PAIR":
+            return state.map((e, ind) => {
+                if (ind == action.index) {
+                    return {
+                        ...e,
+                        subjectGuids: e.subjectGuids.filter((ex, inde) => {
+                            if (inde == action.innerIndex) {
+                                return false;
+                            }
+                            return true;
+                        })
+                    }
+                }
+
+            });
         case "ADD_PAIR":
             return [...state, { attributeGuid: action.attrGuid, subjectGuids: [action.subjectGuid], value: action.value }];
+        case "SET_PAIR":
+            return state.map((e) => {
+                if (e.attributeGuid == action.attrGuid && e.value == action.value) {
+                    return { ...e, subjectGuids: [...e.subjectGuids, action.subjectGuid] }
+                } 
+                return e
+            });
         default:
             // The following line guarantees that every action in the KnownAction union has been covered by a case above
             const exhaustiveCheck: never = action;
