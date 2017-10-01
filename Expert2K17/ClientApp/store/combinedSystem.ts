@@ -5,7 +5,7 @@ import { Action, Reducer, ActionCreator } from 'redux';
 import { AppThunkAction } from './';
 import Guid from '../guid';
 import * as SystemS from './System';
-import * as AttributeS from './System';
+import * as AttributeS from './Attribute';
 import * as SubjectS from './Subject';
 import * as PairS from './Pair';
 import * as ParameterS from './Parameters'

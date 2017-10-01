@@ -21,17 +21,17 @@ import * as Subjecter from './SubjectEdit';
 type CounterProps =
     Interf.System
     & typeof Store.actionCreators
-    & RouteComponentProps<{guid:string}>;
+    & RouteComponentProps<{id:string}>;
 export
     class TestCreater extends React.Component<CounterProps, {}> {
     constructor() {
         super();
     }
     render() {
-        if (this.props.location.pathname == '/CreateTest' || this.props.location.pathname == '/CreateTest/EditTest') {
-            return <Redirect to="/CreateTest/EditTest/new" />
+        if (this.props.location.pathname == '/CreateTest') {
+            return <Redirect to="/CreateTest/new" />
         }
-        if (this.props.match.params.guid != this.props.guid) {
+        if (this.props.match.params.id != this.props.guid) {
 
         }
 
@@ -39,13 +39,13 @@ export
             <Container fluid>
                 <Row>
                     <Col sm={3}>
-                        <ConnectedTestCreaterNav link={this.props.match.params.guid} />
+                        <ConnectedTestCreaterNav link={this.props.match.params.id} />
                     </Col>
                     <Col sm={9}>
-                        <Route path='/CreateTest/EditTest/new' component={Systemer.ConnectedTestSystemCreater} />
-                        <Route path='/CreateTest/EditTest/:guid/CreateSystem' component={Systemer.ConnectedTestSystemEditor} />
-                        <Route path='/CreateTest/EditTest/:guid/CreateAttribute' component={Attributer.ConnectedTestAttributeEditor} />
-                        <Route path='/CreateTest/EditTest/:guid/CreateSubject' component={Subjecter.default} />
+                        <Route path='/CreateTest/new' component={Systemer.ConnectedTestSystemCreater} />
+                        <Route path='/EditTest/:id/CreateSystem' component={Systemer.ConnectedTestSystemEditor} />
+                        <Route path='/EditTest/:id/CreateAttribute' component={Attributer.ConnectedTestAttributeEditor} />
+                        <Route path='/EditTest/:id/CreateSubject' component={Subjecter.default} />
 
                     </Col>
                 </Row>
@@ -81,20 +81,20 @@ export class TestCreaterNav extends React.Component<NavProps, {}>{
                             {
                                 (() => {
                                     if (typeof this.props.link  != 'undefined') {
-                                        return <NavLink to={'/CreateTest/EditTest/' + this.props.link + '/CreateSystem'} className='nav-link' exact activeClassName='active'>Система</NavLink>
+                                        return <NavLink to={'/EditTest/' + this.props.link + '/CreateSystem'}  className='nav-link' exact activeClassName='active'>Система</NavLink>
                                     }
-                                    return <NavLink to={'/CreateTest/EditTest/new'} className='nav-link' exact activeClassName='active'>Система</NavLink>
+                                    return <NavLink to={'/CreateTest/new'} className='nav-link' exact activeClassName='active'>Система</NavLink>
                                 })()
                             }  
                     </NavItem>
                     <NavItem>
-                            <NavLink to={'/CreateTest/EditTest/CreateAttribute'} className='nav-link' activeClassName='active'>Атрибуты</NavLink>
+                        <NavLink exact to={'/EditTest/' + this.props.link + '/CreateAttribute'} className='nav-link' activeClassName='active'>Атрибуты</NavLink>
                     </NavItem>
                     <NavItem>
-                            <NavLink to={'/CreateTest/EditTest/CreateSubject'} className='nav-link' activeClassName='active'>Объекты</NavLink>
+                            <NavLink exact to={'/EditTest/' + this.props.link + '/CreateSubject'} className='nav-link' activeClassName='active'>Объекты</NavLink>
                     </NavItem>
                     <NavItem>
-                            <NavLink to={'/CreateTest/EditTest/CreateSystem3'} className='nav-link' activeClassName='active'>Система</NavLink>
+                            <NavLink exact to={'/EditTest/' + this.props.link + '/CreateSystem3'} className='nav-link' activeClassName='active'>Система</NavLink>
                     </NavItem>
                 </Nav>
 
@@ -114,7 +114,9 @@ export class TestCreaterNav extends React.Component<NavProps, {}>{
 let ConnectedTestCreaterNav = connect((store: ApplicationState) => store.combinedSystem.system)(TestCreaterNav);
 
 
-
+interface linker {
+    link: string;
+}
 
 
 // Wire up the React component to the Redux store

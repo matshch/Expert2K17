@@ -6,11 +6,11 @@ export default class Guid {
     private _guid: string;
 
     public ToString(): string {
-        return this.guid;
+        return this._guid;
     }
 
     // Static member
-    static MakeNew(): Guid {
+    static MakeNew(): string {
         var result: string;
         var i: string;
         var j: number;
@@ -22,6 +22,6 @@ export default class Guid {
             i = Math.floor(Math.random() * 16).toString(16).toUpperCase();
             result = result + i;
         }
-        return new Guid(result);
+        return result;
     }
 }

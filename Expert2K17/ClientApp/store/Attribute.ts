@@ -29,9 +29,9 @@ export const actionCreators = {
     addAttribute: (attr: Attribute): AppThunkAction<KnownAction> => (dispatch, getState) => {
         let new_attr: Attribute = {
             ...attr,
-            guid: Guid.MakeNew().ToString()
+            guid: Guid.MakeNew()
         }
-        dispatch({ type: 'ADD_ATTRIBUTE', attribute: attr });
+        dispatch({ type: 'ADD_ATTRIBUTE', attribute: new_attr });
     },
     syncAttribute: (attr: Attribute, guid_: string): AppThunkAction<KnownAction> => (dispatch, getState) => {
         dispatch({ type: 'SYNC_ATTRIBUTE', attribute: attr, guid: guid_ });
@@ -48,7 +48,7 @@ export const unloadedState: Attribute[] =
 export const reducer: Reducer<Attribute[]> = (state: Attribute[], action: KnownAction) => {
     switch (action.type) {
         case "ADD_ATTRIBUTE":
-            return [...state.slice(0, state.length - 1), action.attribute];
+            return [...state, action.attribute];
         case "SYNC_ATTRIBUTE":
             return state.map((e, index) => {
                 if (e.guid == action.guid) {
