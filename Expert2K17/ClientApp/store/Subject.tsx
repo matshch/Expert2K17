@@ -26,10 +26,20 @@ interface AddPairAction {
     value: string;
     subjectGuid: string;
 }
+interface UnPairAction {
+    type: 'UN_PAIR';
+    index: number;
+    innerIndex: number;
+}
+interface SetPairAction {
+    type: 'SET_PAIR';
+    attrGuid: string;
+    value: string;
+    subjectGuid: string;
+}
 // Declare a 'discriminated union' type. This guarantees that all references to 'type' properties contain one of the
 // declared type strings (and not any other arbitrary string).
 type KnownAction = SyncSubjectAction | AddSubjectAction;
-
 // ----------------
 // REDUCER - For a given state and action, returns the new state. To support time travel, this must not mutate the old state.
 
@@ -47,9 +57,49 @@ export const actionCreators = {
     syncSubject: (subject: Subject): AppThunkAction<KnownAction> => (dispatch, getState) => {
         dispatch({ type: 'SYNC_SUBJECT', subject: subject });
     },
-    addPair: (attrGuid: string, value: string, subjectGuid: string): AppThunkAction<AddPairAction> => (dispatch, getState) => {
+    addPair: (attrGuid: string, value: string, subjectGuid: string): AppThunkAction<AddPairAction | UnPairAction> => (dispatch, getState) => {
+        let pairs = getState().combinedSystem.pairs;
+        let innerIndex = -1;
+        let index = pairs.findIndex((e) => {
+            if (e.attributeGuid == attrGuid && e.subjectGuids.findIndex((x,y) => {
+                if (x == subjectGuid) {
+                    innerIndex = y
+                    return true;
+                }
+                return false;
+            }) > -1) {
+                return true;
+            }
+            return false;
+
+        })
+        if (index > -1 && innerIndex > -1) {
+            dispatch({ type: 'UN_PAIR', index: index, innerIndex: innerIndex });
+        }
         dispatch({ type: 'ADD_PAIR', attrGuid: attrGuid, value: value, subjectGuid: subjectGuid });
+    },
+    setPair: (attrGuid: string, value: string, subjectGuid: string): AppThunkAction<SetPairAction | UnPairAction> => (dispatch, getState) => {
+        let pairs = getState().combinedSystem.pairs;
+        let innerIndex = -1;
+        let index = pairs.findIndex((e) => {
+            if (e.attributeGuid == attrGuid && e.value == value && e.subjectGuids.findIndex((x, y) => {
+                if (x == subjectGuid) {
+                    innerIndex = y
+                    return true;
+                }
+                return false;
+            }) > -1) {
+                return true;
+            }
+            return false;
+
+        })
+        if (index > -1 && innerIndex > -1) {
+            dispatch({ type: 'UN_PAIR', index: index, innerIndex: innerIndex });
+        }
+        dispatch({ type: 'SET_PAIR', attrGuid: attrGuid, value: value, subjectGuid: subjectGuid });
     }
+
 };
 
 

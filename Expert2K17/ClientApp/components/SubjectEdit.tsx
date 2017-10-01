@@ -68,7 +68,9 @@ class Subject extends React.Component<SubjectPropsType, {}>{
 
     addCallback = (value: string, attrGuid: string) => {
         this.props.addPair(attrGuid, value, this.props.subject.guid);
-
+    }
+    selectedCallback = (value: string, attrGuid: string) => {
+        this.props.setPair(attrGuid, value, this.props.subject.guid);
     }
 
     render() {
@@ -84,7 +86,7 @@ class Subject extends React.Component<SubjectPropsType, {}>{
                     {(() => {
                         if (this.props.subject.guid != '' && this.props.attr.length>0) {
                             return this.props.attr.map((val, key) => {
-                                return <SubjectToAttribute attr={val} subject={this.props.subject} added={this.addCallback} pairs={this.props.pairs.filter((pair) => {
+                                return <SubjectToAttribute attr={val} subject={this.props.subject} selected={this.selectedCallback} added={this.addCallback} pairs={this.props.pairs.filter((pair) => {
                                     if (pair.attributeGuid == val.guid) {
                                         return true;
                                     } 
@@ -95,6 +97,130 @@ class Subject extends React.Component<SubjectPropsType, {}>{
 
                     })()}
                 </Form>
+            </CardBlock>
+        </Card>
+    }
+}
+
+
+
+
+interface AdditionalPairs {
+
+    pairs: Interf.Pair[];
+    subject: Interf.Subject;
+    attr: Interf.Attribute;
+}
+
+
+interface STACallbacks {
+    added: (value: string, attrGuid: string) => void;
+    selected: (value: string, attrGuid: string) => void;
+}
+type SubjecterAttribute =
+    AdditionalPairs
+    &
+    STACallbacks;
+    
+
+
+interface OptionValue {
+    label: string;
+    value: any;
+}
+
+
+function findSubjectGuid(subj: string, arr: string[]) {
+    if (arr.findIndex((e) => { if (e == subj) { return true; } return false; }) > -1) {
+        return true
+    }
+    return false
+}
+
+class SubjectToAttribute extends React.Component<SubjecterAttribute, {} > {
+    constructor() {
+        super();
+
+    }
+
+    makeOptions = () => {
+        return this.props.pairs.filter((e) => {
+            if (e.attributeGuid == this.props.attr.guid)
+            { return true }
+            else
+            { return false }
+        }).map((e) => {           
+                return {
+                    label: e.value,
+                    value: e.value
+                }           
+        })
+    }
+    onVChange = (item: any) => {
+        if (!!item && !!item.newOption as any) {
+            this.props.added(item.value, this.props.attr.guid);
+            return;
+        }
+        if (!!item) {
+            this.props.selected(item.value, this.props.attr.guid);     
+            return;
+        }
+    }
+
+    defaultValue = () => {
+        if (this.props.pairs.length > 0) {
+            let neededValue = this.props.pairs.findIndex((e: Interf.Pair) => {
+                if (e.attributeGuid == this.props.attr.guid && findSubjectGuid(this.props.subject.guid, e.subjectGuids)) {
+                    return true
+                }
+                return false;
+            })
+            if (neededValue > -1) {
+                return {
+                    label: this.props.pairs[neededValue].value,
+                    value: this.props.pairs[neededValue].value
+                };
+            }
+        }
+
+        return (null as OptionValue);
+    }
+
+    render() {
+        return <Card>
+            <CardBlock>
+                <Row>
+                    <Col lg={6}>
+                        <Label>{this.props.attr.name}</Label>
+                    </Col>
+                    <Col lg={6}>
+                        <ComboBox.SimpleSelect options={this.makeOptions()} 
+                            createFromSearch={
+                                (options, search) => {
+                                    if (search.length == 0 || (options.map(function (option) {
+                                        return option.label;
+                                    })).indexOf(search) > -1)
+                                        return null as OptionValue;
+                                    else
+                                        return { label: search, value: search };
+                                }
+                            }
+                            defaultValue={this.defaultValue()}
+                            onValueChange={this.onVChange}
+                            
+                            renderOption={function (item: any) {
+                                return <div className="simple-option" style={{ display: "flex", alignItems: "center" }}>
+                                    <div style={{
+                                        backgroundColor: item.label, borderRadius: "50%", width: 24, height: 24
+                                    }}></div>
+                                    <div style={{ marginLeft: 10 }}>
+                                        {!!item.newOption ? "Добавить " + item.label + " ..." : item.label}
+                                    </div>
+                                </div>
+                            }}
+                            placeholder="Выберите значение атрибута"></ComboBox.SimpleSelect>
+                    </Col>
+                </Row>
             </CardBlock>
         </Card>
     }
@@ -145,103 +271,6 @@ class NewSubject extends React.Component<typeof Store.actionCreators, Interf.Sub
         </Card>
     }
 }
-
-interface AdditionalPairs {
-
-    pairs: Interf.Pair[];
-    subject: Interf.Subject;
-    attr: Interf.Attribute;
-}
-
-
-interface STACallbacks {
-    added: (value: string, attrGuid: string) => void;
-
-}
-type SubjecterAttribute =
-    AdditionalPairs
-    &
-    STACallbacks;
-    
-
-
-interface OptionValue {
-    label: string;
-    value: any;
-}
-
-class SubjectToAttribute extends React.Component<SubjecterAttribute, {} > {
-    constructor() {
-        super();
-
-    }
-
-    makeOptions = () => {
-        return this.props.pairs.filter((e) => {
-            if (e.attributeGuid == this.props.attr.guid)
-            { return true }
-            else
-            { return false }
-        }).map((e) => {           
-                return {
-                    label: e.value,
-                    value: e.value
-                }           
-        })
-    }
-    makeOptions1 = () => {
-        return [{
-            label: 'asasd1',
-            value: 'sada1'
-        }, {
-            label: 'sas2',
-            value: 'sas2'
-        }]
-    }
-    onVChange = (item: any) => {
-        if (!!item && !!item.newOption as any) {
-            this.props.added(item.value, this.props.attr.guid );
-        }
-    }
-
-    render() {
-        return <Card>
-            <CardBlock>
-                <Row>
-                    <Col lg={6}>
-                        <Label>{this.props.attr.name}</Label>
-                    </Col>
-                    <Col lg={6}>
-                        <ComboBox.SimpleSelect options={this.makeOptions1()} 
-                            createFromSearch={
-                                (options, search) => {
-                                    if (search.length == 0 || (options.map(function (option) {
-                                        return option.label;
-                                    })).indexOf(search) > -1)
-                                        return null as OptionValue;
-                                    else
-                                        return { label: search, value: search };
-                                }
-                            }
-                            onValueChange={this.onVChange}
-                            renderOption={function (item: any) {
-                                return <div className="simple-option" style={{ display: "flex", alignItems: "center" }}>
-                                    <div style={{
-                                        backgroundColor: item.label, borderRadius: "50%", width: 24, height: 24
-                                    }}></div>
-                                    <div style={{ marginLeft: 10 }}>
-                                        {!!item.newOption ? "Добавить " + item.label + " ..." : item.label}
-                                    </div>
-                                </div>
-                            }}
-                            placeholder="Выберите значение атрибута"></ComboBox.SimpleSelect>
-                    </Col>
-                </Row>
-            </CardBlock>
-        </Card>
-    }
-}
-
 
 interface NeededAttributeProps {
     index: number
