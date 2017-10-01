@@ -17,6 +17,8 @@ namespace Expert2K17.Data
         {
             base.OnModelCreating(builder);
             builder.Entity<YearModel>().HasIndex(e => e.Year).IsUnique();
+            builder.Entity<User>().Property(e => e.Userpic).HasDefaultValue("/default/userpic.png");
+            builder.Entity<User>().Property(e => e.Cover).HasDefaultValue("/default/cover.jpg");
         }
     }
 }
