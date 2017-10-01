@@ -2,14 +2,16 @@ import * as React from 'react';
 import { Alert, Row, Col, Card, CardBlock, ButtonGroup, Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
 import * as Spinner from 'react-spinkit';
 import { connect } from 'react-redux';
-import { RouteComponentProps } from 'react-router-dom';
+import { Redirect, RouteComponentProps } from 'react-router-dom';
 import { ApplicationState } from '../store';
 import * as LoginStore from '../store/Login';
+import * as UserStore from '../store/User';
 import '../css/cards.css';
 
 type LoginProps =
     LoginStore.LoginState
     & typeof LoginStore.actionCreators
+    & UserStore.UserState
     & RouteComponentProps<{}>;
 
 export class Login extends React.Component<LoginProps, { username: string, password: string, rememberme: boolean }> {
@@ -52,6 +54,8 @@ export class Login extends React.Component<LoginProps, { username: string, passw
     }
 
     render() {
+        if (this.props.user != undefined && this.props.user != null)
+            return <Redirect to="/profile"/>
         if (this.props.loading)
             return <Spinner name="ball-scale-multiple"/>
         return (
@@ -94,6 +98,6 @@ export class Login extends React.Component<LoginProps, { username: string, passw
 }
 
 export default connect(
-    (state: ApplicationState) => state.login,
+    (state: ApplicationState) => ({...state.login, ...state.user}),
     LoginStore.actionCreators
 )(Login);

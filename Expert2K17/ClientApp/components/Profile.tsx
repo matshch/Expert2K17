@@ -2,100 +2,55 @@ import * as React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { ApplicationState } from '../store';
+import * as ProfileStore from '../store/Profile';
+import * as Spinner from 'react-spinkit';
 import { NavLink, Route, Redirect } from 'react-router-dom';
-import { Nav, NavItem, Row, Container, Col, Button, Form, FormGroup, Label, Input, FormText, Media, Card, CardBlock, CardTitle, CardText, ListGroup, ListGroupItem, ListGroupItemText } from 'reactstrap'
+import { Label, ListGroup, ListGroupItem, Card, CardImg, CardText, CardBlock, CardTitle, CardSubtitle, Button } from 'reactstrap';
 import DocumentTitle from 'react-document-title';
+import * as UserStore from '../store/User';
 
-export class SideBar extends React.Component<{}, {}>{
-    constructor() {
-        super();
+type ProfileProps =
+    ProfileStore.ProfileState
+    & typeof ProfileStore.actionCreators
+    & UserStore.UserState
+    & typeof UserStore.actionCreators
+    & RouteComponentProps<{}>;
+
+export class Profile extends React.Component<ProfileProps, {}> {
+    componentWillMount() {
+        this.props.GetTestsList();
+        this.props.GetUser();
     }
+
     render() {
+        if (this.props.user == null)
+            return <Redirect to="/login"/>
+        if (this.props.loading || this.props.userLoading)
+            return <Spinner name="ball-scale-multiple"/>
         return (
-            <Card className="createSideBar">
-                <CardBlock>
-                    <div>
-                        <h4>Профиль</h4>
-                    </div>
-                    <hr />
-                    <Nav className="nav-pills" vertical>
-                        <NavItem>
-                            <NavLink to={'/profile'} className='nav-link' exact activeClassName='active'>Система</NavLink>
-                        </NavItem>
-                        <NavItem>
-                            <NavLink to={'/profile2'} className='nav-link' activeClassName='active'>Пользователи</NavLink>
-                        </NavItem>
-                        <NavItem>
-                            <NavLink to={'/profile3'} className='nav-link' activeClassName='active'>Тесты</NavLink>
-                        </NavItem>
-                    </Nav>
-                </CardBlock>
-            </Card>
-        );
+            <DocumentTitle title='Профиль'>
+                <div className='flex-container'>
+                    <Card className="profile">
+                        <CardImg className="profileCover" src={this.props.user.cover} />
+                        <CardImg className="profileImage" width="250px" height="250px" src={this.props.user.userpic} />
+                        <CardBlock>
+                            <CardTitle>{this.props.user.userName}</CardTitle>
+                            <CardSubtitle><h4>{this.props.user.surname} {this.props.user.name} {this.props.user.patronymic}</h4><p>{this.props.user.group} {this.props.user.year}</p></CardSubtitle>
+                            <h5>Список созданных тестов:</h5>
+                            <ListGroup>
+                                {this.props.ResponseObject.map((e: any) => <ListGroupItem>{e["name"]}</ListGroupItem>)}
+                                <ListGroupItem>Какую аниму глянуть?</ListGroupItem>
+                                <ListGroupItem>Какие обои выбрать?</ListGroupItem>
+                                <ListGroupItem>Какую вайфу выбрать?</ListGroupItem>
+                            </ListGroup>
+                        </CardBlock>
+                    </Card>
+                </div>
+            </DocumentTitle>);
     }
 }
 
-export class AdminInterface extends React.Component<{}, {}>{
-    render() {
-        return <Card className="createSideBar">
-            <CardBlock>
-                <Form>
-                    <FormGroup row>
-                        <Label for="text" sm={3}>Название</Label>
-                        <Col sm={9}>
-                            <Input type="text" name="text" id="text" placeholder="Название теста"></Input>
-                        </Col>
-                    </FormGroup>
-                    <FormGroup row>
-                        <Label for="description" sm={3}>О системе</Label>
-                        <Col sm={9}>
-                            <Input type="textarea" id="description" placeholder="Описаение"></Input>
-                        </Col>
-                    </FormGroup>
-                    <FormGroup row>
-                        <Label for="imge" sm={3}>Картинка</Label>
-                        <Col sm={9}>
-                            <Input type="file" name="file" id="imge"></Input>
-                            <img className="img-fluid" ></img> //Доделать потом чтобы высота была
-                        </Col>
-                    </FormGroup>
-                    <FormGroup row>
-                        <Label for="chb1" sm={3}>Публичный доступ</Label>
-                        <Col sm={9}>
-                            <Input type="checkbox" id="chb1" />
-                        </Col>
-                    </FormGroup>
-                    <FormGroup row>
-                        <Label for="chb2" sm={3}>Гостевой доступ</Label>
-                        <Col sm={9}>
-                            <Input type="checkbox" id="chb2" />
-                        </Col>
-                    </FormGroup>
-                    <Row>
-                        <Col sm={3} />
-                        <Col sm={9}>
-                            <Button color="success" className="pull-left">Создать</Button>
-                        </Col>
-                    </Row>
-                </Form>
-            </CardBlock>
-        </Card>
-    }
-}
-
-export default class Profile extends React.Component<RouteComponentProps<{}>, {}> {
-    render() {
-        return (<DocumentTitle title='Профиль'>
-            <Container fluid>
-                <Row>
-                    <Col sm={3}>
-                        <SideBar />
-                    </Col>
-                    <Col sm={9}>
-                        <AdminInterface />
-                    </Col>
-                </Row>
-            </Container>
-        </DocumentTitle>);
-    }
-}
+export default connect(
+    (state: ApplicationState) => ({ ...state.profile, ...state.user }),
+    {...ProfileStore.actionCreators, ...UserStore.actionCreators}
+)(Profile);
