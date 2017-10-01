@@ -87,7 +87,7 @@ class Attribute extends React.Component<AttributeProps, {}>{
                     <FormGroup row>
                         <Label for="texter" sm={3}>Название</Label>
                         <Col sm={9}>
-                            <Input type="text" name="text" id="texter" value={this.props.attr.name} placeholder="Название аттрибута"></Input>
+                            <Input type="text" name="text" id="texter" onChange={this.name_change} value={this.props.attr.name} placeholder="Название аттрибута"></Input>
                         </Col>
                     </FormGroup>
                     <FormGroup row>
@@ -139,14 +139,16 @@ class NewAttribute extends React.Component<typeof Store.actionCreators, Interf.A
     }
 
     addAttribute = () => {
-        this.props.addAttribute(this.state);
-        this.setState({
-            system_guid: '',
-            name: '',
-            values: [],
-            unitValue: false,
-            guid: ''
-        });
+        if (this.state.name != '') {
+            this.props.addAttribute(this.state);
+            this.setState({
+                system_guid: '',
+                name: '',
+                values: [],
+                unitValue: false,
+                guid: ''
+            });
+        }
     }
 
     render() {
@@ -156,7 +158,7 @@ class NewAttribute extends React.Component<typeof Store.actionCreators, Interf.A
                     <FormGroup row>
                         <Label for="texter" sm={3}>Название</Label>
                         <Col sm={9}>
-                            <Input type="text" name="text" id="texter" value={this.state.name} placeholder="Название аттрибута"></Input>
+                            <Input type="text" name="text" id="texter" onChange={this.name_change} value={this.state.name} placeholder="Название аттрибута"></Input>
                         </Col>
                     </FormGroup>
                     <FormGroup row>
@@ -176,14 +178,18 @@ interface NeededAttributeProps {
 }
 
 function getAttributeProps(store: ApplicationState, props: NeededAttributeProps) {
-    
-        let pairs = store.combinedSystem.pairs.filter((e) => {
+    if (store.combinedSystem.pairs.length > 0) {
+        var pairs = store.combinedSystem.pairs.filter((e) => {
             if (e.attributeGuid == store.combinedSystem.attributes[props.index].guid) {
                 return true;
 
             }
             return false;
         })
+    } else {
+        var pairs = ([] as typeof store.combinedSystem.pairs);
+    }
+
         return { attr: store.combinedSystem.attributes[props.index], pairs: pairs, sys: store.combinedSystem.system };
    
 }

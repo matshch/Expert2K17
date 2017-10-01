@@ -27,11 +27,11 @@ class TestCreaterSubject extends React.Component<CreateAttribute, {}>{
     render() {
         return <Container fluid>
             {(() => {
-                this.props.subjects.map((val, key) => {
-                    return <ConnectedSubject index={key} />
+                return this.props.subjects.map((val, key) => {
+                    return <ConnectedSubject key={key} index={key} />
                 })
 
-            })}
+            })()}
             <ConnectedNewSubject/>
         </Container>
     }
@@ -65,6 +65,12 @@ class Subject extends React.Component<SubjectPropsType, {}>{
             name: e.target.value
         });
     }
+
+    addCallback = (value: string, attrGuid: string) => {
+        this.props.addPair(attrGuid, value, this.props.subject.guid);
+
+    }
+
     render() {
         return <Card className="createSideBar">
             <CardBlock>
@@ -76,9 +82,9 @@ class Subject extends React.Component<SubjectPropsType, {}>{
                         </Col>
                     </FormGroup> 
                     {(() => {
-                        if (this.props.subject.guid != '') {
+                        if (this.props.subject.guid != '' && this.props.attr.length>0) {
                             return this.props.attr.map((val, key) => {
-                                return <SubjectToAttribute attr={val} subject={this.props.subject} pairs={this.props.pairs.filter((pair) => {
+                                return <SubjectToAttribute attr={val} subject={this.props.subject} added={this.addCallback} pairs={this.props.pairs.filter((pair) => {
                                     if (pair.attributeGuid == val.guid) {
                                         return true;
                                     } 
@@ -87,7 +93,7 @@ class Subject extends React.Component<SubjectPropsType, {}>{
                             })
                         }
 
-                    })}
+                    })()}
                 </Form>
             </CardBlock>
         </Card>
@@ -113,12 +119,14 @@ class NewSubject extends React.Component<typeof Store.actionCreators, Interf.Sub
         )
     }
     saveSubject = () => {
-        this.props.addSubject(this.state);
-        this.setState({
-            system_guid: '',
-            name: '',
-            guid: ''
-        })
+        if (this.state.name != '') {
+            this.props.addSubject(this.state);
+            this.setState({
+                system_guid: '',
+                name: '',
+                guid: ''
+            })
+        }
     }
 
     render() {
@@ -128,7 +136,7 @@ class NewSubject extends React.Component<typeof Store.actionCreators, Interf.Sub
                     <FormGroup row>
                         <Label for="texter" sm={3}>Название</Label>
                         <Col sm={9}>
-                            <Input type="text" name="text" id="texter" value={this.state.name} placeholder="Название объекта"></Input>
+                            <Input type="text" name="text" id="texter" onChange={this.name_change} value={this.state.name} placeholder="Название объекта"></Input>
                         </Col>
                     </FormGroup>
                     <Button color="success" onClick={this.saveSubject}>Создать</Button>
@@ -147,7 +155,7 @@ interface AdditionalPairs {
 
 
 interface STACallbacks {
-    added?: (value: string, attrGuid: string) => void;
+    added: (value: string, attrGuid: string) => void;
 
 }
 type SubjecterAttribute =

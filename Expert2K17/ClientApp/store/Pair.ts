@@ -13,29 +13,32 @@ import Guid from '../guid';
 // They do not themselves have any side-effects; they just describe something that is going to happen.
 export
     interface SyncSystemAction {
-    type: 'SYNC_SUBJECT';
+    type: 'SYNC_PAIRS';
     system: FormData;
 }
 interface AddSystemAction {
-    type: 'ADD_SUBJECT';
+    type: 'ADD_PAIRS';
     system: FormData;
+}
+interface AddPairAction {
+    type: 'ADD_PAIR';
+    attrGuid: string;
+    value: string;
+    subjectGuid: string;
 }
 // Declare a 'discriminated union' type. This guarantees that all references to 'type' properties contain one of the
 // declared type strings (and not any other arbitrary string).
-type KnownAction = SyncSystemAction | AddSystemAction;
+type KnownAction = SyncSystemAction | AddSystemAction | AddPairAction;
 
 // ----------------
 // REDUCER - For a given state and action, returns the new state. To support time travel, this must not mutate the old state.
 
 export const actionCreators = {
     addSystem: (sys: FormData): AppThunkAction<KnownAction> => (dispatch, getState) => {
-        dispatch({ type: 'ADD_SUBJECT', system: sys });
+        dispatch({ type: 'ADD_PAIRS', system: sys });
     },
     syncSystem: (sys: FormData): AppThunkAction<KnownAction> => (dispatch, getState) => {
-        dispatch({ type: 'SYNC_SUBJECT', system: sys });
-    },
-    addAttribute: (attr: FormData): AppThunkAction<KnownAction> => (dispatch, getState) => {
-
+        dispatch({ type: 'SYNC_PAIRS', system: sys });
     }
 };
 
@@ -46,14 +49,16 @@ export const unloadedState: Pair[] = [];
 
 export const reducer: Reducer<Pair[]> = (state: Pair[], action: KnownAction) => {
     switch (action.type) {
-        case "ADD_SUBJECT":
+        case "ADD_PAIRS":
             return {
                 ...state
             };
-        case "SYNC_SUBJECT":
+        case "SYNC_PAIRS":
             return {
                 ...state
             };
+        case "ADD_PAIR":
+            return [...state, { attributeGuid: action.attrGuid, subjectGuids: [action.subjectGuid], value: action.value }];
         default:
             // The following line guarantees that every action in the KnownAction union has been covered by a case above
             const exhaustiveCheck: never = action;

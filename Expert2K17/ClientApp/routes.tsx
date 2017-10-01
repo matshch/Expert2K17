@@ -14,5 +14,6 @@ export const routes = <Layout>
     <Route path='/register' component={Register} />
     <Route path='/panel' component={Panel} />
     <Route path='/Profile' component={Profile} />
-    <Route path='/CreateTest' component={Tester} />
+    <Route path='/CreateTest' component={Tester}/>
+    <Route path='/EditTest/:id' component={Tester} />
 </Layout>;

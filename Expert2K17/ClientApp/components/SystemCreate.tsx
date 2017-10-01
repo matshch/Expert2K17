@@ -130,7 +130,7 @@ export class TestCreaterSystem extends React.Component<TestCreaterSystemT, Creat
 
     render() {
         if (this.props.guid != '') {
-            return <Redirect to={"/ EditTest /" + this.props.guid + "/ CreateSystem"} />
+            return <Redirect to={"/EditTest/" + this.props.guid + "/CreateSystem"} />
         }
         return <Card className="createSideBar">
             <CardBlock>

@@ -83,7 +83,7 @@ export const unloadedState: System = {
 export const reducer: Reducer<System> = (state: System, action: KnownAction) => {
     switch (action.type) {
         case "ADD_SYSTEM":
-            return action.system               
+            return action.system              
             ;
         case "SYNC_SYSTEM":
             return action.system

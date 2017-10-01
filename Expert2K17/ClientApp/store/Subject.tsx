@@ -20,6 +20,12 @@ interface AddSubjectAction {
     type: 'ADD_SUBJECT';
     subject: Subject;
 }
+interface AddPairAction {
+    type: 'ADD_PAIR';
+    attrGuid: string;
+    value: string;
+    subjectGuid: string;
+}
 // Declare a 'discriminated union' type. This guarantees that all references to 'type' properties contain one of the
 // declared type strings (and not any other arbitrary string).
 type KnownAction = SyncSubjectAction | AddSubjectAction;
@@ -32,7 +38,7 @@ export const actionCreators = {
         dispatch({
             type: 'ADD_SUBJECT', subject: {
                 ...subject_,
-                guid: Guid.MakeNew().ToString(),
+                guid: Guid.MakeNew(),
                 system_guid: getState().combinedSystem.system.guid
             }
         });
@@ -40,6 +46,9 @@ export const actionCreators = {
     },
     syncSubject: (subject: Subject): AppThunkAction<KnownAction> => (dispatch, getState) => {
         dispatch({ type: 'SYNC_SUBJECT', subject: subject });
+    },
+    addPair: (attrGuid: string, value: string, subjectGuid: string): AppThunkAction<AddPairAction> => (dispatch, getState) => {
+        dispatch({ type: 'ADD_PAIR', attrGuid: attrGuid, value: value, subjectGuid: subjectGuid });
     }
 };
 
