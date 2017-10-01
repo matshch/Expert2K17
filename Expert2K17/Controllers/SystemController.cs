@@ -87,14 +87,17 @@ namespace Expert2K17.Controllers
                     response.Error = "Картинка слишком большая";
                     return response;
                 }
-                var path = "/systems/" + obj.Id.ToString();
+                var path = "/systems/" + obj.Id;
                 switch (system.Picture.ContentType)
                 {
                     case "image/gif":
+                        path += ".gif";
                         break;
                     case "image/jpeg":
+                        path += ".jpg";
                         break;
                     case "image/png":
+                        path += ".png";
                         break;
                     default:
                         response.Error = "Картинка неизвестного формата";
