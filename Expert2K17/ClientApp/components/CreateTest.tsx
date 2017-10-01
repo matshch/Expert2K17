@@ -29,7 +29,7 @@ export
     }
     render() {
         if (this.props.location.pathname == '/EditTest') {
-            return <Redirect to="/EditTest/new" />
+            return <Redirect to="/CreateTest/EditTest/new" />
         }
         if (this.props.match.params.guid != this.props.guid) {
 
@@ -42,10 +42,10 @@ export
                         <ConnectedTestCreaterNav link={this.props.match.params.guid} />
                     </Col>
                     <Col sm={9}>
-                        <Route path='/EditTest/new' component={Systemer.ConnectedTestSystemCreater} />
-                        <Route path='/EditTest/:guid/CreateSystem' component={Systemer.ConnectedTestSystemEditor} />
-                        <Route path='/EditTest/:guid/CreateAttribute' component={Attributer.ConnectedTestAttributeEditor} />
-                        <Route path='/EditTest/:guid/CreateSubject' component={Subjecter.default} />
+                        <Route path='/CreateTest/EditTest/new' component={Systemer.ConnectedTestSystemCreater} />
+                        <Route path='/CreateTest/EditTest/:guid/CreateSystem' component={Systemer.ConnectedTestSystemEditor} />
+                        <Route path='/CreateTest/EditTest/:guid/CreateAttribute' component={Attributer.ConnectedTestAttributeEditor} />
+                        <Route path='/CreateTest/EditTest/:guid/CreateSubject' component={Subjecter.default} />
 
                     </Col>
                 </Row>
@@ -81,26 +81,27 @@ export class TestCreaterNav extends React.Component<NavProps, {}>{
                             {
                                 (() => {
                                     if (typeof this.props.link  != 'undefined') {
-                                        return <NavLink to={'/EditTest/' + this.props.link + '/CreateSystem'} className='nav-link' exact activeClassName='active'>Система</NavLink>
+                                        return <NavLink to={'/CreateTest/EditTest/' + this.props.link + '/CreateSystem'} className='nav-link' exact activeClassName='active'>Система</NavLink>
                                     }
-                                    return <NavLink to={'/EditTest/new'} className='nav-link' exact activeClassName='active'>Система</NavLink>
+                                    return <NavLink to={'/CreateTest/EditTest/new'} className='nav-link' exact activeClassName='active'>Система</NavLink>
                                 })()
                             }  
                     </NavItem>
                     <NavItem>
-                            <NavLink to={'/EditTest/CreateAttribute'} className='nav-link' activeClassName='active'>Атрибуты</NavLink>
+                            <NavLink to={'/CreateTest/EditTest/CreateAttribute'} className='nav-link' activeClassName='active'>Атрибуты</NavLink>
                     </NavItem>
                     <NavItem>
-                            <NavLink to={'/EditTest/CreateSubject'} className='nav-link' activeClassName='active'>Объекты</NavLink>
+                            <NavLink to={'/CreateTest/EditTest/CreateSubject'} className='nav-link' activeClassName='active'>Объекты</NavLink>
                     </NavItem>
                     <NavItem>
-                            <NavLink to={'/EditTest/CreateSystem3'} className='nav-link' activeClassName='active'>Система</NavLink>
+                            <NavLink to={'/CreateTest/EditTest/CreateSystem3'} className='nav-link' activeClassName='active'>Система</NavLink>
                     </NavItem>
                 </Nav>
 
                 <hr />
-                <button>Вернуться к предыдущему сохраненному состоянию</button>
-                <button>Сохранить состояние</button>s
+
+                <Button block>Восстановить состояние</Button>
+                <Button block>Сохранить состояние</Button>
 
                 </CardBlock>
             </Card>
