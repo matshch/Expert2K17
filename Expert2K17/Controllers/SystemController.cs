@@ -8,7 +8,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -27,6 +29,22 @@ namespace Expert2K17.Controllers
             _db = db;
             _hostingEnvironment = hostingEnvironment;
             _userManager = userManager;
+        }
+
+        // GET: api/system/get
+        [HttpGet]
+        public async Task<IEnumerable<SystemItem>> Get()
+        {
+            var userId = _userManager.GetUserId(User);
+            var user = await _db.Users.Include(e => e.Tests).FirstOrDefaultAsync(e => e.Id == userId);
+            return from s in user.Tests
+                   select new SystemItem
+                   {
+                       Id = s.Id,
+                       Name = s.Name,
+                       Description = s.Description,
+                       Picture = s.Picture
+                   };
         }
 
         // GET: api/system/get/cee8e768-6490-45a8-9848-090c7a89878a
@@ -198,6 +216,14 @@ namespace Expert2K17.Controllers
             }
 
             return (response, request, system, obj.system);
+        }
+
+        public class SystemItem
+        {
+            public Guid Id { get; set; }
+            public string Name { get; set; }
+            public string Picture { get; set; }
+            public string Description { get; set; }
         }
 
         public class CreateSystem
