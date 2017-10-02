@@ -9,7 +9,7 @@ export interface HomeState {
 
 interface User {
     id: string,
-    nickname: string;
+    username: string;
     surname: string,
     name: string,
     patronymic: string;
@@ -19,7 +19,7 @@ interface CardObject {
     id: string,
     name: string,
     description: string,
-    image: string,
+    picture: string,
     user: User;
 }
 
