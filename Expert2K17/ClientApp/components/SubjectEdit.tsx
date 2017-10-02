@@ -86,7 +86,7 @@ class Subject extends React.Component<SubjectPropsType, {}>{
                     {(() => {
                         if (this.props.subject.guid != '' && this.props.attr.length>0) {
                             return this.props.attr.map((val, key) => {
-                                return <SubjectToAttribute attr={val} subject={this.props.subject} selected={this.selectedCallback} added={this.addCallback} pairs={this.props.pairs.filter((pair) => {
+                                return <SubjectToAttribute attr={val} key={key} subject={this.props.subject} selected={this.selectedCallback} added={this.addCallback} pairs={this.props.pairs.filter((pair) => {
                                     if (pair.attributeGuid == val.guid) {
                                         return true;
                                     } 

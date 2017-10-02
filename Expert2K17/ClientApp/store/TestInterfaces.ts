@@ -45,7 +45,6 @@ export interface Parameter {
     name: string;
     guid: string;
     unitValue: boolean; 
-    values: string[];
 }
 
 export interface KParameter {

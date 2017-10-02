@@ -30,7 +30,6 @@ class TesteCreateParameters extends React.Component<CreateParameters, {}>{
 
     render() {
         return <Container fluid>
-
             {this.props.parameters.map((val, key) => {
                 return <ConnectedParameter key={key} index={key} />
             })}
@@ -43,14 +42,14 @@ class TesteCreateParameters extends React.Component<CreateParameters, {}>{
 interface PArameterAdditionalProps {
     index: number;
     sys: Interf.System;
+    pairs: Interf.ParameterPair[];
+    parameter: Interf.Parameter;
 }
 
 
 
 type ParameterProps =
     PArameterAdditionalProps
-    &
-    Interf.Parameter
     &
     typeof Store.actionCreators;
 
@@ -59,10 +58,10 @@ class Parameter extends React.Component<ParameterProps, {}>{
         super();
     }
     name_change = (e: React.ChangeEvent<HTMLInputElement>) => {
-
+        this.props.syncParameter({ ...this.props.parameter, name: e.target.value });
     }
     unitChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-
+        this.props.syncParameter({ ...this.props.parameter, unitValue: e.target.checked });
     }
     render() {
         return <Card className="createSideBar">
@@ -71,13 +70,13 @@ class Parameter extends React.Component<ParameterProps, {}>{
                     <FormGroup row>
                         <Label for="texter" sm={3}>Название</Label>
                         <Col sm={9}>
-                            <Input type="text" name="text" id="texter" value={this.props.name} placeholder="Название аттрибута"></Input>
+                            <Input type="text" name="text" id="texter" value={this.props.parameter.name} placeholder="Название параметра"></Input>
                         </Col>
                     </FormGroup>
                     <FormGroup row>
                         <Label for="chb1" sm={3}>Числовые значения</Label>
                         <Col sm={9}>
-                            <Input type="checkbox" checked={this.props.unitValue} onChange={this.unitChange} id="chb1" />
+                            <Input type="checkbox" checked={this.props.parameter.unitValue} onChange={this.unitChange} id="chb1" />
                         </Col>
                     </FormGroup>
                     {(() => {
@@ -85,11 +84,10 @@ class Parameter extends React.Component<ParameterProps, {}>{
                             return (<div>
                                 <hr />
                                 <ListGroup>
-                                    {this.props.values.map((val, key) => {
-                                        return <ListGroupItem key={key}>{val}</ListGroupItem>
+                                    {this.props.pairs.map((val, key) => {
+                                        return <ListGroupItem key={key}>{val.value}</ListGroupItem>
                                     })}
                                 </ListGroup>
-                                <Button color="success">Создать</Button>
                             </div>)
                         }
                     })()}
@@ -105,12 +103,27 @@ class Parameter extends React.Component<ParameterProps, {}>{
 class NewParameter extends React.Component<typeof Store.actionCreators, Interf.Parameter>{
     constructor() {
         super();
+        this.state = {
+            name: '',
+            guid: '',
+            unitValue: false
+        };
     }
     name_change = (e: React.ChangeEvent<HTMLInputElement>) => {
-
+        this.setState({
+            ...this.state,
+            name: e.target.value
+        })
     }
     unitChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        this.setState({
+            ...this.state,
+            unitValue: e.target.checked
+        })
+    }
 
+    saveParameter = () => {
+        this.props.addParameter(this.state);
     }
     render() {
         return <Card className="createSideBar">
@@ -119,7 +132,7 @@ class NewParameter extends React.Component<typeof Store.actionCreators, Interf.P
                     <FormGroup row>
                         <Label for="texter" sm={3}>Название</Label>
                         <Col sm={9}>
-                            <Input type="text" name="text" id="texter" value={this.state.name} placeholder="Название аттрибута"></Input>
+                            <Input type="text" name="text" id="texter" value={this.state.name} placeholder="Название параметра"></Input>
                         </Col>
                     </FormGroup>
                     <FormGroup row>
@@ -144,19 +157,16 @@ interface NeededParameterProps {
 }
 
 function getParameterProps(store: ApplicationState, props: NeededParameterProps) {
-    if (props.index != -1) {
-        return { ...store.combinedSystem.parameters[props.index], sys: store.combinedSystem.system };
-    } else {
-        let state: Interf.Parameter = {
-            name: '',
-            values: [],
-            unitValue: false,
-            guid: ''
+    let pairs = store.combinedSystem.parpairs.filter((e) => {
+        if (e.parameterGuid == store.combinedSystem.parameters[props.index].guid) {
+            return true;
         }
-        return { ...state, sys: store.combinedSystem.system };
-    }
+        return false;
 
+    })
+    return { parameter: store.combinedSystem.parameters[props.index], sys: store.combinedSystem.system, pairs: pairs };
 
+ 
 }
 
 

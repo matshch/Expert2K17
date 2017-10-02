@@ -37,7 +37,8 @@ export class TestEditorSystem extends React.Component<TestEditSystemT, {}>{
         });
     }
     render() {
-        return <Card className="createSideBar">
+        return <Container fluid>
+        <Card className="createSideBar">
             <CardBlock>
                 <Form>
                     <FormGroup row>
@@ -68,6 +69,8 @@ export class TestEditorSystem extends React.Component<TestEditSystemT, {}>{
                 </Form>
             </CardBlock>
         </Card>
+        </Container>
+
     }
 }
 
@@ -132,36 +135,38 @@ export class TestCreaterSystem extends React.Component<TestCreaterSystemT, Creat
         if (this.props.guid != '') {
             return <Redirect to={"/EditTest/" + this.props.guid + "/CreateSystem"} />
         }
-        return <Card className="createSideBar">
-            <CardBlock>
-                <Form>
-                    <FormGroup row>
-                        <Label for="text" lg={3}>Название</Label>
-                        <Col lg={9}>
-                            <Input type="text" onChange={this.nameChange} name="text" id="text" placeholder="Название теста"></Input>
-                        </Col>
-                    </FormGroup>
-                    <FormGroup row>
-                        <Label for="description" lg={3}>О системе</Label>
-                        <Col lg={9}>
-                            <Input type="textarea" onChange={this.tldrChange} id="description" placeholder="Описание"></Input>
-                        </Col>
-                    </FormGroup>
-                    <FormGroup row>
-                        <Label for="imge" lg={3}>Картинка</Label>
-                        <Col lg={9}>
-                            <Input type="file" onChange={this.pictureChange} name="file" id="imge"></Input>
-                        </Col>
-                    </FormGroup>                   
-                    <Row>
-                        <Col lg={3} />
-                        <Col lg={9}>
-                            <Button color="success" onClick={this.saveTest} className="pull-left">Создать тест</Button>
-                        </Col>
-                    </Row>
-                </Form>
-            </CardBlock>
-        </Card>
+        return <Container fluid>
+            <Card className="createSideBar">
+                <CardBlock>
+                    <Form>
+                        <FormGroup row>
+                            <Label for="text" lg={3}>Название</Label>
+                            <Col lg={9}>
+                                <Input type="text" onChange={this.nameChange} name="text" id="text" placeholder="Название теста"></Input>
+                            </Col>
+                        </FormGroup>
+                        <FormGroup row>
+                            <Label for="description" lg={3}>О системе</Label>
+                            <Col lg={9}>
+                                <Input type="textarea" onChange={this.tldrChange} id="description" placeholder="Описание"></Input>
+                            </Col>
+                        </FormGroup>
+                        <FormGroup row>
+                            <Label for="imge" lg={3}>Картинка</Label>
+                            <Col lg={9}>
+                                <Input type="file" onChange={this.pictureChange} name="file" id="imge"></Input>
+                            </Col>
+                        </FormGroup>                   
+                        <Row>
+                            <Col lg={3} />
+                            <Col lg={9}>
+                                <Button color="success" onClick={this.saveTest} className="pull-left">Создать тест</Button>
+                            </Col>
+                        </Row>
+                    </Form>
+                </CardBlock>
+            </Card>
+        </Container>
     }
 }
 

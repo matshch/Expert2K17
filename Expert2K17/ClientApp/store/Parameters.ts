@@ -10,8 +10,8 @@ import Guid from '../guid';
 // They do not themselves have any side-effects; they just describe something that is going to happen.
 export
     interface SyncConditionAction {
-    type: 'SYNC_ATTRIBUTE';
-    parameters: Parameter;
+    type: 'SYNC_PARAMETER';
+    parameter: Parameter;
 }
 interface AddConditioParameternAction {
     type: 'ADD_PARAMETER';
@@ -26,10 +26,14 @@ type KnownAction = SyncConditionAction | AddConditioParameternAction;
 
 export const actionCreators = {
     addParameter: (parameter: Parameter): AppThunkAction<KnownAction> => (dispatch, getState) => {
-        dispatch({ type: 'ADD_PARAMETER', parameter: parameter });
+        let par = {
+            ...parameter,
+            guid: Guid.MakeNew()
+        }
+        dispatch({ type: 'ADD_PARAMETER', parameter: par });
     },
-    syncCondition: (attr: Parameter): AppThunkAction<KnownAction> => (dispatch, getState) => {
-        dispatch({ type: 'SYNC_ATTRIBUTE', parameters: attr });
+    syncParameter: (parameter: Parameter): AppThunkAction<KnownAction> => (dispatch, getState) => {
+        dispatch({ type: 'SYNC_PARAMETER', parameter: parameter });
     },
 };
 
@@ -44,10 +48,14 @@ export const reducer: Reducer<Parameter[]> = (state: Parameter[], action: KnownA
     switch (action.type) {
         case "ADD_PARAMETER":
             return [...state, action.parameter]             
-        case "SYNC_ATTRIBUTE":
-            return {
-                ...state
-            };
+        case "SYNC_PARAMETER":
+            return state.map((val) => {
+                if (val.guid == action.parameter.guid) {
+                    return action.parameter;
+                }
+                return val;
+
+            });
         default:
             // The following line guarantees that every action in the KnownAction union has been covered by a case above
             const exhaustiveCheck: never = action;

@@ -9,6 +9,8 @@ import * as AttributeS from './Attribute';
 import * as SubjectS from './Subject';
 import * as PairS from './Pair';
 import * as ParameterS from './Parameters'
+import * as ParPairsS from './ParameterPair'
+
 
 
 export interface SystemCreateState {
@@ -17,6 +19,7 @@ export interface SystemCreateState {
     subjects: SystemI.Subject[];
     pairs: SystemI.Pair[];
     parameters: SystemI.Parameter[];
+    parpairs: SystemI.ParameterPair[];
 }
 
 export const reducers = {
@@ -24,7 +27,9 @@ export const reducers = {
     attributes: AttributeS.reducer,
     subjects: SubjectS.reducer,
     pairs: PairS.reducer,
-    parameters: ParameterS.reducer
+    parameters: ParameterS.reducer,
+    parpairs: ParPairsS.reducer
+
 };
 
 interface LoadPreviousAction {

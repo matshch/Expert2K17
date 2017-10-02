@@ -13,9 +13,9 @@ import Guid from '../guid';
 // They do not themselves have any side-effects; they just describe something that is going to happen.
 interface AddPairAction {
     type: 'ADD_PARPAIR';
-    attrGuid: string;
+    parameterGuid: string;
     value: string;
-    subjectGuid: string;
+    questionGuid: string;
 }
 interface UnPairAction {
     type: 'UN_PARPAIR';
@@ -62,7 +62,7 @@ export const reducer: Reducer<ParameterPair[]> = (state: ParameterPair[], action
 
             });
         case "ADD_PARPAIR":
-            return [...state, { parameterGuid: action.attrGuid, questionGuids: [action.subjectGuid], value: action.value }];
+            return [...state, { parameterGuid: action.parameterGuid, questionGuids: [action.questionGuid], value: action.value }];
         case "SET_PARPAIR":
             return state.map((e) => {
                 if (e.parameterGuid == action.parameterGuid && e.value == action.value) {

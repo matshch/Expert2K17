@@ -87,7 +87,7 @@ class Attribute extends React.Component<AttributeProps, {}>{
                     <FormGroup row>
                         <Label for="texter" sm={3}>Название</Label>
                         <Col sm={9}>
-                            <Input type="text" name="text" id="texter" onChange={this.name_change} value={this.props.attr.name} placeholder="Название аттрибута"></Input>
+                            <Input type="text" name="text" id="texter" onChange={this.name_change} value={this.props.attr.name} placeholder="Название атрибута"></Input>
                         </Col>
                     </FormGroup>
                     <FormGroup row>
@@ -158,7 +158,7 @@ class NewAttribute extends React.Component<typeof Store.actionCreators, Interf.A
                     <FormGroup row>
                         <Label for="texter" sm={3}>Название</Label>
                         <Col sm={9}>
-                            <Input type="text" name="text" id="texter" onChange={this.name_change} value={this.state.name} placeholder="Название аттрибута"></Input>
+                            <Input type="text" name="text" id="texter" onChange={this.name_change} value={this.state.name} placeholder="Название атрибута"></Input>
                         </Col>
                     </FormGroup>
                     <FormGroup row>
