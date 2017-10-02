@@ -5,7 +5,7 @@ import * as React from 'react';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { ApplicationState } from '../store';
-import * as Store from '../store/Attribute';
+import * as Store from '../store/Parameters';
 import { NavLink, Route, Redirect } from 'react-router-dom';
 import { Nav, NavItem, Row, Container, Col, Button, Form, FormGroup, Label, Input, FormText, Media, Card, CardBlock, CardTitle, CardText, ListGroup, ListGroupItem, ListGroupItemText } from 'reactstrap'
 import DocumentTitle from 'react-document-title';
@@ -34,7 +34,7 @@ class TesteCreateParameters extends React.Component<CreateParameters, {}>{
             {this.props.parameters.map((val, key) => {
                 return <ConnectedParameter key={key} index={key} />
             })}
-            <ConnectedParameter index={-1} />
+            <ConnectedNewParameter/>
         </Container>
     }
 }
@@ -100,6 +100,45 @@ class Parameter extends React.Component<ParameterProps, {}>{
     }
 }
 
+
+
+class NewParameter extends React.Component<typeof Store.actionCreators, Interf.Parameter>{
+    constructor() {
+        super();
+    }
+    name_change = (e: React.ChangeEvent<HTMLInputElement>) => {
+
+    }
+    unitChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+
+    }
+    render() {
+        return <Card className="createSideBar">
+            <CardBlock>
+                <Form>
+                    <FormGroup row>
+                        <Label for="texter" sm={3}>Название</Label>
+                        <Col sm={9}>
+                            <Input type="text" name="text" id="texter" value={this.state.name} placeholder="Название аттрибута"></Input>
+                        </Col>
+                    </FormGroup>
+                    <FormGroup row>
+                        <Label for="chb1" sm={3}>Числовые значения</Label>
+                        <Col sm={9}>
+                            <Input type="checkbox" checked={this.state.unitValue} onChange={this.unitChange} id="chb1" />
+                        </Col>
+                    </FormGroup>
+                    <Button color="success">Создать</Button>                         
+
+                </Form>
+            </CardBlock>
+        </Card>
+    }
+}
+
+
+
+
 interface NeededParameterProps {
     index: number;
 }
@@ -123,3 +162,4 @@ function getParameterProps(store: ApplicationState, props: NeededParameterProps)
 
 export let ConnectedTestParameterEditor = connect((store: ApplicationState) => { return { parameters: store.combinedSystem.parameters, sys: store.combinedSystem.system } }, Store.actionCreators)(TesteCreateParameters);
 let ConnectedParameter = connect(getParameterProps, Store.actionCreators)(Parameter)
+let ConnectedNewParameter = connect(() => ({}), Store.actionCreators)(NewParameter)

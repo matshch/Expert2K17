@@ -31,8 +31,8 @@ export
         if (this.props.location.pathname == '/CreateTest') {
             return <Redirect to="/CreateTest/new" />
         }
-        if (this.props.match.params.id != this.props.guid) {
-
+        if (this.props.match.params.id != this.props.guid || this.props.guid != '' && this.props.location.pathname != '/CreateTest/new') {
+           
         }
 
         return <DocumentTitle title='Создание системы — ЭЗ ПЕЗ'>

@@ -51,7 +51,12 @@ export interface Parameter {
 export interface KParameter {
     parameters: Parameter[];
 }
-
+export interface ParameterPair {
+    //[guid: string]: string;//Attribute -> value
+    parameterGuid: string;
+    value: string;
+    questionGuids: string[];
+}
 interface Answer {
     answer: string;
     value: string;

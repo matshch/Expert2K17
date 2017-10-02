@@ -1,7 +1,7 @@
 ﻿// A '.tsx' file enables JSX support in the TypeScript compiler, 
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
-import { Pair } from './TestInterfaces'
+import { ParameterPair } from './TestInterfaces'
 import { fetch, addTask } from 'domain-task';
 import { Action, Reducer, ActionCreator } from 'redux';
 import { AppThunkAction } from './';
@@ -11,70 +11,45 @@ import Guid from '../guid';
 // -----------------
 // ACTIONS - These are serializable (hence replayable) descriptions of state transitions.
 // They do not themselves have any side-effects; they just describe something that is going to happen.
-export
-    interface SyncSystemAction {
-    type: 'SYNC_PAIRS';
-    system: FormData;
-}
-interface AddSystemAction {
-    type: 'ADD_PAIRS';
-    system: FormData;
-}
 interface AddPairAction {
-    type: 'ADD_PAIR';
+    type: 'ADD_PARPAIR';
     attrGuid: string;
     value: string;
     subjectGuid: string;
 }
 interface UnPairAction {
-    type: 'UN_PAIR';
+    type: 'UN_PARPAIR';
     index: number;
     innerIndex: number;
 }
 
 interface SetPairAction {
-    type: 'SET_PAIR';
-    attrGuid: string;
+    type: 'SET_PARPAIR';
+    parameterGuid: string;
     value: string;
-    subjectGuid: string;
+    questionGuid: string;
 }
 // Declare a 'discriminated union' type. This guarantees that all references to 'type' properties contain one of the
 // declared type strings (and not any other arbitrary string).
-type KnownAction = SyncSystemAction | AddSystemAction | AddPairAction | UnPairAction | SetPairAction;
+type KnownAction = AddPairAction | UnPairAction | SetPairAction;
 
 // ----------------
 // REDUCER - For a given state and action, returns the new state. To support time travel, this must not mutate the old state.
 
-export const actionCreators = {
-    addSystem: (sys: FormData): AppThunkAction<KnownAction> => (dispatch, getState) => {
-        dispatch({ type: 'ADD_PAIRS', system: sys });
-    },
-    syncSystem: (sys: FormData): AppThunkAction<KnownAction> => (dispatch, getState) => {
-        dispatch({ type: 'SYNC_PAIRS', system: sys });
-    }
-};
 
 
 
 
-export const unloadedState: Pair[] = [];
+export const unloadedState: ParameterPair[] = [];
 
-export const reducer: Reducer<Pair[]> = (state: Pair[], action: KnownAction) => {
+export const reducer: Reducer<ParameterPair[]> = (state: ParameterPair[], action: KnownAction) => {
     switch (action.type) {
-        case "ADD_PAIRS":
-            return {
-                ...state
-            };
-        case "SYNC_PAIRS":
-            return {
-                ...state
-            };
-        case "UN_PAIR":
+        case "UN_PARPAIR":
             return state.map((e, ind) => {
                 if (ind == action.index) {
                     return {
                         ...e,
-                        subjectGuids: e.subjectGuids.filter((ex, inde) => {
+                        subjectGuids: e.questionGuids.filter((ex, inde) => {
                             if (inde == action.innerIndex) {
                                 return false;
                             }
@@ -86,13 +61,13 @@ export const reducer: Reducer<Pair[]> = (state: Pair[], action: KnownAction) => 
                 }
 
             });
-        case "ADD_PAIR":
-            return [...state, { attributeGuid: action.attrGuid, subjectGuids: [action.subjectGuid], value: action.value }];
-        case "SET_PAIR":
+        case "ADD_PARPAIR":
+            return [...state, { parameterGuid: action.attrGuid, subjectGuids: [action.subjectGuid], value: action.value }];
+        case "SET_PARPAIR":
             return state.map((e) => {
-                if (e.attributeGuid == action.attrGuid && e.value == action.value) {
-                    return { ...e, subjectGuids: [...e.subjectGuids, action.subjectGuid] }
-                } 
+                if (e.parameterGuid == action.parameterGuid && e.value == action.value) {
+                    return { ...e, subjectGuids: [...e.questionGuids, action.questionGuid] }
+                }
                 return e
             });
         default:
