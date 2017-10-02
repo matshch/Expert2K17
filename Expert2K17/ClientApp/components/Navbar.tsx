@@ -1,8 +1,15 @@
 import * as React from 'react';
 import { Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, NavLink as NavBarLink } from 'reactstrap';
+import { ApplicationState } from '../store';
+import * as UserStore from '../store/User';
 import { NavLink, Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 
-export default class NavBar extends React.Component<{}, { isOpen: boolean }> {
+type NavBarProps =
+    UserStore.UserState
+    & typeof UserStore.actionCreators;
+
+class NavBar extends React.Component<NavBarProps, { isOpen: boolean }> {
   constructor() {
     super();
     this.toggle = this.toggle.bind(this);
@@ -10,6 +17,11 @@ export default class NavBar extends React.Component<{}, { isOpen: boolean }> {
       isOpen: false
     };
   }
+
+  componentWillMount() {
+    this.props.GetUser();
+  }
+
   toggle() {
     this.setState({
       isOpen: !this.state.isOpen
@@ -28,33 +40,36 @@ export default class NavBar extends React.Component<{}, { isOpen: boolean }> {
                   Список тестов
                 </NavLink>
               </NavItem>
-              <NavItem>
-                <NavLink to={'/CreateTest'} className='nav-link' activeClassName='active'>
-                  Создание теста
-                </NavLink>
-              </NavItem>
+              {(this.props.user != undefined && this.props.user != null) ?
+                (<NavItem>
+                  <NavLink to={'/CreateTest'} className='nav-link' activeClassName='active'>
+                    Создание теста
+                  </NavLink>
+                </NavItem>) : null}
+              {(this.props.user != undefined && this.props.user != null && this.props.user.isAdmin) ?
+                (<NavItem>
+                  <NavLink to={'/panel'} className='nav-link' activeClassName='active'>
+                    Панель управления
+                  </NavLink>
+                </NavItem>) : null}
             </Nav>
             <Nav navbar>
-              <NavItem>
-                <NavLink to={'/register'} className='nav-link' activeClassName='active'>
-                  Зарегистрироваться
-                </NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink to={'/login'} className='nav-link' activeClassName='active'>
-                  Войти
-                </NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink to={'/panel'} className='nav-link' activeClassName='active'>
-                  Панель управления
-                </NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink to={'/profile'} className='nav-link' activeClassName='active'>
-                  Профиль
-                </NavLink>
-              </NavItem>
+              {(this.props.user != undefined && this.props.user != null) ?
+                (<NavItem>
+                  <NavLink to={'/profile'} className='nav-link' activeClassName='active'>
+                    {this.props.user.userName}
+                  </NavLink>
+                </NavItem>) :
+                [<NavItem>
+                  <NavLink to={'/login'} className='nav-link' activeClassName='active'>
+                    Войти
+                  </NavLink>
+                </NavItem>,
+                <NavItem key="register">
+                  <NavLink to={'/register'} className='nav-link' activeClassName='active'>
+                    Зарегистрироваться
+                  </NavLink>
+                </NavItem>]}
             </Nav>
           </Collapse>
         </Navbar>
@@ -62,3 +77,5 @@ export default class NavBar extends React.Component<{}, { isOpen: boolean }> {
     );
   }
 }
+
+export default connect((state: ApplicationState) => state.user, UserStore.actionCreators)(NavBar);
