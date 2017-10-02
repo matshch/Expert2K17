@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { ApplicationState } from '../store';
 import * as ProfileStore from '../store/Profile';
 import * as Spinner from 'react-spinkit';
-import { NavLink, Route, Redirect } from 'react-router-dom';
+import { Link, NavLink, Route, Redirect } from 'react-router-dom';
 import { ButtonGroup, Label, ListGroup, ListGroupItem, Card, CardImg, CardText, CardBlock, CardTitle, CardSubtitle, Button } from 'reactstrap';
 import DocumentTitle from 'react-document-title';
 import * as UserStore from '../store/User';
@@ -46,13 +46,13 @@ export class Profile extends React.Component<ProfileProps, { showPictureButtons:
         this.file2.click()
     }
 
-    private file1 : HTMLInputElement;
-    private file2 : HTMLInputElement;
+    private file1: HTMLInputElement;
+    private file2: HTMLInputElement;
 
     render() {
         if (this.props.user === null)
             return <Redirect to="/login" />
-        if (this.props.user === undefined || (this.props.ResponseObject.length === 0 && this.props.loading))
+        if (this.props.user === undefined || (this.props.TestsList.length === 0 && this.props.loading))
             return <Spinner name="ball-scale-multiple" />
         return (
             <DocumentTitle title='Профиль'>
@@ -72,17 +72,14 @@ export class Profile extends React.Component<ProfileProps, { showPictureButtons:
                         })()}
                         <CardBlock>
                             <CardTitle>{this.props.user.userName}</CardTitle>
-                            <CardSubtitle><h4>{this.props.user.surname} {this.props.user.name} {this.props.user.patronymic}</h4><p>{this.props.user.group} {this.props.user.year}</p></CardSubtitle>
+                            <div className="card-subtitle"><h4>{this.props.user.surname} {this.props.user.name} {this.props.user.patronymic}</h4><p>{this.props.user.group} {this.props.user.year}</p></div>
                             <h5>Список созданных тестов:</h5>
                             <ListGroup>
-                                {/* {this.props.ResponseObject.map((e: any) => <ListGroupItem>{e["name"]}</ListGroupItem>)} */}
-                                <ListGroupItem>Какую аниму глянуть?</ListGroupItem>
-                                <ListGroupItem>Какие обои выбрать?</ListGroupItem>
-                                <ListGroupItem>Какую вайфу выбрать?</ListGroupItem>
+                                {this.props.TestsList.map(e => <Link className="list-group-item list-group-item-action" to={"/test/" + e.id}>{e.name}</Link>)}
                             </ListGroup>
                         </CardBlock>
-                        <input ref={(input)=>this.file1=input} onChange={this.profilePictureChanged} type="file" />
-                        <input ref={(input)=>this.file2=input} onChange={this.coverPictureChanged} type="file" />
+                        <input ref={(input) => this.file1 = input} onChange={this.profilePictureChanged} type="file" />
+                        <input ref={(input) => this.file2 = input} onChange={this.coverPictureChanged} type="file" />
                     </Card>
                 </div>
             </DocumentTitle>

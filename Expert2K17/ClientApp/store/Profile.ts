@@ -1,14 +1,17 @@
-import { fetch, addTask } from 'domain-task';
+import { fetch, addTask } from '../custom/fetch';
 import { Action, Reducer, ActionCreator } from 'redux';
 import { AppThunkAction } from './';
 
-export interface ProfileState {
-    ResponseObject: any;
-    loading: boolean;
+interface TestObject {
+    id: string;
+    name: string;
+    description: string;
+    picture: string;
 }
 
-export interface ProfileObject {
-    testlist: any[];
+export interface ProfileState {
+    TestsList: TestObject[];
+    loading: boolean;
 }
 
 interface UselessProfileAction {
@@ -16,32 +19,32 @@ interface UselessProfileAction {
 }
 
 interface GetProfileResponse {
-    type: 'GET_PROFILE_RESPONSE';
-    data: ProfileObject[]
+    type: 'GET_GET_TESTS_LIST';
+    data: TestObject[]
 }
 
 type KnownActions = UselessProfileAction | GetProfileResponse;
 
 export const actionCreators = {
     GetTestsList: (): AppThunkAction<KnownActions> => (dispatch, getState) => {
-        // let fetchTask = fetch("/api/system/get", {credentials: 'same-origin'}).then(response => response.json() as Promise<any>).then(data => {
-        //     dispatch({ type: 'GET_PROFILE_RESPONSE', data: data });
-        // });
-        // addTask(fetchTask);
+        let fetchTask = fetch("/api/system/get", {credentials: 'same-origin'})
+            .then(response => response.json() as Promise<TestObject[]>).then(data => {
+                dispatch({ type: 'GET_GET_TESTS_LIST', data: data });
+            });
+        addTask(fetchTask);
         dispatch({ type: 'USELESS_PROFILE_ACTION' });
-        dispatch({ type: 'GET_PROFILE_RESPONSE', data: [] });
     }
 };
 
 export const reducer: Reducer<ProfileState> = (state: ProfileState, action: KnownActions) => {
     switch (action.type) {
-        case 'GET_PROFILE_RESPONSE':
-            return { ResponseObject: action.data, loading: false };
+        case 'GET_GET_TESTS_LIST':
+            return { TestsList: action.data, loading: false };
         case 'USELESS_PROFILE_ACTION':
             return { ...state, loading: true };
         default:
             const exhaustiveCheck: never = action;
     }
 
-    return state || { ResponseObject: [], loading: false };
+    return state || { TestsList: [], loading: false };
 };

@@ -1,5 +1,6 @@
 import { fetch, addTask } from 'domain-task';
 import { Action, Reducer, ActionCreator } from 'redux';
+import { SetUser } from './User';
 import { AppThunkAction } from './';
 
 export interface RegisterState {
@@ -37,7 +38,7 @@ interface GetGroupsYearsResponse {
     data: GroupsYearsObject[]
 }
 
-type KnownActions = UselessRegisterAction | GetRegisterResponse | GetGroupsYearsResponse;
+type KnownActions = UselessRegisterAction | GetRegisterResponse | GetGroupsYearsResponse | SetUser;
 
 export const actionCreators = {
     Register: (inputObject: RegisterObject): AppThunkAction<KnownActions> => (dispatch, getState) => {
@@ -50,6 +51,7 @@ export const actionCreators = {
             method: "PUT",
             body: JSON.stringify(inputObject)
         }).then(response => response.json() as Promise<any>).then(data => {
+            dispatch({ type: 'SET_USER', data: data["user"] });
             dispatch({ type: 'GET_REGISTER_RESPONSE', data: data });
         });
         addTask(fetchTask);
@@ -64,7 +66,9 @@ export const actionCreators = {
     }
 };
 
-export const reducer: Reducer<RegisterState> = (state: RegisterState, action: KnownActions) => {
+type KnownReducerActions = UselessRegisterAction | GetRegisterResponse | GetGroupsYearsResponse;
+
+export const reducer: Reducer<RegisterState> = (state: RegisterState, action: KnownReducerActions) => {
     switch (action.type) {
         case 'GET_REGISTER_RESPONSE':
             return { ...state, ResponseObject: action.data, loading: false };

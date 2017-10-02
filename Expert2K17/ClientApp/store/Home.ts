@@ -7,19 +7,19 @@ export interface HomeState {
     loading: boolean;
 }
 
-export interface User {
+interface User {
     id: string,
-    nickname: string;
+    username: string;
     surname: string,
     name: string,
     patronymic: string;
 }
 
-export interface CardObject {
+interface CardObject {
     id: string,
     name: string,
     description: string,
-    image: string,
+    picture: string,
     user: User;
 }
 
