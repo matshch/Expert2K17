@@ -62,7 +62,7 @@ export const reducer: Reducer<ParameterPair[]> = (state: ParameterPair[], action
 
             });
         case "ADD_PARPAIR":
-            return [...state, { parameterGuid: action.attrGuid, subjectGuids: [action.subjectGuid], value: action.value }];
+            return [...state, { parameterGuid: action.attrGuid, questionGuids: [action.subjectGuid], value: action.value }];
         case "SET_PARPAIR":
             return state.map((e) => {
                 if (e.parameterGuid == action.parameterGuid && e.value == action.value) {
