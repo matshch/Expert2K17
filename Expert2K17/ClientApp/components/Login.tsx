@@ -81,7 +81,7 @@ export class Login extends React.Component<LoginProps, { username: string, passw
                             </Label>
                             {
                                 (() => {
-                                    if (this.props.ResponseObject["succeeded"] === false) {
+                                    if (this.props.ResponseObject.succeeded === false) {
                                         return (
                                             <Alert color="danger">
                                                 <strong>Ошибка</strong> Неправильные имя пользователя или пароль.

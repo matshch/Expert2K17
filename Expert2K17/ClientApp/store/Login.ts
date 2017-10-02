@@ -23,7 +23,7 @@ interface User {
 
 interface LoginResponse {
     user: User;
-    succeeded: boolean;
+    succeeded: boolean | null;
     isLockedOut: boolean;
     isNotAllowed: boolean;
     requiresTwoFactor: boolean;
