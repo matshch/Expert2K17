@@ -14,6 +14,8 @@ namespace Expert2K17.Models
         public string Picture { get; set; }
         public bool Published { get; set; }
 
+        public DateTime PublishedAt { get; set; }
+
         [Required]
         public string PublishedJson { get; set; }
         [Required]
@@ -28,6 +30,7 @@ namespace Expert2K17.Models
             Picture = "/default/system.png";
 
             Published = false;
+            PublishedAt = DateTime.Now;
         }
     }
 }

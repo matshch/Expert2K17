@@ -38,6 +38,7 @@ namespace Expert2K17.Controllers
             var userId = _userManager.GetUserId(User);
             var user = await _db.Users.Include(e => e.Tests).FirstOrDefaultAsync(e => e.Id == userId);
             return from s in user.Tests
+                   orderby s.PublishedAt
                    select new SystemItem
                    {
                        Id = s.Id,
