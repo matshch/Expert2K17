@@ -22,7 +22,7 @@ export class Home extends React.Component<HomeProps, {}> {
     }
 
     renderListItem(key: string, t: string, st: string, tx: string, img: string) {
-        return <ListItem key={key} title={t} subtitle={st} text={tx} image={img}/>;
+        return <ListItem key={key} id={key} title={t} subtitle={st} text={tx} image={img}/>;
     }
 
     render() {

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, NavLink as NavBarLink } from 'reactstrap';
 import { ApplicationState } from '../store';
 import * as UserStore from '../store/User';
-import { NavLink, Link } from 'react-router-dom';
+import { NavLink, Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 type NavBarProps =
@@ -78,4 +78,4 @@ class NavBar extends React.Component<NavBarProps, { isOpen: boolean }> {
   }
 }
 
-export default connect((state: ApplicationState) => state.user, UserStore.actionCreators)(NavBar);
+export default withRouter(connect((state: ApplicationState) => state.user, UserStore.actionCreators)(NavBar));

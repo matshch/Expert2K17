@@ -160,6 +160,11 @@ body
     display: none;
 }
 
+.profile .alert
+{
+    text-align: center;
+}
+
 .profileEditButtons
 {
     position: absolute;

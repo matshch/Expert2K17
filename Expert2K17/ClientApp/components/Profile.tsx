@@ -5,7 +5,7 @@ import { ApplicationState } from '../store';
 import * as ProfileStore from '../store/Profile';
 import * as Spinner from 'react-spinkit';
 import { Link, NavLink, Route, Redirect } from 'react-router-dom';
-import { ButtonGroup, Label, ListGroup, ListGroupItem, Card, CardImg, CardText, CardBlock, CardTitle, CardSubtitle, Button } from 'reactstrap';
+import { Alert, ButtonGroup, Label, ListGroup, ListGroupItem, Card, CardImg, CardText, CardBlock, CardTitle, CardSubtitle, Button } from 'reactstrap';
 import DocumentTitle from 'react-document-title';
 import * as UserStore from '../store/User';
 
@@ -59,6 +59,17 @@ export class Profile extends React.Component<ProfileProps, { showPictureButtons:
                 <div className='flex-container'>
                     <Card className="profile">
                         <img onMouseEnter={() => this.setState({ showPictureButtons: true })} onMouseLeave={() => this.setState({ showPictureButtons: false })} className="profileCover card-img" src={this.props.user.cover} />
+                        {
+                            (() => {
+                                if (this.props.imageUploadSucceeded === false) {
+                                    return (
+                                        <Alert color="danger">
+                                            <strong>Ошибка</strong> {this.props.imageUploadError}
+                                        </Alert>
+                                    )
+                                }
+                            })()
+                        }
                         <img onMouseEnter={() => this.setState({ showPictureButtons: true })} onMouseLeave={() => this.setState({ showPictureButtons: false })} className="profileImage" width="250px" height="250px" src={this.props.user.userpic} />
                         {(() => {
                             if (this.state.showPictureButtons === true) {
@@ -78,8 +89,8 @@ export class Profile extends React.Component<ProfileProps, { showPictureButtons:
                                 {this.props.TestsList.map(e => <Link className="list-group-item list-group-item-action" to={"/test/" + e.id}>{e.name}</Link>)}
                             </ListGroup>
                         </CardBlock>
-                        <input ref={(input) => this.file1 = input} onChange={this.profilePictureChanged} type="file" />
-                        <input ref={(input) => this.file2 = input} onChange={this.coverPictureChanged} type="file" />
+                        <input ref={(input) => this.file1 = input} accept="image/png,image/gif,image/jpeg" onChange={this.profilePictureChanged} type="file" />
+                        <input ref={(input) => this.file2 = input} accept="image/png,image/gif,image/jpeg" onChange={this.coverPictureChanged} type="file" />
                     </Card>
                 </div>
             </DocumentTitle>
