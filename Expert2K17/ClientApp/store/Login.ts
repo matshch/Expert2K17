@@ -4,8 +4,29 @@ import { SetUser } from './User'
 import { AppThunkAction } from './';
 
 export interface LoginState {
-    ResponseObject: any;
+    ResponseObject: LoginResponse;
     loading: boolean;
+}
+
+interface User {
+    id: string;
+    userName: string;
+    surname: string;
+    name: string;
+    patronymic: string;
+    group: string;
+    year: string;
+    isAdmin: boolean;
+    userpic: string;
+    cover: string;
+}
+
+interface LoginResponse {
+    user: User;
+    succeeded: boolean;
+    isLockedOut: boolean;
+    isNotAllowed: boolean;
+    requiresTwoFactor: boolean;
 }
 
 export interface LoginObject {
@@ -20,7 +41,7 @@ interface UselessLoginAction {
 
 interface GetLoginResponse {
     type: 'GET_LOGIN_RESPONSE';
-    data: LoginObject[]
+    data: LoginResponse;
 }
 
 type KnownActions = UselessLoginAction | GetLoginResponse | SetUser;
@@ -37,8 +58,8 @@ export const actionCreators = {
             },
             method: "POST",
             body: JSON.stringify(inputObject)
-        }).then(response => response.json() as Promise<any>).then(data => {
-            dispatch({type: 'SET_USER', data: data["user"]})
+        }).then(response => response.json() as Promise<LoginResponse>).then(data => {
+            dispatch({type: 'SET_USER', data: data.user})
             dispatch({ type: 'GET_LOGIN_RESPONSE', data: data });
         });
         addTask(fetchTask);
@@ -56,5 +77,5 @@ export const reducer: Reducer<LoginState> = (state: LoginState, action: ReducerA
             const exhaustiveCheck: never = action;
     }
 
-    return state || { ResponseObject: [], loading: false };
+    return state || { ResponseObject: null, loading: false };
 };

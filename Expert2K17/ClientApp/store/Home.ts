@@ -7,7 +7,7 @@ export interface HomeState {
     loading: boolean;
 }
 
-export interface User {
+interface User {
     id: string,
     nickname: string;
     surname: string,
@@ -15,7 +15,7 @@ export interface User {
     patronymic: string;
 }
 
-export interface CardObject {
+interface CardObject {
     id: string,
     name: string,
     description: string,
