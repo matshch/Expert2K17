@@ -22,7 +22,7 @@ export default class NavBar extends React.Component<{}, { isOpen: boolean }> {
           <NavbarToggler right onClick={this.toggle} />
           <Link className='navbar-brand' to={'/'}>ЭЗ ПЕЗ</Link>
           <Collapse isOpen={this.state.isOpen} navbar>
-            <Nav className="ml-auto" navbar>
+            <Nav className="mr-auto" navbar>
               <NavItem>
                 <NavLink exact to={'/'} className='nav-link' activeClassName='active'>
                   Список тестов
@@ -33,6 +33,8 @@ export default class NavBar extends React.Component<{}, { isOpen: boolean }> {
                   Создание теста
                 </NavLink>
               </NavItem>
+            </Nav>
+            <Nav navbar>
               <NavItem>
                 <NavLink to={'/register'} className='nav-link' activeClassName='active'>
                   Зарегистрироваться
