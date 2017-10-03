@@ -58,6 +58,7 @@ namespace Expert2K17.Controllers
                         response.Error = "Картинка неизвестного формата";
                         return response;
                 }
+                path += "?d=" + DateTimeOffset.Now.ToUnixTimeMilliseconds();
                 using (var stream = new FileStream(_hostingEnvironment.WebRootPath + path, FileMode.Create))
                 {
                     await system.Picture.CopyToAsync(stream);
@@ -109,6 +110,7 @@ namespace Expert2K17.Controllers
                         response.Error = "Картинка неизвестного формата";
                         return response;
                 }
+                path += "?d=" + DateTimeOffset.Now.ToUnixTimeMilliseconds();
                 using (var stream = new FileStream(_hostingEnvironment.WebRootPath + path, FileMode.Create))
                 {
                     await system.Picture.CopyToAsync(stream);
