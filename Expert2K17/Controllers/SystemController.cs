@@ -165,6 +165,25 @@ namespace Expert2K17.Controllers
             return response;
         }
 
+        // POST: api/system/rollback/cee8e768-6490-45a8-9848-090c7a89878a
+        [HttpPost("{id}")]
+        public async Task<CreateSystemResponse> Rollback(Guid id)
+        {
+            var response = new CreateSystemResponse();
+            var (system, error) = await GetPrepare(id.ToString());
+
+            if (error != null)
+            {
+                response.Error = error;
+                return response;
+            }
+
+            system.AutosavedJson = system.PublishedJson;
+            response.Json = system.PublishedJson;
+            response.Succeded = true;
+            return response;
+        }
+
         // POST: api/system/save
         [HttpPost]
         public async Task<MyResponse> Save()
@@ -180,6 +199,63 @@ namespace Expert2K17.Controllers
             await _db.SaveChangesAsync();
 
             response.Succeded = true;
+            return response;
+        }
+
+        // POST: api/profile/setPicture
+        [HttpPost]
+        public async Task<PictureResponse> SetPicture(PictureForm form)
+        {
+            var response = new PictureResponse();
+            var (system, error) = await GetPrepare(form.Id);
+
+            if (error != null)
+            {
+                response.Error = error;
+                return response;
+            }
+            response.Picture = system.Picture;
+
+            if (form.Picture != null)
+            {
+                if (form.Picture.Length > 5 * 1024 * 1024)
+                {
+                    response.Error = "Картинка слишком большая";
+                    return response;
+                }
+                var path = "/systems/" + form.Id;
+                switch (form.Picture.ContentType)
+                {
+                    case "image/gif":
+                        path += ".gif";
+                        break;
+                    case "image/jpeg":
+                        path += ".jpg";
+                        break;
+                    case "image/png":
+                        path += ".png";
+                        break;
+                    default:
+                        response.Error = "Картинка неизвестного формата";
+                        return response;
+                }
+                path += "?d=" + DateTimeOffset.Now.ToUnixTimeMilliseconds();
+                using (var stream = new FileStream(_hostingEnvironment.WebRootPath + path, FileMode.Create))
+                {
+                    await form.Picture.CopyToAsync(stream);
+                }
+                var oldPath = system.Picture;
+                if (oldPath != path && !oldPath.StartsWith("/default/"))
+                {
+                    System.IO.File.Delete(_hostingEnvironment.WebRootPath + oldPath);
+                }
+                system.Picture = path;
+            }
+
+            response.Succeded = true;
+            response.Picture = system.Picture;
+
+            await _db.SaveChangesAsync();
             return response;
         }
 
@@ -262,6 +338,19 @@ namespace Expert2K17.Controllers
         {
             public bool Succeded { get; set; } = false;
             public string Error { get; set; } = "";
+        }
+
+        public class PictureForm
+        {
+            public string Id { get; set; }
+            public IFormFile Picture { get; set; }
+        }
+
+        public class PictureResponse
+        {
+            public bool Succeded { get; set; } = false;
+            public string Error { get; set; } = "";
+            public string Picture { get; set; } = null;
         }
     }
 }
