@@ -16,7 +16,7 @@ export default class ListItem extends React.Component<ListItemProps, {}> {
             <div className='flex-item'>
                 <Link to={"/test/" + this.props.id}>
                     <Card>
-                        <CardImg top width="300px" src={this.props.image}/>
+                        <CardImg top width="300px" src={this.props.image} />
                         <CardBlock>
                             <CardTitle>{this.props.title}</CardTitle>
                             <CardSubtitle>{this.props.subtitle}</CardSubtitle>
@@ -29,7 +29,7 @@ export default class ListItem extends React.Component<ListItemProps, {}> {
     }
 }
 
-export class FirstListItem extends React.Component<{text: string}, {}> {
+export class FirstListItem extends React.Component<{ text: string }, {}> {
     public render() {
         return (
             <div className='flex-item createTest'>

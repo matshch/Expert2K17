@@ -1,6 +1,7 @@
 import * as Home from './Home';
 import * as User from './User';
 import * as Profile from './Profile';
+import * as Panel from './Panel';
 import * as Login from './Login';
 import * as Register from './Register';
 import * as SystemS from './System'
@@ -13,6 +14,7 @@ import * as combinedSystems from './combinedSystem';
 export interface ApplicationState {
 	user: User.UserState;
 	profile: Profile.ProfileState;
+    panel: Panel.PanelState;
     home: Home.HomeState;
     login: Login.LoginState;
     register: Register.RegisterState;
@@ -25,6 +27,7 @@ export interface ApplicationState {
 export const reducers = {
 	user: User.reducer,
 	profile: Profile.reducer,
+    panel: Panel.reducer,
     home: Home.reducer,
     login: Login.reducer,
     register: Register.reducer,
