@@ -84,7 +84,6 @@ export interface KCondition {
 
 
 export interface Question {
-    system_guid: string;
     question: string;
     guid: string;
     parameter_guid: string;
