@@ -58,15 +58,15 @@ namespace Expert2K17.Controllers
                         response.Error = "Картинка неизвестного формата";
                         return response;
                 }
-                path += "?d=" + DateTimeOffset.Now.ToUnixTimeMilliseconds();
                 using (var stream = new FileStream(_hostingEnvironment.WebRootPath + path, FileMode.Create))
                 {
                     await system.Picture.CopyToAsync(stream);
                 }
+                path += "?d=" + DateTimeOffset.Now.ToUnixTimeMilliseconds();
                 var oldPath = user.Cover;
                 if (oldPath != path && !oldPath.StartsWith("/default/"))
                 {
-                    System.IO.File.Delete(_hostingEnvironment.WebRootPath + oldPath);
+                    System.IO.File.Delete(_hostingEnvironment.WebRootPath + oldPath.Split("?").First());
                 }
                 user.Cover = path;
             }
@@ -110,15 +110,15 @@ namespace Expert2K17.Controllers
                         response.Error = "Картинка неизвестного формата";
                         return response;
                 }
-                path += "?d=" + DateTimeOffset.Now.ToUnixTimeMilliseconds();
                 using (var stream = new FileStream(_hostingEnvironment.WebRootPath + path, FileMode.Create))
                 {
                     await system.Picture.CopyToAsync(stream);
                 }
+                path += "?d=" + DateTimeOffset.Now.ToUnixTimeMilliseconds();
                 var oldPath = user.Userpic;
                 if (oldPath != path && !oldPath.StartsWith("/default/"))
                 {
-                    System.IO.File.Delete(_hostingEnvironment.WebRootPath + oldPath);
+                    System.IO.File.Delete(_hostingEnvironment.WebRootPath + oldPath.Split("?").First());
                 }
                 user.Userpic = path;
             }

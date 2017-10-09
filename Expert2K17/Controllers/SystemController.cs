@@ -239,15 +239,15 @@ namespace Expert2K17.Controllers
                         response.Error = "Картинка неизвестного формата";
                         return response;
                 }
-                path += "?d=" + DateTimeOffset.Now.ToUnixTimeMilliseconds();
                 using (var stream = new FileStream(_hostingEnvironment.WebRootPath + path, FileMode.Create))
                 {
                     await form.Picture.CopyToAsync(stream);
                 }
+                path += "?d=" + DateTimeOffset.Now.ToUnixTimeMilliseconds();
                 var oldPath = system.Picture;
                 if (oldPath != path && !oldPath.StartsWith("/default/"))
                 {
-                    System.IO.File.Delete(_hostingEnvironment.WebRootPath + oldPath);
+                    System.IO.File.Delete(_hostingEnvironment.WebRootPath + oldPath.Split("?").First());
                 }
                 system.Picture = path;
             }
