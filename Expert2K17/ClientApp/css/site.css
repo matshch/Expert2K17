@@ -130,7 +130,7 @@ body
 .panel .list-group-item
 {
     font-family: OpenSans-SemiBoldItalic !important;
-    font-size: 16pt;
+    font-size: 14pt;
     line-height: 18px;
 
     text-transform: uppercase;
@@ -153,6 +153,7 @@ body
     margin-right: 0;
     margin-left: auto;
     padding: 10px;
+    display: block;
 
     color: white;
     background-color: rgba(230,50,50,1);
