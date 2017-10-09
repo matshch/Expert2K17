@@ -19,8 +19,7 @@ interface AddPairAction {
 }
 interface UnPairAction {
     type: 'UN_PARPAIR';
-    index: number;
-    innerIndex: number;
+    questionGuid: string;
 }
 
 interface SetPairAction {
@@ -46,15 +45,10 @@ export const reducer: Reducer<ParameterPair[]> = (state: ParameterPair[], action
     switch (action.type) {
         case "UN_PARPAIR":
             return state.map((e, ind) => {
-                if (ind == action.index) {
+                if (e.questionGuid == action.questionGuid) {
                     return {
                         ...e,
-                        subjectGuids: e.questionGuids.filter((ex, inde) => {
-                            if (inde == action.innerIndex) {
-                                return false;
-                            }
-                            return true;
-                        })
+                        questionGuid: ''
                     }
                 } else {
                     return e
@@ -62,11 +56,11 @@ export const reducer: Reducer<ParameterPair[]> = (state: ParameterPair[], action
 
             });
         case "ADD_PARPAIR":
-            return [...state, { parameterGuid: action.parameterGuid, questionGuids: [action.questionGuid], value: action.value }];
+            return [...state, { parameterGuid: action.parameterGuid, questionGuid: action.questionGuid, value: action.value }];
         case "SET_PARPAIR":
             return state.map((e) => {
                 if (e.parameterGuid == action.parameterGuid && e.value == action.value) {
-                    return { ...e, subjectGuids: [...e.questionGuids, action.questionGuid] }
+                    return { ...e, questionGuid: action.questionGuid }
                 }
                 return e
             });

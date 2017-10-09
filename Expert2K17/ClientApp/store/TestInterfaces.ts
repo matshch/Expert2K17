@@ -54,7 +54,7 @@ export interface ParameterPair {
     //[guid: string]: string;//Attribute -> value
     parameterGuid: string;
     value: string;
-    questionGuids: string[];
+    questionGuid: string;
 }
 interface Answer {
     answer: string;

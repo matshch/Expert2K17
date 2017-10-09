@@ -59,10 +59,9 @@ type QuestionPropsType =
 
 
 interface AdditionalPairs {
-
-    pairs: Interf.Pair[];
-    subject: Interf.Subject;
-    attr: Interf.Attribute;
+    pairs: Interf.ParameterPair[];
+    parameter: Interf.Parameter;
+    question: Interf.Question;
 }
 
 
@@ -98,7 +97,7 @@ class SubjectToAttribute extends React.Component<SubjecterAttribute, {}> {
 
     makeOptions = () => {
         return this.props.pairs.filter((e) => {
-            if (e.attributeGuid == this.props.attr.guid) { return true }
+            if (e.parameterGuid == this.props.parameter.guid) { return true }
             else { return false }
         }).map((e) => {
             return {
@@ -109,19 +108,22 @@ class SubjectToAttribute extends React.Component<SubjecterAttribute, {}> {
     }
     onVChange = (item: any) => {
         if (!!item && !!item.newOption as any) {
-            this.props.added(item.value, this.props.attr.guid);
+            this.props.added(item.value, this.props.parameter.guid);
             return;
         }
         if (!!item) {
-            this.props.selected(item.value, this.props.attr.guid);
+            this.props.selected(item.value, this.props.parameter.guid);
             return;
         }
     }
 
+    onTextChange = () => {
+
+    }
     defaultValue = () => {
         if (this.props.pairs.length > 0) {
-            let neededValue = this.props.pairs.findIndex((e: Interf.Pair) => {
-                if (e.attributeGuid == this.props.attr.guid && findSubjectGuid(this.props.subject.guid, e.subjectGuids)) {
+            let neededValue = this.props.pairs.findIndex((e: Interf.ParameterPair) => {
+                if (e.parameterGuid == this.props.parameter.guid) {
                     return true
                 }
                 return false;
@@ -141,8 +143,16 @@ class SubjectToAttribute extends React.Component<SubjecterAttribute, {}> {
         return <Card>
             <CardBlock>
                 <Row>
+                    <Col lg={4}>
+                        <label>Вопрос</label>
+                    </Col>
+                    <Col lg={8}>
+                        <Input type="textarea" onChange={this.onTextChange} />
+                    </Col>
+                </Row>
+                <Row>
                     <Col lg={6}>
-                        <Label>{this.props.attr.name}</Label>
+                        <Label>Значение параметра</Label>
                     </Col>
                     <Col lg={6}>
                         <ComboBox.SimpleSelect options={this.makeOptions()}
@@ -169,7 +179,7 @@ class SubjectToAttribute extends React.Component<SubjecterAttribute, {}> {
                                     </div>
                                 </div>
                             }}
-                            placeholder="Выберите значение атрибута"></ComboBox.SimpleSelect>
+                            placeholder="Выберите значение параметра"></ComboBox.SimpleSelect>
                     </Col>
                 </Row>
             </CardBlock>
