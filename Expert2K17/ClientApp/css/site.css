@@ -111,6 +111,22 @@ body
     }
 }
 
+.panel .badge
+{
+    margin-left: 1ex;
+}
+
+.panel .listItemImg
+{
+    display: block;
+
+    width: auto;
+    height: 50px;
+    padding-right: 20px;
+
+    object-fit: cover;
+}
+
 .profileImage
 {
     display: block;
@@ -150,10 +166,11 @@ body
 {
     font-size: 16pt;
 
+    display: block;
+
     margin-right: 0;
     margin-left: auto;
     padding: 10px;
-    display: block;
 
     color: white;
     background-color: rgba(230,50,50,1);
