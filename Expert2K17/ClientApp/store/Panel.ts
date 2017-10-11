@@ -1,50 +1,55 @@
-import { fetch, addTask } from '../custom/fetch';
-import { Action, Reducer, ActionCreator } from 'redux';
-import { AppThunkAction } from './';
+import { fetch, addTask } from "../custom/fetch";
+import { Reducer } from "redux";
+import { AppThunkAction } from "./";
 
-interface TestObject {
+interface UserObject {
     id: string;
+    userName: string;
+    surname: string;
     name: string;
-    description: string;
-    picture: string;
+    patronymic: string;
+    group: string;
+    year: string;
+    userpic: string;
+    cover: string;
 }
 
 export interface PanelState {
-    TestsList: TestObject[];
+    UsersList: UserObject[];
     loading: boolean;
 }
 
 interface UselessPanelAction {
-    type: 'USELESS_PROFILE_ACTION';
+    type: "USELESS_PANEL_ACTION";
 }
 
 interface GetPanelResponse {
-    type: 'GET_GET_TESTS_LIST';
-    data: TestObject[]
+    type: "GET_ADMIN_USERS_LIST";
+    data: UserObject[];
 }
 
 type KnownActions = UselessPanelAction | GetPanelResponse;
 
 export const actionCreators = {
     GetTestsList: (): AppThunkAction<KnownActions> => (dispatch, getState) => {
-        let fetchTask = fetch("/api/system/get", {credentials: 'same-origin'})
-            .then(response => response.json() as Promise<TestObject[]>).then(data => {
-                dispatch({ type: 'GET_GET_TESTS_LIST', data: data });
+        const fetchTask = fetch("/api/admin/getUsers", { credentials: "same-origin" })
+            .then(response => response.json() as Promise<UserObject[]>).then(data => {
+                dispatch({ type: "GET_ADMIN_USERS_LIST", data: data });
             });
         addTask(fetchTask);
-        dispatch({ type: 'USELESS_PROFILE_ACTION' });
+        dispatch({ type: "USELESS_PANEL_ACTION" });
     }
 };
 
 export const reducer: Reducer<PanelState> = (state: PanelState, action: KnownActions) => {
     switch (action.type) {
-        case 'GET_GET_TESTS_LIST':
-            return { TestsList: action.data, loading: false };
-        case 'USELESS_PROFILE_ACTION':
-            return { ...state, loading: true };
-        default:
-            const exhaustiveCheck: never = action;
+    case "GET_ADMIN_USERS_LIST":
+        return { UsersList: action.data, loading: false };
+    case "USELESS_PANEL_ACTION":
+        return { ...state, loading: true };
+    default:
+        const exhaustiveCheck = action;
     }
 
-    return state || { TestsList: [], loading: false };
+    return state || { UsersList: [], loading: false };
 };

@@ -63,7 +63,7 @@ interface AdditionalPairs {
     parameter: Interf.Parameter;
     question: Interf.Question;
     index: number;
-
+    text: string;
 }
 
 
@@ -150,7 +150,7 @@ class Answeres extends React.Component<SubjecterAttribute, {}> {
                         <label>Вопрос</label>
                     </Col>
                     <Col lg={8}>
-                        <Input type="textarea" value={this.props.} onChange={this.onTextChange} />
+                        <Input type="textarea" value={this.props.text} onChange={this.onTextChange} />
                     </Col>
                 </Row>
                 <Row>
