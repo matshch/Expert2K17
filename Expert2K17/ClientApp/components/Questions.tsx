@@ -60,22 +60,15 @@ type QuestionPropsType =
 
 interface AdditionalPairs {
     pairs: Interf.ParameterPair[];
-    parameter: Interf.Parameter;
     question: Interf.Question;
     index: number;
-    text: string;
+    answer: Interf.Answer;
 }
 
-
-interface STACallbacks {
-    added: (value: string, attrGuid: string, index: number) => void;
-    selected: (value: string, attrGuid: string, index: number) => void;
-    texted: (answer: string, index: number) => void;
-}
 type SubjecterAttribute =
     AdditionalPairs
     &
-    STACallbacks;
+    typeof Store.actionCreators;
 
 
 
@@ -92,7 +85,7 @@ function findSubjectGuid(subj: string, arr: string[]) {
     return false
 }
 
-class Answeres extends React.Component<SubjecterAttribute, {}> {
+class Answers extends React.Component<SubjecterAttribute, {}> {
     constructor() {
         super();
 
@@ -126,7 +119,7 @@ class Answeres extends React.Component<SubjecterAttribute, {}> {
     defaultValue = () => {
         if (this.props.pairs.length > 0) {
             let neededValue = this.props.pairs.findIndex((e: Interf.ParameterPair) => {
-                if (e.parameterGuid == this.props.parameter.guid) {
+                if (e.guid == this.props.answer.value) {
                     return true
                 }
                 return false;
@@ -150,7 +143,7 @@ class Answeres extends React.Component<SubjecterAttribute, {}> {
                         <label>Вопрос</label>
                     </Col>
                     <Col lg={8}>
-                        <Input type="textarea" value={this.props.text} onChange={this.onTextChange} />
+                        <Input type="textarea" value={this.props.answer.answer} onChange={this.onTextChange} />
                     </Col>
                 </Row>
                 <Row>
@@ -240,5 +233,41 @@ class NewQuestion extends React.Component<typeof Store.actionCreators, Interf.Qu
 }
 
 
+interface NeededPropsAnswers{
+    index: number;
+    questionGuid: string;
+}
+
+function getParameterProps(store: ApplicationState, props: NeededPropsAnswers) {
+    let answer = store.combinedSystem.questions.filter((e) => {
+        if (e.guid == props.questionGuid) {
+            return true;
+        }
+        return false;
+
+    })[0].answers.filter((e, ind) => {
+        if (ind == props.index) {
+            return true;
+        } 
+        return false;
+        })
+    let question = store.combinedSystem.questions.filter((e) => {
+        if (e.guid == props.questionGuid) {
+            return true;
+        }
+        return false;
+    })[0];
+    let values = store.combinedSystem.parpairs.filter((e) => {
+        if (e.parameterGuid == question.parameter_guid) {
+            return true;
+        }
+        return false;
+
+    })
+    return { answer: answer[0], question: question, pairs: values };
+
+
+}
 
 let ConnectedNewQuestion = connect(() => ({}), Store.actionCreators)(NewQuestion)
+let ConnectedAnswer = connect(getParameterProps, Store.actionCreators)(Answers)
