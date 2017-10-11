@@ -56,7 +56,7 @@ export interface ParameterPair {
     value: string;
     questionGuid: string;
 }
-interface Answer {
+export interface Answer {
     answer: string;
     value: string;
 }

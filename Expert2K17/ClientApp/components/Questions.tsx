@@ -62,12 +62,15 @@ interface AdditionalPairs {
     pairs: Interf.ParameterPair[];
     parameter: Interf.Parameter;
     question: Interf.Question;
+    index: number;
+
 }
 
 
 interface STACallbacks {
-    added: (value: string, attrGuid: string) => void;
-    selected: (value: string, attrGuid: string) => void;
+    added: (value: string, attrGuid: string, index: number) => void;
+    selected: (value: string, attrGuid: string, index: number) => void;
+    texted: (answer: string, index: number) => void;
 }
 type SubjecterAttribute =
     AdditionalPairs
@@ -89,7 +92,7 @@ function findSubjectGuid(subj: string, arr: string[]) {
     return false
 }
 
-class SubjectToAttribute extends React.Component<SubjecterAttribute, {}> {
+class Answeres extends React.Component<SubjecterAttribute, {}> {
     constructor() {
         super();
 
@@ -108,17 +111,17 @@ class SubjectToAttribute extends React.Component<SubjecterAttribute, {}> {
     }
     onVChange = (item: any) => {
         if (!!item && !!item.newOption as any) {
-            this.props.added(item.value, this.props.parameter.guid);
+            this.props.added(item.value, this.props.parameter.guid, this.props.index);
             return;
         }
         if (!!item) {
-            this.props.selected(item.value, this.props.parameter.guid);
+            this.props.selected(item.value, this.props.parameter.guid, this.props.index);
             return;
         }
     }
 
-    onTextChange = () => {
-
+    onTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        this.props.texted(e.target.value, this.props.index);
     }
     defaultValue = () => {
         if (this.props.pairs.length > 0) {
@@ -147,7 +150,7 @@ class SubjectToAttribute extends React.Component<SubjecterAttribute, {}> {
                         <label>Вопрос</label>
                     </Col>
                     <Col lg={8}>
-                        <Input type="textarea" onChange={this.onTextChange} />
+                        <Input type="textarea" value={this.props.} onChange={this.onTextChange} />
                     </Col>
                 </Row>
                 <Row>
