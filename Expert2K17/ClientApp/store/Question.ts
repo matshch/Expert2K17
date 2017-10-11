@@ -99,7 +99,24 @@ export const actionCreators = {
                 type: 'SYNC_ANSWER'
             });
         }
+    },
+    addAnswer: (valueGuid: string, answer: string, questionGuid: string): AppThunkAction<KnownAction> => (dispatch, getState) => {
+        dispatch({
+            type: 'ADD_ANSWER',
+            questionGuid: questionGuid,
+            guid: valueGuid,
+            answer: answer
+        });
+    },
+    addParpair: (valueGuid: string, value: string, parameterGuid: string): AppThunkAction<KnownAction | AddPairAction> => (dispatch, getState) => {
+        dispatch({
+            type: 'ADD_PARPAIR',
+            parameterGuid: parameterGuid,
+            guid: Guid.MakeNew(),
+            value: value
+        });
     }
+
 };
 
 

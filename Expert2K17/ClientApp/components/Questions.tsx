@@ -19,7 +19,7 @@ type CreateAttribute =
     &
     typeof Store.actionCreators;
 
-class TestCreaterSubject extends React.Component<CreateAttribute, {}>{
+class TestCreaterQuestions extends React.Component<CreateAttribute, {}>{
     constructor() {
         super();
     }
@@ -54,15 +54,12 @@ type QuestionPropsType =
 
 
 
-
-
-
-
 interface AdditionalPairs {
     pairs: Interf.ParameterPair[];
     question: Interf.Question;
     index: number;
     answer: Interf.Answer;
+    questionGuid: string;
 }
 
 type SubjecterAttribute =
@@ -93,7 +90,7 @@ class Answers extends React.Component<SubjecterAttribute, {}> {
 
     makeOptions = () => {
         return this.props.pairs.filter((e) => {
-            if (e.parameterGuid == this.props.parameter.guid) { return true }
+            if (e.parameterGuid == this.props.question.parameter_guid) { return true }
             else { return false }
         }).map((e) => {
             return {
@@ -104,17 +101,33 @@ class Answers extends React.Component<SubjecterAttribute, {}> {
     }
     onVChange = (item: any) => {
         if (!!item && !!item.newOption as any) {
-            this.props.added(item.value, this.props.parameter.guid, this.props.index);
+            this.props.addParpair(item.value, this.props.question.parameter_guid);
+            if (this.props.index > -1) {
+                this.props.syncAnswer(this.props.index, this.props.question.guid, this.props.answer.value, this.props.answer.answer, item.value);
+                return;
+            }
+            this.props.addParpair(item.value, this.props.question.parameter_guid);
             return;
         }
-        if (!!item) {
-            this.props.selected(item.value, this.props.parameter.guid, this.props.index);
+        if (!!item && this.props.index > -1) {
+            this.props.syncAnswer(this.props.index, this.props.question.guid, this.props.answer.value, this.props.answer.answer, item.value);
             return;
         }
     }
 
     onTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        this.props.texted(e.target.value, this.props.index);
+        if (this.props.index != -1) {
+            let valer = this.props.pairs.find((e) => {
+                if (e.guid == this.props.answer.value) {
+                    return true;
+                }
+            }).value + '';
+
+            this.props.syncAnswer(this.props.index, this.props.question.guid, this.props.answer.value, e.target.value, valer);
+        } else {
+            this.props.addAnswer(this.props.answer.value, e.target.value, this.props.question.guid);
+        }
+
     }
     defaultValue = () => {
         if (this.props.pairs.length > 0) {
@@ -238,25 +251,23 @@ interface NeededPropsAnswers{
     questionGuid: string;
 }
 
-function getParameterProps(store: ApplicationState, props: NeededPropsAnswers) {
-    let answer = store.combinedSystem.questions.filter((e) => {
+function getAnswerProps(store: ApplicationState, props: NeededPropsAnswers) {
+
+    let answer = store.combinedSystem.questions.find((e) => {
         if (e.guid == props.questionGuid) {
             return true;
         }
-        return false;
 
-    })[0].answers.filter((e, ind) => {
+    }).answers.find((e, ind) => {
         if (ind == props.index) {
             return true;
         } 
-        return false;
         })
-    let question = store.combinedSystem.questions.filter((e) => {
+    let question = store.combinedSystem.questions.find((e) => {
         if (e.guid == props.questionGuid) {
             return true;
         }
-        return false;
-    })[0];
+    });
     let values = store.combinedSystem.parpairs.filter((e) => {
         if (e.parameterGuid == question.parameter_guid) {
             return true;
@@ -264,10 +275,16 @@ function getParameterProps(store: ApplicationState, props: NeededPropsAnswers) {
         return false;
 
     })
-    return { answer: answer[0], question: question, pairs: values };
+
+    if (props.index == -1) {
+        return { answer: {value: '', answer: ''}, question: question, pairs: values };
+
+    }
+
+    return { answer: answer, question: question, pairs: values };
 
 
 }
 
 let ConnectedNewQuestion = connect(() => ({}), Store.actionCreators)(NewQuestion)
-let ConnectedAnswer = connect(getParameterProps, Store.actionCreators)(Answers)
+let ConnectedAnswer = connect(getAnswerProps, Store.actionCreators)(Answers)
