@@ -101,7 +101,6 @@ class Answers extends React.Component<SubjecterAttribute, {}> {
     }
     onVChange = (item: any) => {
         if (!!item && !!item.newOption as any) {
-            this.props.addParpair(item.value, this.props.question.parameter_guid);
             if (this.props.index > -1) {
                 this.props.syncAnswer(this.props.index, this.props.question.guid, this.props.answer.value, this.props.answer.answer, item.value);
                 return;

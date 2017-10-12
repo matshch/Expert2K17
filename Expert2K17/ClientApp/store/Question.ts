@@ -108,7 +108,7 @@ export const actionCreators = {
             answer: answer
         });
     },
-    addParpair: (valueGuid: string, value: string, parameterGuid: string): AppThunkAction<KnownAction | AddPairAction> => (dispatch, getState) => {
+    addParpair: (value: string, parameterGuid: string): AppThunkAction<KnownAction | AddPairAction> => (dispatch, getState) => {
         dispatch({
             type: 'ADD_PARPAIR',
             parameterGuid: parameterGuid,
