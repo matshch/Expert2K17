@@ -24,8 +24,9 @@ function renderApp(hydrate = false) {
 
     var renderer = ReactDOM.render;
     if (hydrate) {
-        // TODO: remove "as any" when hydrate will be in type
-        renderer = (ReactDOM as any).hydrate;
+        //TODO: React 16
+        //renderer = (ReactDOM as any).hydrate;
+        renderer = ReactDOM.render;
     }
     renderer(
         <AppContainer>
