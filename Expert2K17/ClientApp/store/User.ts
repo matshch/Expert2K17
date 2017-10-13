@@ -64,14 +64,12 @@ export const actionCreators = {
             .then(response => response.json() as Promise<ImageResponse>).then(data => {
                 dispatch({ type: 'SET_PROFILE_COVER', data: data });
             });
-        addTask(fetchTask);
     },
     SetUserpic: (picture: FormData): AppThunkAction<KnownActions> => (dispatch, getState) => {
         let fetchTask = fetch("/api/profile/setUserpic", { credentials: 'same-origin', method: "POST", body: picture })
             .then(response => response.json() as Promise<ImageResponse>).then(data => {
                 dispatch({ type: 'SET_PROFILE_USERPIC', data: data });
             });
-        addTask(fetchTask);
     }
 };
 
