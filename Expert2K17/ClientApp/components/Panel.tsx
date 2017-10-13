@@ -3,10 +3,11 @@ import { RouteComponentProps } from "react-router-dom";
 import { connect } from "react-redux";
 import { ApplicationState } from "../store";
 import * as PanelStore from "../store/Panel";
+import * as DataGrid from 'react-data-grid';
 import * as RegisterStore from "../store/Register";
 import * as Spinner from "react-spinkit";
-import { Link, Redirect } from "react-router-dom";
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Badge, Row, Col, ListGroup, Card, CardBlock } from "reactstrap";
+import { Link, NavLink, Redirect, Route } from "react-router-dom";
+import { Nav, NavItem, NavDropdown, DropdownItem, DropdownToggle, DropdownMenu, Button, Modal, ModalHeader, ModalBody, ModalFooter, Badge, Row, Col, ListGroup, Card, CardBlock } from "reactstrap";
 import DocumentTitle from "react-document-title";
 import * as UserStore from "../store/User";
 
@@ -41,10 +42,13 @@ export class Panel extends React.Component<PanelProps, { modal: boolean, showPic
     }
 
     render() {
+        if (this.props.location.pathname == '/panel') {
+            return <Redirect to="/panel/users" />
+        }
         if (this.props.user === null || (this.props.user === undefined && this.props.userLoading === true) || this.props.user.isAdmin === false)
             return <Redirect to="/login" />;
         return (
-            <DocumentTitle title="Профиль">
+            <DocumentTitle title="Панель управления">
                 <div>
                     <div className="flex-container">
                         <Card className="panel">
@@ -52,40 +56,14 @@ export class Panel extends React.Component<PanelProps, { modal: boolean, showPic
                                 <div className="card-title">
                                     <h3>Панель управления</h3> <h4>Добро пожаловать, {this.props.user.userName}</h4>
                                 </div>
-                                <Row>
-                                    <Col xs>
-                                        <h5>Список пользователей:</h5>
-                                        <ListGroup>
-                                            {this.props.UsersList.map(e => <PanelListItem onClick={this.toggle} text={e.userName} pic={e.userpic} />)}
-                                        </ListGroup>
-                                    </Col>
-                                    <Col xs>
-                                        <h5>Список тестов:</h5>
-                                        <ListGroup>
-                                            {this.props.TestsList.map(e => <PanelListItem onClick={this.toggle} text={e.name} pic={e.picture} />)}
-                                        </ListGroup>
-                                    </Col>
-                                    <Col xs>
-                                        <h5>Список групп:</h5>
-                                        <ListGroup>
-                                            {this.props.GroupsYearsObject.map(e => e.groups.map(g => <PanelGroupItem onClick={this.toggle} text={g} year={e.year} />))}
-                                        </ListGroup>
-                                    </Col>
-                                </Row>
+                                <Tabs />
+                                <div>
+                                    <Route path='/panel/users' component={UsersPanel} />
+                                    <Route path='/panel/tests' component={TestsPanel} />
+                                    <Route path='/panel/groups' component={GroupsPanel} />
+                                </div>
                             </CardBlock>
                         </Card>
-                    </div>
-                    <div>
-                        <Modal isOpen={this.state.modal} toggle={this.toggle}>
-                            <ModalHeader toggle={this.toggle}>{this.state.modalLabel}</ModalHeader>
-                            <ModalBody>
-                                azaz
-                        </ModalBody>
-                            <ModalFooter>
-                                <Button color="primary" onClick={this.toggle}>Do Something</Button>{' '}
-                                <Button color="secondary" onClick={this.toggle}>Cancel</Button>
-                            </ModalFooter>
-                        </Modal>
                     </div>
                 </div>
             </DocumentTitle>
@@ -93,25 +71,107 @@ export class Panel extends React.Component<PanelProps, { modal: boolean, showPic
     }
 }
 
-class PanelListItem extends React.Component<{ text: string, pic: string, onClick: any }, {}> {
-    render() {
-        return (
-            <Button onClick={this.props.onClick} className="list-group-item">
-                <img className="listItemImg" src={this.props.pic} />
-                {this.props.text}
-                <i className="fa fa-trash-o" aria-hidden="true" />
-            </Button>
-        );
+export class UsersPanel extends React.Component<{}, { rows: any[], columns: any[] }> {
+    constructor() {
+        super();
+        this.state = {
+            columns: [{ key: 'id', name: 'ID' },
+            { key: 'userName', name: 'Имя пользователя' },
+            { key: 'surname', name: 'Фамилия' },
+            { key: 'name', name: 'Имя' },
+            { key: 'patronymic', name: 'Отчество' },
+            { key: 'group', name: 'Группа' },
+            { key: 'year', name: 'Год' }],
+            rows: []
+        }
+    }
+    public render() {
+        return (<div><Table rows={this.state.rows} columns={this.state.columns} /></div>);
     }
 }
 
-class PanelGroupItem extends React.Component<{ text: string, year: string, onClick: any }, {}> {
+export class TestsPanel extends React.Component<{}, { rows: any[], columns: any[] }> {
+    constructor() {
+        super();
+        this.state = {
+            columns: [{ key: 'id', name: 'ID' },
+            { key: 'name', name: 'Название' },
+            { key: 'description', name: 'Описание' },
+            { key: 'username', name: 'Имя пользователя' }],
+            rows: []
+        }
+    }
+    public render() {
+        return (<div><Table rows={this.state.rows} columns={this.state.columns} /></div>);
+    }
+}
+
+export class GroupsPanel extends React.Component<{}, { rows: any[], columns: any[] }> {
+    constructor() {
+        super();
+        this.state = {
+            columns: [{ key: 'id', name: 'ID' },
+            { key: 'group', name: 'Группа' },
+            { key: 'year', name: 'Год' }],
+            rows: []
+        }
+    }
+    public render() {
+        return (<div><Table rows={this.state.rows} columns={this.state.columns} /></div>);
+    }
+}
+
+
+class Table extends React.Component<{ rows: any[], columns: any[] }, {}>{
+    constructor() {
+        super();
+    }
+
+    rowGetter = (i: number) => {
+        return this.props.rows[i];
+    }
+
     render() {
         return (
-            <Button onClick={this.props.onClick} className="list-group-item">
-                {this.props.text}<Badge pill>{this.props.year}</Badge>
-                <i className="fa fa-trash-o" aria-hidden="true" />
-            </Button>
+            <DataGrid
+                columns={this.props.columns}
+                rowGetter={this.rowGetter}
+                rowsCount={this.props.rows.length}
+                minHeight={500} />);
+    }
+}
+
+export class Tabs extends React.Component<{}, { dropdownOpen: boolean }> {
+    constructor() {
+        super();
+
+        this.toggle = this.toggle.bind(this);
+        this.state = {
+            dropdownOpen: false
+        };
+    }
+
+    toggle() {
+        this.setState({
+            dropdownOpen: !this.state.dropdownOpen
+        });
+    }
+
+    render() {
+        return (
+            <div>
+                <Nav pills>
+                    <NavItem>
+                        <NavLink to="/panel/users" className='nav-link' activeClassName='active'>Пользователи</NavLink>
+                    </NavItem>
+                    <NavItem>
+                        <NavLink to="/panel/tests" className='nav-link' activeClassName='active'>Тесты</NavLink>
+                    </NavItem>
+                    <NavItem>
+                        <NavLink to="/panel/groups" className='nav-link' activeClassName='active'>Группы</NavLink>
+                    </NavItem>
+                </Nav>
+            </div>
         );
     }
 }

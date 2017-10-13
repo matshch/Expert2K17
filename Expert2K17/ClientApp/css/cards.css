@@ -46,14 +46,21 @@
     box-shadow: 0 2px 15px rgba(0, 0, 0, .3);
 }
 
+.panel .card {
+    box-shadow: none !important;
+}
 
-.home .card
+.home .card {
+    max-width: 302px;
+}
+
+.home .card,
+.panel .card
 {
     position: relative;
 
     display: inline-flex;
 
-    max-width: 302px;
     height: 100%;
 
     -webkit-transition: all .6s cubic-bezier(.165, .84, .44, 1);
@@ -63,7 +70,8 @@
     border-radius: 5px;
 }
 
-.home .card:after
+.home .card:after,
+.panel .card:after
 {
     position: absolute;
     z-index: -1;
@@ -82,13 +90,15 @@
     box-shadow: 0 5px 15px rgba(0, 0, 0, .3);
 }
 
-.home .card:hover
+.home .card:hover,
+.panel .card:hover
 {
     -webkit-transform: scale(1.05, 1.05);
             transform: scale(1.05, 1.05);
 }
 
-.home .card:hover::after
+.home .card:hover::after,
+.panel .card:hover::after
 {
     opacity: 1;
 }
