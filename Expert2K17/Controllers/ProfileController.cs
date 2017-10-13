@@ -62,12 +62,12 @@ namespace Expert2K17.Controllers
                 {
                     await system.Picture.CopyToAsync(stream);
                 }
-                path += "?d=" + DateTimeOffset.Now.ToUnixTimeMilliseconds();
-                var oldPath = user.Cover;
+                var oldPath = user.Cover.Split("?").First();
                 if (oldPath != path && !oldPath.StartsWith("/default/"))
                 {
-                    System.IO.File.Delete(_hostingEnvironment.WebRootPath + oldPath.Split("?").First());
+                    System.IO.File.Delete(_hostingEnvironment.WebRootPath + oldPath);
                 }
+                path += "?d=" + DateTimeOffset.Now.ToUnixTimeMilliseconds();
                 user.Cover = path;
             }
 
@@ -114,12 +114,12 @@ namespace Expert2K17.Controllers
                 {
                     await system.Picture.CopyToAsync(stream);
                 }
-                path += "?d=" + DateTimeOffset.Now.ToUnixTimeMilliseconds();
-                var oldPath = user.Userpic;
+                var oldPath = user.Userpic.Split("?").First();
                 if (oldPath != path && !oldPath.StartsWith("/default/"))
                 {
-                    System.IO.File.Delete(_hostingEnvironment.WebRootPath + oldPath.Split("?").First());
+                    System.IO.File.Delete(_hostingEnvironment.WebRootPath + oldPath);
                 }
+                path += "?d=" + DateTimeOffset.Now.ToUnixTimeMilliseconds();
                 user.Userpic = path;
             }
             
