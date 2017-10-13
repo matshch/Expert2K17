@@ -15,18 +15,18 @@ interface AddPairAction {
     type: 'ADD_PARPAIR';
     parameterGuid: string;
     value: string;
-    questionGuid: string;
+    guid: string;
 }
 interface UnPairAction {
     type: 'UN_PARPAIR';
-    questionGuid: string;
+    guid: string;
 }
 
 interface SetPairAction {
-    type: 'SET_PARPAIR';
+    type: 'SYNC_PARPAIR';
     parameterGuid: string;
     value: string;
-    questionGuid: string;
+    guid: string;
 }
 // Declare a 'discriminated union' type. This guarantees that all references to 'type' properties contain one of the
 // declared type strings (and not any other arbitrary string).
@@ -45,7 +45,7 @@ export const reducer: Reducer<ParameterPair[]> = (state: ParameterPair[], action
     switch (action.type) {
         case "UN_PARPAIR":
             return state.map((e, ind) => {
-                if (e.questionGuid == action.questionGuid) {
+                if (e.guid== action.guid) {
                     return {
                         ...e,
                         questionGuid: ''
@@ -56,11 +56,11 @@ export const reducer: Reducer<ParameterPair[]> = (state: ParameterPair[], action
 
             });
         case "ADD_PARPAIR":
-            return [...state, { parameterGuid: action.parameterGuid, questionGuid: action.questionGuid, value: action.value }];
-        case "SET_PARPAIR":
+            return [...state, { parameterGuid: action.parameterGuid, guid: action.guid, value: action.value }];
+        case "SYNC_PARPAIR":
             return state.map((e) => {
-                if (e.parameterGuid == action.parameterGuid && e.value == action.value) {
-                    return { ...e, questionGuid: action.questionGuid }
+                if (e.guid == action.guid) {
+                    return { ...e, value: action.value }
                 }
                 return e
             });

@@ -54,11 +54,11 @@ export interface ParameterPair {
     //[guid: string]: string;//Attribute -> value
     parameterGuid: string;
     value: string;
-    questionGuid: string;
+    guid: string;
 }
 export interface Answer {
     answer: string;
-    value: string;
+    value: string; //value guid
 }
 
 enum Operation {

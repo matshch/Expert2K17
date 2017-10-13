@@ -19,7 +19,7 @@ type CreateAttribute =
     &
     typeof Store.actionCreators;
 
-class TestCreaterSubject extends React.Component<CreateAttribute, {}>{
+class TestCreaterQuestions extends React.Component<CreateAttribute, {}>{
     constructor() {
         super();
     }
@@ -54,28 +54,18 @@ type QuestionPropsType =
 
 
 
-
-
-
-
 interface AdditionalPairs {
     pairs: Interf.ParameterPair[];
-    parameter: Interf.Parameter;
     question: Interf.Question;
     index: number;
-    text: string;
+    answer: Interf.Answer;
+    questionGuid: string;
 }
 
-
-interface STACallbacks {
-    added: (value: string, attrGuid: string, index: number) => void;
-    selected: (value: string, attrGuid: string, index: number) => void;
-    texted: (answer: string, index: number) => void;
-}
 type SubjecterAttribute =
     AdditionalPairs
     &
-    STACallbacks;
+    typeof Store.actionCreators;
 
 
 
@@ -92,7 +82,7 @@ function findSubjectGuid(subj: string, arr: string[]) {
     return false
 }
 
-class Answeres extends React.Component<SubjecterAttribute, {}> {
+class Answers extends React.Component<SubjecterAttribute, {}> {
     constructor() {
         super();
 
@@ -100,7 +90,7 @@ class Answeres extends React.Component<SubjecterAttribute, {}> {
 
     makeOptions = () => {
         return this.props.pairs.filter((e) => {
-            if (e.parameterGuid == this.props.parameter.guid) { return true }
+            if (e.parameterGuid == this.props.question.parameter_guid) { return true }
             else { return false }
         }).map((e) => {
             return {
@@ -111,22 +101,37 @@ class Answeres extends React.Component<SubjecterAttribute, {}> {
     }
     onVChange = (item: any) => {
         if (!!item && !!item.newOption as any) {
-            this.props.added(item.value, this.props.parameter.guid, this.props.index);
+            if (this.props.index > -1) {
+                this.props.syncAnswer(this.props.index, this.props.question.guid, this.props.answer.value, this.props.answer.answer, item.value);
+                return;
+            }
+            this.props.addParpair(item.value, this.props.question.parameter_guid);
             return;
         }
-        if (!!item) {
-            this.props.selected(item.value, this.props.parameter.guid, this.props.index);
+        if (!!item && this.props.index > -1) {
+            this.props.syncAnswer(this.props.index, this.props.question.guid, this.props.answer.value, this.props.answer.answer, item.value);
             return;
         }
     }
 
     onTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        this.props.texted(e.target.value, this.props.index);
+        if (this.props.index != -1) {
+            let valer = this.props.pairs.find((e) => {
+                if (e.guid == this.props.answer.value) {
+                    return true;
+                }
+            }).value + '';
+
+            this.props.syncAnswer(this.props.index, this.props.question.guid, this.props.answer.value, e.target.value, valer);
+        } else {
+            this.props.addAnswer(this.props.answer.value, e.target.value, this.props.question.guid);
+        }
+
     }
     defaultValue = () => {
         if (this.props.pairs.length > 0) {
             let neededValue = this.props.pairs.findIndex((e: Interf.ParameterPair) => {
-                if (e.parameterGuid == this.props.parameter.guid) {
+                if (e.guid == this.props.answer.value) {
                     return true
                 }
                 return false;
@@ -150,7 +155,7 @@ class Answeres extends React.Component<SubjecterAttribute, {}> {
                         <label>Вопрос</label>
                     </Col>
                     <Col lg={8}>
-                        <Input type="textarea" value={this.props.text} onChange={this.onTextChange} />
+                        <Input type="textarea" value={this.props.answer.answer} onChange={this.onTextChange} />
                     </Col>
                 </Row>
                 <Row>
@@ -240,5 +245,45 @@ class NewQuestion extends React.Component<typeof Store.actionCreators, Interf.Qu
 }
 
 
+interface NeededPropsAnswers{
+    index: number;
+    questionGuid: string;
+}
+
+function getAnswerProps(store: ApplicationState, props: NeededPropsAnswers) {
+
+    let answer = store.combinedSystem.questions.find((e) => {
+        if (e.guid == props.questionGuid) {
+            return true;
+        }
+
+    }).answers.find((e, ind) => {
+        if (ind == props.index) {
+            return true;
+        } 
+        })
+    let question = store.combinedSystem.questions.find((e) => {
+        if (e.guid == props.questionGuid) {
+            return true;
+        }
+    });
+    let values = store.combinedSystem.parpairs.filter((e) => {
+        if (e.parameterGuid == question.parameter_guid) {
+            return true;
+        }
+        return false;
+
+    })
+
+    if (props.index == -1) {
+        return { answer: {value: '', answer: ''}, question: question, pairs: values };
+
+    }
+
+    return { answer: answer, question: question, pairs: values };
+
+
+}
 
 let ConnectedNewQuestion = connect(() => ({}), Store.actionCreators)(NewQuestion)
+let ConnectedAnswer = connect(getAnswerProps, Store.actionCreators)(Answers)
