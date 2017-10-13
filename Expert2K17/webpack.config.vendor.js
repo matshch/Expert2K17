@@ -14,6 +14,7 @@ module.exports = (env) => {
         resolve: { extensions: [ '.js' ] },
         entry: {
             vendor: [
+                '@devexpress/dx-react-grid-material-ui',
                 'bootstrap/dist/css/bootstrap.css',
                 'domain-task',
                 'event-source-polyfill',
@@ -89,7 +90,7 @@ module.exports = (env) => {
         },
         module: {
             rules: [
-            	{ test: /\.css(\?|$)/, use: isDevBuild ? 'css-loader' : 'css-loader?minimize' },
+                { test: /\.css(\?|$)/, use: isDevBuild ? 'css-loader' : 'css-loader?minimize' },
                 { test: fileExt, use: 
                     {
                         loader: "file-loader",
