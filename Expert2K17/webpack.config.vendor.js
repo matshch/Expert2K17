@@ -7,7 +7,7 @@ module.exports = (env) => {
     const isDevBuild = !(env && env.prod);
     const extractCSS = new ExtractTextPlugin('vendor.css');
 
-    const fileExt = /\.(png|woff|woff2|eot|ttf|svg)(\?|$)/;
+    const fileExt = /\.(png|jpg|jpeg|gif|woff|woff2|eot|ttf|svg)(\?|$)/;
 
     const sharedConfig = {
         stats: { modules: false },

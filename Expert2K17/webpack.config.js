@@ -8,7 +8,7 @@ module.exports = (env) => {
     const isDevBuild = !(env && env.prod);
     const extractCSS = new ExtractTextPlugin('site.css');
 
-    const fileExt = /\.(png|jpg|jpeg|gif|woff|woff2|eot|ttf|svg)$/;
+    const fileExt = /\.(png|jpg|jpeg|gif|woff|woff2|eot|ttf|svg)(\?|$)/;
 
     // Configuration in common to both client-side and server-side bundles
     const sharedConfig = () => ({
