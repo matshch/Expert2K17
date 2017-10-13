@@ -76,7 +76,7 @@ export const actionCreators = {
 export const reducer: Reducer<UserState> = (state: UserState, action: KnownActions) => {
     switch (action.type) {
         case 'SET_USER':
-            return { user: action.data, ...state, userLoading: false };
+            return { ...state, user: action.data, userLoading: false };
         case 'SET_PROFILE_COVER':
             return {
                 ...state, user: { ...state.user, cover: action.data.picture },
