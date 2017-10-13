@@ -3,9 +3,6 @@
   "private": true,
   "version": "0.0.0",
   "dependencies": {
-    "@devexpress/dx-react-core": "^1.0.0-alpha.11",
-    "@devexpress/dx-react-grid": "^1.0.0-alpha.11",
-    "@devexpress/dx-react-grid-material-ui": "^1.0.0-alpha.11",
     "@types/history": "^4.6.0",
     "@types/node-fetch": "^1.6.7",
     "@types/react": "^15.6.4",
@@ -35,8 +32,6 @@
     "file-loader": "^0.11.2",
     "font-awesome": "^4.7.0",
     "history": "^4.7.2",
-    "material-ui": "^1.0.0-beta.13",
-    "material-ui-icons": "^1.0.0-beta.10",
     "node-noop": "^1.0.0",
     "popper.js": "^1.12.5",
     "react": "^15.6.2",
