@@ -30,7 +30,6 @@ export default createServerRenderer(params => {
         );
         renderToString(app);
 
-        console.log(routerContext.url);
         // If there's a redirection, just send this information back to the host application
         if (routerContext.url) {
             resolve({ redirectUrl: routerContext.url });
