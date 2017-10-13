@@ -20,6 +20,7 @@ module.exports = (env) => {
                 'font-awesome/css/font-awesome.css',
                 'history',
                 'react',
+                'react-data-grid',
                 'react-dom',
                 'react-router-dom',
                 'react-redux',
