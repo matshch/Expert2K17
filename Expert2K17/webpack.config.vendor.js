@@ -25,9 +25,12 @@ module.exports = (env) => {
                 'react-redux',
                 'react-selectize',
                 'react-selectize/dist/index.css',
+                'react-slick',
                 'redux',
                 'redux-thunk',
-                'react-router-redux'
+                'react-router-redux',
+                'slick-carousel/slick/slick.css',
+                'slick-carousel/slick/slick-theme.css'
             ],
         },
         output: {
