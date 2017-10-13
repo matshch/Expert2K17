@@ -65,7 +65,13 @@ module.exports = (env) => {
                 path: path.join(__dirname, 'wwwroot', 'dist', '[name]-manifest.json'),
                 name: '[name]_[hash]'
             })
-        ].concat(isDevBuild ? [] : [
+        ].concat(isDevBuild ? [
+            // Plugins that apply in development builds only
+            new webpack.SourceMapDevToolPlugin({
+                filename: '[file].map', // Remove this line if you prefer inline source maps
+                moduleFilenameTemplate: path.relative('./wwwroot/dist', '[resourcePath]') // Point sourcemap entries to the original file locations on disk
+            })
+        ] : [
             new webpack.optimize.UglifyJsPlugin()
         ])
     });
