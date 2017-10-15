@@ -44,14 +44,11 @@ export const unloadedState: ParameterPair[] = [];
 export const reducer: Reducer<ParameterPair[]> = (state: ParameterPair[], action: KnownAction) => {
     switch (action.type) {
         case "UN_PARPAIR":
-            return state.map((e, ind) => {
+            return state.filter((e, ind) => {
                 if (e.guid== action.guid) {
-                    return {
-                        ...e,
-                        questionGuid: ''
-                    }
+                    return false;
                 } else {
-                    return e
+                    return true
                 }
 
             });
