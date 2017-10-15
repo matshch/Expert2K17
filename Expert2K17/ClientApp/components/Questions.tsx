@@ -13,9 +13,7 @@ import * as Interf from '../store/TestInterfaces';
 import * as ComboBox from 'react-selectize';
 
 type CreateAttribute =
-    Interf.KSubject
-    &
-    Interf.KSystem
+    Interf.KQuestion
     &
     typeof Store.actionCreators;
 
@@ -27,7 +25,7 @@ class TestCreaterQuestions extends React.Component<CreateAttribute, {}>{
     render() {
         return <Container fluid>
             {(() => {
-                return this.props.subjects.map((val, key) => {
+                return this.props.questions.map((val, key) => {
                 })
 
             })()}
@@ -55,6 +53,11 @@ class Question extends React.Component<QuestionProps, {}>{
         super();
     }
     name_change = (e: React.ChangeEvent<HTMLInputElement>) => {
+        this.props.syncQuestion({
+            ...this.props.question,
+            question: e.target.value
+        })
+
     }
     unitChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     }
@@ -73,14 +76,21 @@ class Question extends React.Component<QuestionProps, {}>{
     }
 
     makeOptions = () => {
+        return this.props.parameters.map((e) => {
+            return {
+                label: e.name,
+                value: e.guid
+            }
 
+        })
     }
 
-    onVChange = () => { }
-    /*
-    options={this.makeOptions()}
-                                defaultValue={this.defaultValue()}
-                                onValueChange={this.onVChange} */
+    onVChange = (item: any) => {
+        if (!!item && this.props.index > -1) {
+            this.props.changeParameter(this.props.question.guid, item.value);
+            return;
+        }
+    }
     render() {
         return <Card className="createSideBar">
             <CardBlock>
@@ -88,7 +98,7 @@ class Question extends React.Component<QuestionProps, {}>{
                     <FormGroup row>
                         <Label for="texter" sm={3}>Формулировка вопроса</Label>
                         <Col sm={9}>
-                            <Input type="text" name="text" id="texter" value={this.props.question.question} placeholder="Вопрос"></Input>
+                            <Input type="text" name="text" id="texter" value={this.props.question.question} onChange={this.name_change} placeholder="Вопрос"></Input>
                         </Col>
                     </FormGroup>
                     <FormGroup row>
@@ -101,6 +111,9 @@ class Question extends React.Component<QuestionProps, {}>{
                         <Label for="chb2" sm={3}>Параметр</Label>
                         <Col sm={9}>
                             <ComboBox.SimpleSelect 
+                                options={this.makeOptions()}
+                                defaultValue={this.defaultValue()}
+                                onValueChange={this.onVChange} 
                                 placeholder="Выберите параметр"></ComboBox.SimpleSelect>
                         </Col>
                     </FormGroup>
@@ -375,3 +388,22 @@ function getAnswerProps(store: ApplicationState, props: NeededPropsAnswers) {
 
 let ConnectedNewQuestion = connect(() => ({}), Store.actionCreators)(NewQuestion)
 let ConnectedAnswer = connect(getAnswerProps, Store.actionCreators)(Answers)
+
+
+interface NeededPropsQuestion {
+    index: number;
+}
+
+
+function getQuestionProps(store: ApplicationState, props: NeededPropsQuestion) {
+    let question = store.combinedSystem.questions.find((e, ind) => {
+        if (ind == props.index) {
+            return true;
+        }
+    });
+
+    return { question: question, parameters: store.combinedSystem.parameters };
+
+
+}
+let ConnectedQuestion = connect(getQuestionProps, Store.actionCreators)(Question)

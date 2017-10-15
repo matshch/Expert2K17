@@ -42,9 +42,14 @@ interface AddPairAction {
     value: string;
     guid: string;
 }
+interface ChangeParameterAction {
+    type: 'CHANGE_PARAMETER';
+    parameterGuid: string;
+    questionGuid: string;
+}
 // Declare a 'discriminated union' type. This guarantees that all references to 'type' properties contain one of the
 // declared type strings (and not any other arbitrary string).
-type KnownAction = SyncQuestionAction | AddQuestionAction | AddAnswerAction | SyncAnswerAction;
+type KnownAction = SyncQuestionAction | AddQuestionAction | AddAnswerAction | SyncAnswerAction | ChangeParameterAction;
 // ----------------
 // REDUCER - For a given state and action, returns the new state. To support time travel, this must not mutate the old state.
 
@@ -115,6 +120,13 @@ export const actionCreators = {
             guid: Guid.MakeNew(),
             value: value
         });
+    },
+    changeParameter: (questionGuid: string, parameterGuid: string): AppThunkAction<KnownAction> => (dispatch, getState) => {
+        dispatch({
+            type: 'CHANGE_PARAMETER',
+            parameterGuid: parameterGuid,
+            questionGuid: questionGuid
+        });
     }
 
 };
@@ -165,6 +177,16 @@ export const reducer: Reducer<Question[]> = (state: Question[], action: KnownAct
                 }
                 return e
             });
+        case "CHANGE_PARAMETER":
+            return state.map((e) => {
+                if (e.guid == action.questionGuid) {
+                    return {
+                        ...e,
+                        parameter_guid: action.parameterGuid
+                    }
+                }
+                return e
+            })
         default:
             // The following line guarantees that every action in the KnownAction union has been covered by a case above
             const exhaustiveCheck: never = action;
