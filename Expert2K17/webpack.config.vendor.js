@@ -14,10 +14,7 @@ module.exports = (env) => {
         resolve: { extensions: [ '.js' ] },
         entry: {
             vendor: [
-                'bootstrap/dist/css/bootstrap.css',
                 'domain-task',
-                'event-source-polyfill',
-                'font-awesome/css/font-awesome.css',
                 'history',
                 'react',
                 'react-data-grid',
@@ -25,13 +22,10 @@ module.exports = (env) => {
                 'react-router-dom',
                 'react-redux',
                 'react-selectize',
-                'react-selectize/dist/index.css',
                 'react-slick',
                 'redux',
                 'redux-thunk',
                 'react-router-redux',
-                'slick-carousel/slick/slick.css',
-                'slick-carousel/slick/slick-theme.css'
             ],
         },
         output: {
@@ -62,6 +56,15 @@ module.exports = (env) => {
                     }
                 }
             ]
+        },
+        entry: {
+            vendor: [
+                'bootstrap/dist/css/bootstrap.css',
+                'font-awesome/css/font-awesome.css',
+                'react-selectize/dist/index.css',
+                'slick-carousel/slick/slick.css',
+                'slick-carousel/slick/slick-theme.css'
+            ].concat(isDevBuild ? ['event-source-polyfill'] : [])
         },
         plugins: [
             extractCSS,
@@ -100,7 +103,12 @@ module.exports = (env) => {
                 }
             ]
         },
-        entry: { vendor: ['aspnet-prerendering', 'react-dom/server'] },
+        entry: {
+            vendor: [
+                'aspnet-prerendering',
+                'react-dom/server'
+            ]
+        },
         plugins: [
             new webpack.DllPlugin({
                 path: path.join(__dirname, 'ClientApp', 'dist', '[name]-manifest.json'),
