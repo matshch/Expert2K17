@@ -105,6 +105,9 @@ module.exports = (env) => {
             new webpack.DllPlugin({
                 path: path.join(__dirname, 'ClientApp', 'dist', '[name]-manifest.json'),
                 name: '[name]_[hash]'
+            }),
+            new webpack.ProvidePlugin({
+                'self.navigator.userAgent': 'empty-string'
             })
         ]
     });
