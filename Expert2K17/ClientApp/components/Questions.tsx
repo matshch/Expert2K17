@@ -37,6 +37,94 @@ class TestCreaterQuestions extends React.Component<CreateAttribute, {}>{
 }
 
 
+interface PArameterAdditionalProps {
+    index: number;
+    question: Interf.Question;
+    parameters: Interf.Parameter[];
+}
+
+
+
+type QuestionProps =
+    PArameterAdditionalProps
+    &
+    typeof Store.actionCreators;
+
+class Question extends React.Component<QuestionProps, {}>{
+    constructor() {
+        super();
+    }
+    name_change = (e: React.ChangeEvent<HTMLInputElement>) => {
+    }
+    unitChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    }
+
+    defaultValue = () => {
+        let guid = this.props.question.parameter_guid
+        let name = this.props.parameters.find((e) => {
+            if (e.guid == guid) {
+                return true;
+            }
+        }).name
+        return {
+            label: name,
+            value: name
+        }
+    }
+
+    makeOptions = () => {
+
+    }
+
+    onVChange = () => { }
+    /*
+    options={this.makeOptions()}
+                                defaultValue={this.defaultValue()}
+                                onValueChange={this.onVChange} */
+    render() {
+        return <Card className="createSideBar">
+            <CardBlock>
+                <Form>
+                    <FormGroup row>
+                        <Label for="texter" sm={3}>Формулировка вопроса</Label>
+                        <Col sm={9}>
+                            <Input type="text" name="text" id="texter" value={this.props.question.question} placeholder="Вопрос"></Input>
+                        </Col>
+                    </FormGroup>
+                    <FormGroup row>
+                        <Label for="chb0" sm={3}>Тип ответа</Label>
+                        <Col sm={9}>
+                            
+                        </Col>
+                    </FormGroup>
+                    <FormGroup row>
+                        <Label for="chb2" sm={3}>Параметр</Label>
+                        <Col sm={9}>
+                            <ComboBox.SimpleSelect 
+                                placeholder="Выберите параметр"></ComboBox.SimpleSelect>
+                        </Col>
+                    </FormGroup>
+                    {(() => {
+                        if (this.props.index != -1) {
+                            return (<div>
+                                <hr />
+                                <ListGroup>
+                                    {this.props.question.answers.map((val, key) => {
+                                        return <ConnectedAnswer index={key} questionGuid={this.props.question.guid} key={key} />
+                                    })}
+                                </ListGroup>
+                            </div>)
+                        }
+                    })()}
+
+                </Form>
+            </CardBlock>
+        </Card>
+    }
+}
+
+
+
 interface AdditionalProps {
     index: number;
     pairs: Interf.ParameterPair[];
