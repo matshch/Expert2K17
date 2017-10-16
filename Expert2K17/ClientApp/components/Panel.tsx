@@ -2,7 +2,7 @@ import * as React from "react";
 import { RouteComponentProps } from "react-router-dom";
 import { connect } from "react-redux";
 import { ApplicationState } from "../store";
-import { Toolbar } from 'react-data-grid-addons';
+import { Toolbar, Data as DGData, Filters } from 'react-data-grid-addons';
 import * as PanelStore from "../store/Panel";
 import * as DataGrid from 'react-data-grid';
 import * as RegisterStore from "../store/Register";
@@ -95,12 +95,12 @@ class UsersPanel extends React.Component<PanelUsersProps, {}> {
     }
     public render() {
         const columns = [{ key: 'id', name: 'ID', resizable: true, filterable: true },
-        { key: 'userName', name: 'Имя пользователя', resizable: true, filterable: true, sortable: true },
-        { key: 'surname', name: 'Фамилия', resizable: true, filterable: true, sortable: true },
-        { key: 'name', name: 'Имя', resizable: true, filterable: true, sortable: true },
-        { key: 'patronymic', name: 'Отчество', resizable: true, filterable: true, sortable: true },
-        { key: 'group', name: 'Группа', resizable: true, filterable: true, sortable: true },
-        { key: 'year', name: 'Год', resizable: true, filterable: true, sortable: true }];
+        { key: 'userName', name: 'Имя пользователя', resizable: true, filterable: true, sortable: true, editable: true },
+        { key: 'surname', name: 'Фамилия', resizable: true, filterable: true, sortable: true, editable: true },
+        { key: 'name', name: 'Имя', resizable: true, filterable: true, sortable: true, editable: true },
+        { key: 'patronymic', name: 'Отчество', resizable: true, filterable: true, sortable: true, editable: true },
+        { key: 'group', name: 'Группа', resizable: true, filterable: true, sortable: true, editable: true },
+        { key: 'year', name: 'Год', resizable: true, filterable: true, sortable: true, editable: true, filterRenderer: Filters.NumericFilter }];
         return (<div><Table handleGridRowsUpdated={this.handleGridRowsUpdated} rows={this.getRows()} columns={columns} /></div>);
     }
 }
@@ -130,9 +130,9 @@ class TestsPanel extends React.Component<PanelUsersProps, {}> {
     }
     public render() {
         const columns = [{ key: 'id', name: 'ID', resizable: true, filterable: true },
-        { key: 'name', name: 'Название', resizable: true, filterable: true, sortable: true },
-        { key: 'description', name: 'Описание', resizable: true, filterable: true, sortable: true },
-        { key: 'username', name: 'Имя пользователя', resizable: true, filterable: true, sortable: true }];
+        { key: 'name', name: 'Название', resizable: true, filterable: true, sortable: true, editable: true },
+        { key: 'description', name: 'Описание', resizable: true, filterable: true, sortable: true, editable: true },
+        { key: 'username', name: 'Имя пользователя', resizable: true, filterable: true, sortable: true, editable: true }];
         return (<div><Table handleGridRowsUpdated={this.handleGridRowsUpdated} rows={this.getRows()} columns={columns} /></div>);
     }
 }
@@ -162,7 +162,7 @@ class GroupsPanel extends React.Component<PanelGroupsProps, {}> {
     }
     public render() {
         const columns = [{ key: 'group', name: 'Группа', resizable: true, filterable: true, sortable: true },
-        { key: 'year', name: 'Год', resizable: true, filterable: true, sortable: true }];
+        { key: 'year', name: 'Год', resizable: true, filterable: true, sortable: true, filterRenderer: Filters.NumericFilter }];
         return (<div><Table handleGridRowsUpdated={this.handleGridRowsUpdated} rows={this.getRows()} columns={columns} /></div>);
     }
 }
@@ -172,34 +172,41 @@ const ConnectedGroupsPanel = connect(
     RegisterStore.actionCreators
 )(GroupsPanel);
 
+type TableProps = { rows: any[], columns: any[], handleGridRowsUpdated: any };
 
-class Table extends React.Component<{ rows: any[], columns: any[], handleGridRowsUpdated: any }, { filters: any, sortColumn: any, sortDirection: any }>{
-    constructor() {
-        super();
+class Table extends React.Component<TableProps, { filters: any, sortColumn: any, sortDirection: any, rows: any }>{
+    constructor(props: TableProps) {
+        super(props);
         this.state = {
+            rows: props.rows,
             filters: {},
             sortColumn: null,
             sortDirection: null
         }
     }
 
-    rowGetter = (i: number) => {
-        return this.props.rows[i];
+    componentWillReceiveProps(nextProps: TableProps) {
+        this.setState({ rows: nextProps.rows });
     }
 
-    getRows() {
-        return this.props.rows;
+    rowGetter = (rowIdx: number) => {
+        const rows = this.getRows();
+        return rows[rowIdx];
     }
 
-    getSize() {
+    getRows = () => {
+        return DGData.Selectors.getRows(this.state);
+    }
+
+    getSize = () => {
         return this.getRows().length;
     }
 
-    handleGridSort(sortColumn: any, sortDirection: any) {
+    handleGridSort = (sortColumn: any, sortDirection: any) => {
         this.setState({ sortColumn: sortColumn, sortDirection: sortDirection });
     }
 
-    handleFilterChange(filter: any) {
+    handleFilterChange = (filter: any) => {
         let newFilters = Object.assign({}, this.state.filters);
         if (filter.filterTerm) {
             newFilters[filter.column.key] = filter;
@@ -210,7 +217,7 @@ class Table extends React.Component<{ rows: any[], columns: any[], handleGridRow
         this.setState({ filters: newFilters });
     }
 
-    onClearFilters() {
+    onClearFilters = () => {
         this.setState({ filters: {} });
     }
 
@@ -221,9 +228,9 @@ class Table extends React.Component<{ rows: any[], columns: any[], handleGridRow
                 enableCellSelect={true}
                 columns={this.props.columns}
                 rowGetter={this.rowGetter}
-                rowsCount={this.props.rows.length}
+                rowsCount={this.getSize()}
                 minHeight={500}
-                toolbar={<Toolbar enableFilter={true} />}
+                toolbar={<EmptyToolbar onToggleFilter={null} />}
                 onAddFilter={this.handleFilterChange}
                 onClearFilters={this.onClearFilters}
                 onGridRowsUpdated={this.props.handleGridRowsUpdated} />);
@@ -262,6 +269,17 @@ export class Tabs extends React.Component<{}, { dropdownOpen: boolean }> {
                 </Nav>
             </div>
         );
+    }
+}
+
+class EmptyToolbar extends React.Component<{ onToggleFilter: any }, {}> {
+    componentDidMount() {
+        if (this.props.onToggleFilter !== null) {
+            this.props.onToggleFilter()
+        }
+    }
+    render() {
+        return (<div />)
     }
 }
 
