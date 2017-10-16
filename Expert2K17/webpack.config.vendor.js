@@ -18,14 +18,16 @@ module.exports = (env) => {
                 'history',
                 'react',
                 'react-data-grid',
-                'react-dom',
+                'react-document-title',
                 'react-router-dom',
                 'react-redux',
                 'react-selectize',
                 'react-slick',
+                'react-spinkit',
+                'reactstrap',
                 'redux',
                 'redux-thunk',
-                'react-router-redux',
+                'react-router-redux'
             ],
         },
         output: {
@@ -61,6 +63,8 @@ module.exports = (env) => {
             vendor: [
                 'bootstrap/dist/css/bootstrap.css',
                 'font-awesome/css/font-awesome.css',
+                'react-dom',
+                'react-hot-loader',
                 'react-selectize/dist/index.css',
                 'slick-carousel/slick/slick.css',
                 'slick-carousel/slick/slick-theme.css'
