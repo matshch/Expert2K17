@@ -2,6 +2,7 @@ import * as React from "react";
 import { RouteComponentProps } from "react-router-dom";
 import { connect } from "react-redux";
 import { ApplicationState } from "../store";
+import { Toolbar } from 'react-data-grid-addons';
 import * as PanelStore from "../store/Panel";
 import * as DataGrid from 'react-data-grid';
 import * as RegisterStore from "../store/Register";
@@ -12,13 +13,19 @@ import DocumentTitle from "react-document-title";
 import * as UserStore from "../store/User";
 
 type PanelProps =
+    UserStore.UserState
+    & typeof UserStore.actionCreators
+    & RouteComponentProps<{}>;
+
+
+type PanelUsersProps =
     PanelStore.PanelState
     & typeof PanelStore.actionCreators
-    & UserStore.UserState
-    & typeof UserStore.actionCreators
-    & RegisterStore.RegisterState
-    & typeof RegisterStore.actionCreators
     & RouteComponentProps<{}>;
+
+type PanelGroupsProps =
+    RegisterStore.RegisterState
+    & typeof RegisterStore.actionCreators
 
 export class Panel extends React.Component<PanelProps, { modal: boolean, showPictureButtons: boolean, modalLabel: string }> {
     constructor() {
@@ -36,9 +43,6 @@ export class Panel extends React.Component<PanelProps, { modal: boolean, showPic
 
     componentWillMount() {
         this.props.GetUser();
-        this.props.GetUsersList();
-        this.props.GetAdminTestsList();
-        this.props.GetGroupsYears();
     }
 
     render() {
@@ -58,9 +62,9 @@ export class Panel extends React.Component<PanelProps, { modal: boolean, showPic
                                 </div>
                                 <Tabs />
                                 <div>
-                                    <Route path='/panel/users' component={UsersPanel} />
-                                    <Route path='/panel/tests' component={TestsPanel} />
-                                    <Route path='/panel/groups' component={GroupsPanel} />
+                                    <Route path='/panel/users' component={ConnectedUsersPanel} />
+                                    <Route path='/panel/tests' component={ConnectedTestsPanel} />
+                                    <Route path='/panel/groups' component={ConnectedGroupsPanel} />
                                 </div>
                             </CardBlock>
                         </Card>
@@ -71,73 +75,158 @@ export class Panel extends React.Component<PanelProps, { modal: boolean, showPic
     }
 }
 
-export class UsersPanel extends React.Component<{}, { rows: any[], columns: any[] }> {
-    constructor() {
-        super();
-        this.state = {
-            columns: [{ key: 'id', name: 'ID' },
-            { key: 'userName', name: 'Имя пользователя' },
-            { key: 'surname', name: 'Фамилия' },
-            { key: 'name', name: 'Имя' },
-            { key: 'patronymic', name: 'Отчество' },
-            { key: 'group', name: 'Группа' },
-            { key: 'year', name: 'Год' }],
-            rows: []
+class UsersPanel extends React.Component<PanelUsersProps, {}> {
+    componentWillMount() {
+        this.props.GetUsersList();
+    }
+    getRows = () => {
+        return this.props.UsersList;
+    }
+    handleGridRowsUpdated = ({ fromRow, toRow, updated }: any) => {
+        let rows = this.getRows().slice();
+
+        for (let i = fromRow; i <= toRow; i++) {
+            let rowToUpdate = rows[i];
+            let updatedRow = { ...rowToUpdate, ...updated };
+            rows[i] = updatedRow;
         }
+        /*Отправляю дерьмо*/
+        this.props.GetUsersList();
     }
     public render() {
-        return (<div><Table rows={this.state.rows} columns={this.state.columns} /></div>);
+        const columns = [{ key: 'id', name: 'ID', resizable: true, filterable: true },
+        { key: 'userName', name: 'Имя пользователя', resizable: true, filterable: true, sortable: true },
+        { key: 'surname', name: 'Фамилия', resizable: true, filterable: true, sortable: true },
+        { key: 'name', name: 'Имя', resizable: true, filterable: true, sortable: true },
+        { key: 'patronymic', name: 'Отчество', resizable: true, filterable: true, sortable: true },
+        { key: 'group', name: 'Группа', resizable: true, filterable: true, sortable: true },
+        { key: 'year', name: 'Год', resizable: true, filterable: true, sortable: true }];
+        return (<div><Table handleGridRowsUpdated={this.handleGridRowsUpdated} rows={this.getRows()} columns={columns} /></div>);
     }
 }
 
-export class TestsPanel extends React.Component<{}, { rows: any[], columns: any[] }> {
-    constructor() {
-        super();
-        this.state = {
-            columns: [{ key: 'id', name: 'ID' },
-            { key: 'name', name: 'Название' },
-            { key: 'description', name: 'Описание' },
-            { key: 'username', name: 'Имя пользователя' }],
-            rows: []
+const ConnectedUsersPanel = connect(
+    (state: ApplicationState) => state.panel,
+    PanelStore.actionCreators
+)(UsersPanel);
+
+class TestsPanel extends React.Component<PanelUsersProps, {}> {
+    componentWillMount() {
+        this.props.GetAdminTestsList();
+    }
+    getRows = () => {
+        return this.props.TestsList.map(e => ({ ...e, username: e.user.username }));
+    }
+    handleGridRowsUpdated = ({ fromRow, toRow, updated }: any) => {
+        let rows = this.getRows().slice();
+
+        for (let i = fromRow; i <= toRow; i++) {
+            let rowToUpdate = rows[i];
+            let updatedRow = { ...rowToUpdate, ...updated };
+            rows[i] = updatedRow;
         }
+        /*Отправляю дерьмо*/
+        this.props.GetAdminTestsList();
     }
     public render() {
-        return (<div><Table rows={this.state.rows} columns={this.state.columns} /></div>);
+        const columns = [{ key: 'id', name: 'ID', resizable: true, filterable: true },
+        { key: 'name', name: 'Название', resizable: true, filterable: true, sortable: true },
+        { key: 'description', name: 'Описание', resizable: true, filterable: true, sortable: true },
+        { key: 'username', name: 'Имя пользователя', resizable: true, filterable: true, sortable: true }];
+        return (<div><Table handleGridRowsUpdated={this.handleGridRowsUpdated} rows={this.getRows()} columns={columns} /></div>);
     }
 }
 
-export class GroupsPanel extends React.Component<{}, { rows: any[], columns: any[] }> {
-    constructor() {
-        super();
-        this.state = {
-            columns: [{ key: 'id', name: 'ID' },
-            { key: 'group', name: 'Группа' },
-            { key: 'year', name: 'Год' }],
-            rows: []
+const ConnectedTestsPanel = connect(
+    (state: ApplicationState) => state.panel,
+    PanelStore.actionCreators
+)(TestsPanel);
+
+class GroupsPanel extends React.Component<PanelGroupsProps, {}> {
+    componentWillMount() {
+        this.props.GetGroupsYears();
+    }
+    getRows = () => {
+        return [].concat(...this.props.GroupsYearsObject.map(e => e.groups.map(i => ({ group: i, year: e.year }))));
+    }
+    handleGridRowsUpdated = ({ fromRow, toRow, updated }: any) => {
+        let rows = this.getRows().slice();
+
+        for (let i = fromRow; i <= toRow; i++) {
+            let rowToUpdate = rows[i];
+            let updatedRow = { ...rowToUpdate, ...updated };
+            rows[i] = updatedRow;
         }
+        /*Отправляю дерьмо*/
+        this.props.GetGroupsYears();
     }
     public render() {
-        return (<div><Table rows={this.state.rows} columns={this.state.columns} /></div>);
+        const columns = [{ key: 'group', name: 'Группа', resizable: true, filterable: true, sortable: true },
+        { key: 'year', name: 'Год', resizable: true, filterable: true, sortable: true }];
+        return (<div><Table handleGridRowsUpdated={this.handleGridRowsUpdated} rows={this.getRows()} columns={columns} /></div>);
     }
 }
 
+const ConnectedGroupsPanel = connect(
+    (state: ApplicationState) => state.register,
+    RegisterStore.actionCreators
+)(GroupsPanel);
 
-class Table extends React.Component<{ rows: any[], columns: any[] }, {}>{
+
+class Table extends React.Component<{ rows: any[], columns: any[], handleGridRowsUpdated: any }, { filters: any, sortColumn: any, sortDirection: any }>{
     constructor() {
         super();
+        this.state = {
+            filters: {},
+            sortColumn: null,
+            sortDirection: null
+        }
     }
 
     rowGetter = (i: number) => {
         return this.props.rows[i];
     }
 
+    getRows() {
+        return this.props.rows;
+    }
+
+    getSize() {
+        return this.getRows().length;
+    }
+
+    handleGridSort(sortColumn: any, sortDirection: any) {
+        this.setState({ sortColumn: sortColumn, sortDirection: sortDirection });
+    }
+
+    handleFilterChange(filter: any) {
+        let newFilters = Object.assign({}, this.state.filters);
+        if (filter.filterTerm) {
+            newFilters[filter.column.key] = filter;
+        } else {
+            delete newFilters[filter.column.key];
+        }
+
+        this.setState({ filters: newFilters });
+    }
+
+    onClearFilters() {
+        this.setState({ filters: {} });
+    }
+
     render() {
         return (
             <DataGrid
+                onGridSort={this.handleGridSort}
+                enableCellSelect={true}
                 columns={this.props.columns}
                 rowGetter={this.rowGetter}
                 rowsCount={this.props.rows.length}
-                minHeight={500} />);
+                minHeight={500}
+                toolbar={<Toolbar enableFilter={true} />}
+                onAddFilter={this.handleFilterChange}
+                onClearFilters={this.onClearFilters}
+                onGridRowsUpdated={this.props.handleGridRowsUpdated} />);
     }
 }
 
@@ -177,6 +266,6 @@ export class Tabs extends React.Component<{}, { dropdownOpen: boolean }> {
 }
 
 export default connect(
-    (state: ApplicationState) => ({ ...state.panel, ...state.user, ...state.register }),
-    { ...PanelStore.actionCreators, ...UserStore.actionCreators, ...RegisterStore.actionCreators }
+    (state: ApplicationState) => state.user,
+    UserStore.actionCreators
 )(Panel);
