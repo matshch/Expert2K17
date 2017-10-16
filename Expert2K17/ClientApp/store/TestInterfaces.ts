@@ -70,12 +70,19 @@ enum Operation {
     Substract,
     Set
 }
+
+enum ComponentCondition {
+    Question,
+    Logic
+}
+
 export interface Condition {
     left: string; // guid par/attr
     right: string; // value
     act: Operation;
-    parameter: boolean; // 0 - par -> 1 - attr
-    guid: string;   
+    parameter: boolean; // 1 - par -> 0 - attr
+    guid: string;
+    origin: ComponentCondition;
 }
 export interface KCondition {
     [guid: string]: Condition;

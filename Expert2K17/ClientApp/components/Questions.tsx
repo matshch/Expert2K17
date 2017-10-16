@@ -17,7 +17,7 @@ type CreateAttribute =
     &
     typeof Store.actionCreators;
 
-class TestCreaterQuestions extends React.Component<CreateAttribute, {}>{
+export class TestCreaterQuestions extends React.Component<CreateAttribute, {}>{
     constructor() {
         super();
     }
@@ -26,6 +26,7 @@ class TestCreaterQuestions extends React.Component<CreateAttribute, {}>{
         return <Container fluid>
             {(() => {
                 return this.props.questions.map((val, key) => {
+                    return <ConnectedQuestion index={key} key={key} />
                 })
 
             })()}
@@ -59,20 +60,25 @@ class Question extends React.Component<QuestionProps, {}>{
         })
 
     }
-    unitChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    }
 
     defaultValue = () => {
-        let guid = this.props.question.parameter_guid
-        let name = this.props.parameters.find((e) => {
-            if (e.guid == guid) {
-                return true;
+        if (this.props.parameters.length > 0) {
+            let guid = this.props.question.parameter_guid
+            let pardef = this.props.parameters.find((e) => {
+                if (e.guid == guid) {
+                    return true;
+                }
+            })
+            if (typeof pardef != 'undefined') {
+                let name = pardef.name
+                return {
+                    label: name,
+                    value: name
+                }
             }
-        }).name
-        return {
-            label: name,
-            value: name
+            return null;
         }
+        return null;
     }
 
     makeOptions = () => {
@@ -124,7 +130,9 @@ class Question extends React.Component<QuestionProps, {}>{
                                 <ListGroup>
                                     {this.props.question.answers.map((val, key) => {
                                         return <ConnectedAnswer index={key} questionGuid={this.props.question.guid} key={key} />
-                                    })}
+                                    }).concat([
+                                        <ConnectedAnswer index={-1} key={this.props.question.answers.length} questionGuid={this.props.question.guid} />
+                                    ])}
                                 </ListGroup>
                             </div>)
                         }
@@ -186,7 +194,7 @@ function findSubjectGuid(subj: string, arr: string[]) {
 class Answers extends React.Component<SubjecterAttribute, {}> {
     constructor() {
         super();
-
+        
     }
 
     makeOptions = () => {
@@ -201,18 +209,21 @@ class Answers extends React.Component<SubjecterAttribute, {}> {
         })
     }
     onVChange = (item: any) => {
-        if (!!item && !!item.newOption as any) {
-            if (this.props.index > -1) {
+        if (this.props.index > -1) {
+            if (!!item && !!item.newOption as any) {
+                if (this.props.index > -1) {
+                    this.props.syncAnswer(this.props.index, this.props.question.guid, this.props.answer.value, this.props.answer.answer, item.value);
+                    return;
+                }
+                this.props.addParpair(item.value, this.props.question.parameter_guid);
+                return;
+            }
+            if (!!item && this.props.index > -1) {
                 this.props.syncAnswer(this.props.index, this.props.question.guid, this.props.answer.value, this.props.answer.answer, item.value);
                 return;
             }
-            this.props.addParpair(item.value, this.props.question.parameter_guid);
-            return;
         }
-        if (!!item && this.props.index > -1) {
-            this.props.syncAnswer(this.props.index, this.props.question.guid, this.props.answer.value, this.props.answer.answer, item.value);
-            return;
-        }
+
     }
 
     onTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -227,7 +238,6 @@ class Answers extends React.Component<SubjecterAttribute, {}> {
         } else {
             this.props.addAnswer(this.props.answer.value, e.target.value, this.props.question.guid);
         }
-
     }
     defaultValue = () => {
         if (this.props.pairs.length > 0) {
@@ -353,16 +363,6 @@ interface NeededPropsAnswers{
 
 function getAnswerProps(store: ApplicationState, props: NeededPropsAnswers) {
 
-    let answer = store.combinedSystem.questions.find((e) => {
-        if (e.guid == props.questionGuid) {
-            return true;
-        }
-
-    }).answers.find((e, ind) => {
-        if (ind == props.index) {
-            return true;
-        } 
-        })
     let question = store.combinedSystem.questions.find((e) => {
         if (e.guid == props.questionGuid) {
             return true;
@@ -376,10 +376,25 @@ function getAnswerProps(store: ApplicationState, props: NeededPropsAnswers) {
 
     })
 
+
     if (props.index == -1) {
-        return { answer: {value: '', answer: ''}, question: question, pairs: values };
+        return { answer: { value: '', answer: '' }, question: question, pairs: values };
 
     }
+
+    let answer = store.combinedSystem.questions.find((e) => {
+        if (e.guid == props.questionGuid) {
+            return true;
+        }
+
+    }).answers.find((e, ind) => {
+        if (ind == props.index) {
+            return true;
+        } 
+        })
+
+
+
 
     return { answer: answer, question: question, pairs: values };
 
@@ -407,3 +422,4 @@ function getQuestionProps(store: ApplicationState, props: NeededPropsQuestion) {
 
 }
 let ConnectedQuestion = connect(getQuestionProps, Store.actionCreators)(Question)
+export let ConnectedQuestionCreator = connect((state: ApplicationState) => { return { questions: state.combinedSystem.questions } }, Store.actionCreators)(TestCreaterQuestions)

@@ -139,10 +139,10 @@ export const unloadedState: Question[] = [];
 export const reducer: Reducer<Question[]> = (state: Question[], action: KnownAction) => {
     switch (action.type) {
         case "ADD_QUESTION":
-            return [...state, action.question];
+            return [...state, { ...action.question }];
         case "ADD_ANSWER":
             return state.map((e) => {
-                if (e.guid == action.guid) {
+                if (e.guid == action.questionGuid) {
                     return {
                         ...e,
                         answers: [...e.answers, { answer: action.answer, value: action.guid }]
@@ -153,7 +153,7 @@ export const reducer: Reducer<Question[]> = (state: Question[], action: KnownAct
             });
         case "SYNC_ANSWER":
             return state.map((e) => {
-                if (e.guid == action.guid) {
+                if (e.guid == action.questionGuid) {
                     return {
                         ...e,
                         answers: e.answers.map((e, ind) => {
