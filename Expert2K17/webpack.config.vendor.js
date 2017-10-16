@@ -119,7 +119,9 @@ module.exports = (env) => {
                 path: path.join(__dirname, 'ClientApp', 'dist', '[name]-manifest.json'),
                 name: '[name]_[hash]'
             }),
+            // Fixes for react-data-grid-2
             new webpack.ProvidePlugin({
+                'document': 'min-document',
                 'self.navigator.userAgent': 'empty-string'
             })
         ]
