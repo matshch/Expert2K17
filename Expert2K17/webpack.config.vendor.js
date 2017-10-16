@@ -18,6 +18,7 @@ module.exports = (env) => {
                 'history',
                 'react',
                 'react-data-grid',
+                'react-data-grid-addons',
                 'react-document-title',
                 'react-router-dom',
                 'react-redux',

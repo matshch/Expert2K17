@@ -37,6 +37,7 @@
     "popper.js": "^1.12.5",
     "react": "^15.6.2",
     "react-data-grid": "^2.0.60",
+    "react-data-grid-addons": "^2.0.60",
     "react-document-title": "^2.0.3",
     "react-dom": "^15.6.2",
     "react-dom-factories": "^1.0.2",
