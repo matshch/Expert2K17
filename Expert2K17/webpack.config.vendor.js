@@ -16,6 +16,7 @@ module.exports = (env) => {
             vendor: [
                 'domain-task',
                 'history',
+                're-reselect',
                 'react',
                 'react-data-grid',
                 'react-data-grid-addons',
@@ -26,6 +27,7 @@ module.exports = (env) => {
                 'react-slick',
                 'react-spinkit',
                 'reactstrap',
+                'reselect',
                 'redux',
                 'redux-thunk',
                 'react-router-redux'
