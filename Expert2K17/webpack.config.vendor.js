@@ -16,6 +16,7 @@ module.exports = (env) => {
             vendor: [
                 'domain-task',
                 'history',
+                're-reselect',
                 'react',
                 'react-data-grid',
                 'react-data-grid-addons',
@@ -26,6 +27,7 @@ module.exports = (env) => {
                 'react-slick',
                 'react-spinkit',
                 'reactstrap',
+                'reselect',
                 'redux',
                 'redux-thunk',
                 'react-router-redux'
@@ -122,7 +124,9 @@ module.exports = (env) => {
             // Fixes for react-data-grid-2
             new webpack.ProvidePlugin({
                 'document': 'min-document',
-                'self.navigator.userAgent': 'empty-string'
+                'self': 'node-noop',
+                'self.navigator.userAgent': 'empty-string',
+                'window': 'node-noop'
             })
         ]
     });
