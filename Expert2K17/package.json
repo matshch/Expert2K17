@@ -61,8 +61,8 @@
   },
   "scripts": {
     "build": "npm-run-all build:vendor build:site",
-    "build:vendor": "webpack --config webpack.config.vendor.js",
-    "build:site": "webpack",
+    "build:vendor": "webpack --progress --config webpack.config.vendor.js",
+    "build:site": "webpack --progress",
     "prepare": "npm-run-all --parallel setup build",
     "setup": "cp-file --no-overwrite connections.template.json connections.json",
     "start": "dotnet run"
