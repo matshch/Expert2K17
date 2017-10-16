@@ -124,7 +124,9 @@ module.exports = (env) => {
             // Fixes for react-data-grid-2
             new webpack.ProvidePlugin({
                 'document': 'min-document',
-                'self.navigator.userAgent': 'empty-string'
+                'self': 'node-noop',
+                'self.navigator.userAgent': 'empty-string',
+                'window': 'node-noop'
             })
         ]
     });
