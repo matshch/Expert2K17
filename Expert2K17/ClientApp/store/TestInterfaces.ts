@@ -61,7 +61,7 @@ export interface Answer {
     value: string; //value guid
 }
 
-enum Operation {
+export enum Operation {
     Equal,
     NotEqual,
     Greater,
@@ -71,7 +71,7 @@ enum Operation {
     Set
 }
 
-enum ComponentCondition {
+export enum ComponentCondition {
     Question,
     Logic
 }
