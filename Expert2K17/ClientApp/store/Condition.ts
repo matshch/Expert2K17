@@ -53,14 +53,14 @@ type KnownAction = AddConditionAction | SyncConditionAction;
 
 
 export const actionCreators = {
-    addParameter: (condition: Condition): AppThunkAction<KnownAction> => (dispatch, getState) => {
+    addCondition: (condition: Condition): AppThunkAction<KnownAction> => (dispatch, getState) => {
         let condition_ = {
             ...condition,
             guid: Guid.MakeNew()
         }
         dispatch({ type: 'ADD_CONDITION', condition: condition_ });
     },
-    syncParameter: (condition: Condition): AppThunkAction<KnownAction> => (dispatch, getState) => {
+    syncCondition: (condition: Condition): AppThunkAction<KnownAction> => (dispatch, getState) => {
         dispatch({ type: 'SYNC_CONDITION', condition: condition });
     },
 };

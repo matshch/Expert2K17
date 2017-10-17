@@ -316,6 +316,7 @@ class NewQuestion extends React.Component<typeof Store.actionCreators, Interf.Qu
             guid: '',
             parameter_guid: '',
             answers: [],
+            type: Interf.QuestionType.Variety,
             cast_after: '', //Question_guid
             cast_if: '' //Condition guid 
         }
