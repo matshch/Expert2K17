@@ -117,6 +117,20 @@ class Condition extends React.Component<ConditionProps, {}>{
         
     }
 
+    prepareActs = () => {
+        const ifer = [
+            { label: '+', value: Interf.Operation.Add },
+            { label: '==', value: Interf.Operation.Equal },
+            { label: '>', value: Interf.Operation.Greater },
+            { label: '<', value: Interf.Operation.Less },
+            { label: ' ', value: Interf.Operation.None },
+            { label: '!=', value: Interf.Operation.NotEqual },
+            { label: '=', value: Interf.Operation.Set },
+            { label: '-', value: Interf.Operation.Substract },
+        ]
+
+        return ifer;
+    }
 
     render() {
         return <Card className="createSideBar">
@@ -132,7 +146,9 @@ class Condition extends React.Component<ConditionProps, {}>{
                                 />
                             </Col>
                             <Col>
-                                <ComboBox.SimpleSelect/>
+                                <ComboBox.SimpleSelect
+                                    options={this.prepareActs()}
+                                />
                             </Col>
                             <Col>
                                 <ComboBox.SimpleSelect />
