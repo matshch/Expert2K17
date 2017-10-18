@@ -84,7 +84,11 @@ export const actionCreators = {
             guid: newPair.guid,
             value: newPair.value
         });
-        dispatch({ type: 'SYNC_CONDITION', condition: condition });
+        let condition_: Condition = {
+            ...condition,
+            right: guid
+        }
+        dispatch({ type: 'SYNC_CONDITION', condition: condition_ });
     },
 };
 

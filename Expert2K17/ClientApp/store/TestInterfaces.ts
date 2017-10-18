@@ -97,7 +97,10 @@ export enum QuestionType {
     Value
 }
 
-
+export enum LogicOperation {
+    And,
+    Or
+}
 
 export interface Question {
     question: string;
@@ -116,7 +119,7 @@ export interface Logic {
     conditions: string[];
     guid: string;
     then: string; //condition result
-    operation: Operation;
+    operation: LogicOperation;
 }
 
 export interface Klogic {
