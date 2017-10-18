@@ -70,7 +70,7 @@ class Parameter extends React.Component<ParameterProps, {}>{
                     <FormGroup row>
                         <Label for="texter" sm={3}>Название</Label>
                         <Col sm={9}>
-                            <Input type="text" name="text" id="texter" value={this.props.parameter.name} placeholder="Название параметра"></Input>
+                            <Input type="text" name="text" id="texter" onChange={this.name_change} value={this.props.parameter.name} placeholder="Название параметра"></Input>
                         </Col>
                     </FormGroup>
                     <FormGroup row>
@@ -124,6 +124,11 @@ class NewParameter extends React.Component<typeof Store.actionCreators, Interf.P
 
     saveParameter = () => {
         this.props.addParameter(this.state);
+        this.setState({
+            name: '',
+            guid: '',
+            unitValue: false
+        })
     }
     render() {
         return <Card className="createSideBar">
@@ -132,7 +137,7 @@ class NewParameter extends React.Component<typeof Store.actionCreators, Interf.P
                     <FormGroup row>
                         <Label for="texter" sm={3}>Название</Label>
                         <Col sm={9}>
-                            <Input type="text" name="text" id="texter" value={this.state.name} placeholder="Название параметра"></Input>
+                            <Input type="text" name="text" id="texter" onChange={this.name_change} value={this.state.name} placeholder="Название параметра"></Input>
                         </Col>
                     </FormGroup>
                     <FormGroup row>
@@ -141,7 +146,7 @@ class NewParameter extends React.Component<typeof Store.actionCreators, Interf.P
                             <Input type="checkbox" checked={this.state.unitValue} onChange={this.unitChange} id="chb1" />
                         </Col>
                     </FormGroup>
-                    <Button color="success">Создать</Button>                         
+                    <Button color="success" onClick={this.saveParameter}>Создать</Button>                         
 
                 </Form>
             </CardBlock>

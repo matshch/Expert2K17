@@ -11,6 +11,8 @@ import * as PairS from './Pair';
 import * as ParameterS from './Parameters'
 import * as ParPairsS from './ParameterPair'
 import * as QuestionS from './Question'
+import * as ConditionS from './Condition'
+
 
 
 
@@ -22,6 +24,7 @@ export interface SystemCreateState {
     parameters: SystemI.Parameter[];
     parpairs: SystemI.ParameterPair[];
     questions: SystemI.Question[];
+    conditions: SystemI.Condition[];
 }
 
 export const reducers = {
@@ -31,7 +34,8 @@ export const reducers = {
     pairs: PairS.reducer,
     parameters: ParameterS.reducer,
     parpairs: ParPairsS.reducer,
-    questions: QuestionS.reducer
+    questions: QuestionS.reducer,
+    conditions: ConditionS.reducer
 };
 
 interface LoadPreviousAction {

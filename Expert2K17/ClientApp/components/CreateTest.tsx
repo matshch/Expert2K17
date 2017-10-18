@@ -16,7 +16,7 @@ import * as Systemer from './SystemCreate';
 import * as Attributer from './AttributeEdit';
 import * as Subjecter from './SubjectEdit';
 import * as Parameter from './Parameters';
-
+import * as Question from './Questions';
 
 type CounterProps =
     Interf.System
@@ -47,6 +47,7 @@ export
                         <Route path='/EditTest/:id/CreateAttribute' component={Attributer.ConnectedTestAttributeEditor} />
                         <Route path='/EditTest/:id/CreateSubject' component={Subjecter.default} />
                         <Route path='/EditTest/:id/CreateParameter' component={Parameter.ConnectedTestParameterEditor} />
+                        <Route path='/EditTest/:id/CreateQuestion' component={Question.ConnectedQuestionCreator} />
                     </Col>
                 </Row>
             </Container>
@@ -95,6 +96,9 @@ export class TestCreaterNav extends React.Component<NavProps, {}>{
                     </NavItem>
                     <NavItem>
                             <NavLink exact to={'/EditTest/' + this.props.link + '/CreateParameter'} className='nav-link' activeClassName='active'>Параметер</NavLink>
+                    </NavItem>
+                    <NavItem>
+                        <NavLink exact to={'/EditTest/' + this.props.link + '/CreateQuestion'} className='nav-link' activeClassName='active'>Вопрос</NavLink>
                     </NavItem>
                 </Nav>
 

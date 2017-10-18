@@ -61,7 +61,8 @@ export interface Answer {
     value: string; //value guid
 }
 
-enum Operation {
+export enum Operation {
+    None,
     Equal,
     NotEqual,
     Greater,
@@ -70,15 +71,29 @@ enum Operation {
     Substract,
     Set
 }
+
+export enum ComponentCondition {
+    Question,
+    Logic,
+    Result
+}
+
 export interface Condition {
     left: string; // guid par/attr
     right: string; // value
     act: Operation;
-    parameter: boolean; // 0 - par -> 1 - attr
-    guid: string;   
+    parameter: number; // 1 - par -> 0 - attr -> -1 - not chosen -> -2 - force parameter
+    guid: string;
+    origin: ComponentCondition;
 }
 export interface KCondition {
     [guid: string]: Condition;
+}
+
+
+export enum QuestionType {
+    Variety,
+    Value
 }
 
 
@@ -90,16 +105,16 @@ export interface Question {
     answers: Answer[];
     cast_after: string; //Question_guid
     cast_if: string; //Condition guid 
-
+    type: QuestionType;
 }
 export interface KQuestion {
     questions: Question[];
 }
 
 export interface Logic {
-    conditions: Condition[];
+    conditions: string[];
     guid: string;
-    then: Condition;
+    then: string; //condition result
     operation: Operation;
 }
 
