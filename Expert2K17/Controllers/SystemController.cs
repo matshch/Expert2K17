@@ -243,8 +243,7 @@ namespace Expert2K17.Controllers
                 {
                     await form.Picture.CopyToAsync(stream);
                 }
-                var oldPath = user.Cover.Split("?").First();
-                var oldPath = system.Picture;
+                var oldPath = system.Picture.Split("?").First();
                 if (oldPath != path && !oldPath.StartsWith("/default/"))
                 {
                     System.IO.File.Delete(_hostingEnvironment.WebRootPath + oldPath);
