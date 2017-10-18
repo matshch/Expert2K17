@@ -286,6 +286,7 @@ class Condition extends React.Component<ConditionProps, {}>{
     onVRightChange = (item: any) => {
         if (this.props.index > -1) {
             if (!!item && !!item.newOption as any) {
+
                 let name: string = item.label;
                 var mode: number = -1;
                 if (name.split(' ')[0] == 'Параметр') {

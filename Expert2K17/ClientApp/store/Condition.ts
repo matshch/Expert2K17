@@ -1,7 +1,7 @@
 ﻿// A '.tsx' file enables JSX support in the TypeScript compiler, 
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
-import { Condition, Operation, ComponentCondition } from './TestInterfaces'
+import { Condition, Operation, ComponentCondition, ParameterPair } from './TestInterfaces'
 import { fetch, addTask } from 'domain-task';
 import { Action, Reducer, ActionCreator } from 'redux';
 import { AppThunkAction } from './';
@@ -43,6 +43,14 @@ interface SyncConditionAction {
     type: 'SYNC_CONDITION';
     condition: Condition;
 }
+
+interface AddPairAction {
+    type: 'ADD_PARPAIR';
+    parameterGuid: string;
+    value: string;
+    guid: string;
+}
+
 // Declare a 'discriminated union' type. This guarantees that all references to 'type' properties contain one of the
 // declared type strings (and not any other arbitrary string).
 type KnownAction = AddConditionAction | SyncConditionAction;
@@ -61,6 +69,21 @@ export const actionCreators = {
         dispatch({ type: 'ADD_CONDITION', condition: condition_ });
     },
     syncCondition: (condition: Condition): AppThunkAction<KnownAction> => (dispatch, getState) => {
+        dispatch({ type: 'SYNC_CONDITION', condition: condition });
+    },
+    syncWithAddCondition: (condition: Condition, label: string): AppThunkAction<KnownAction | AddPairAction> => (dispatch, getState) => {
+        let guid = Guid.MakeNew();
+        let newPair: ParameterPair = {
+            guid: guid,
+            parameterGuid: condition.left,
+            value: label
+        }
+        dispatch({
+            type: 'ADD_PARPAIR',
+            parameterGuid: newPair.parameterGuid,
+            guid: newPair.guid,
+            value: newPair.value
+        });
         dispatch({ type: 'SYNC_CONDITION', condition: condition });
     },
 };
