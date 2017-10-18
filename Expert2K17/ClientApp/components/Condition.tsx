@@ -19,6 +19,8 @@ interface ConditionAdditionalProps {
     mode: number;
     index: number;
     attributes: Interf.Attribute[];
+    parameterPairs: Interf.ParameterPair[];
+    pairs: Interf.Pair[];
     condition: Interf.Condition;
     type: Interf.ComponentCondition;
 }
@@ -118,18 +120,114 @@ class Condition extends React.Component<ConditionProps, {}>{
     }
 
     prepareActs = () => {
-        const ifer = [
-            { label: '+', value: Interf.Operation.Add },
-            { label: '==', value: Interf.Operation.Equal },
-            { label: '>', value: Interf.Operation.Greater },
-            { label: '<', value: Interf.Operation.Less },
-            { label: ' ', value: Interf.Operation.None },
-            { label: '!=', value: Interf.Operation.NotEqual },
-            { label: '=', value: Interf.Operation.Set },
-            { label: '-', value: Interf.Operation.Substract },
-        ]
 
-        return ifer;
+        if (this.props.condition.origin == Interf.ComponentCondition.Logic || this.props.condition.origin == Interf.ComponentCondition.Question) {
+            const ifer = [
+                { label: '==', value: Interf.Operation.Equal },
+                { label: '>', value: Interf.Operation.Greater },
+                { label: '<', value: Interf.Operation.Less },
+                { label: '!=', value: Interf.Operation.NotEqual },
+            ]
+            return ifer;
+        }
+        if (this.props.condition.origin == Interf.ComponentCondition.Result) {
+            const ifer = [
+                { label: '+', value: Interf.Operation.Add },
+                { label: '==', value: Interf.Operation.Equal },
+                { label: '>', value: Interf.Operation.Greater },
+                { label: '<', value: Interf.Operation.Less },
+                { label: '!=', value: Interf.Operation.NotEqual },
+                { label: '=', value: Interf.Operation.Set },
+                { label: '-', value: Interf.Operation.Substract },
+            ]
+            return ifer;
+        }
+
+    }
+
+    defaultValueMiddle = () => {
+        if (this.props.condition.act == Interf.Operation.Add) {
+            return { label: '+', value: Interf.Operation.Add }
+        }
+        if (this.props.condition.act == Interf.Operation.Equal) {
+            return { label: '==', value: Interf.Operation.Equal }
+        }
+        if (this.props.condition.act == Interf.Operation.Greater) {
+            return { label: '>', value: Interf.Operation.Greater }
+        }
+        if (this.props.condition.act == Interf.Operation.Less) {
+            return { label: '<', value: Interf.Operation.Less }
+        }
+        if (this.props.condition.act == Interf.Operation.NotEqual) {
+            return { label: '!=', value: Interf.Operation.NotEqual }
+        }
+        if (this.props.condition.act == Interf.Operation.Set) {
+            return { label: '=', value: Interf.Operation.Set }
+        }
+        if (this.props.condition.act == Interf.Operation.Substract) {
+            return { label: '-', value: Interf.Operation.Substract }
+        }
+    }
+
+    onValueChangeMiddle = (item: any) => {
+        if (this.props.index > -1 && !!item) {
+            let newCondition: Interf.Condition = {
+                ...this.props.condition,
+                act: item.value
+            }
+            this.props.syncCondition(newCondition);
+        }
+    }
+
+
+    prepareValues = () => {
+        if (this.props.index > -1) {
+            if (this.props.condition.parameter == 1) {
+                let parameter = this.props.parameters.find((e) => {
+                    if (e.guid == this.props.condition.left) {
+                        return true;
+                    }
+                })
+                let pairs = this.props.parameterPairs.filter((e) => {
+                    if (e.parameterGuid == parameter.guid) {
+                        return true;
+                    }
+                    return false;
+                }).map((e, index) => {
+                    return {
+                        value: index,
+                        label: e.value
+                    }
+
+                })
+            }
+            if (this.props.condition.parameter == 0) {
+                let attribute = this.props.attributes.find((e) => {
+                    if (e.guid == this.props.condition.left) {
+                        return true;
+                    }
+                })
+                let pairs = this.props.pairs.filter((e) => {
+                    if (e.attributeGuid == attribute.guid) {
+                        return true;
+                    }
+                    return false;
+                }).map((e,ind) => {
+                    return {
+                        value: ind,
+                        label: e.value
+                    }
+
+                })
+            }
+
+
+
+        }
+        return [{
+            label: 'Выберите параметр',
+            value: ''
+        }];
     }
 
     render() {
@@ -148,10 +246,15 @@ class Condition extends React.Component<ConditionProps, {}>{
                             <Col>
                                 <ComboBox.SimpleSelect
                                     options={this.prepareActs()}
+                                    defaultValue={this.defaultValueMiddle()}
+                                    onValueChange={this.onValueChangeMiddle}
                                 />
                             </Col>
                             <Col>
-                                <ComboBox.SimpleSelect />
+                                <ComboBox.SimpleSelect
+                                    options={this.prepareValues()}
+
+                                />
                             </Col>
                         </Row>
                     </FormGroup>
@@ -172,18 +275,18 @@ function getConditionProps(store: ApplicationState, props: ConnectProps) {
     if (props.index >= 0) {
         let condition = store.combinedSystem.conditions[props.index];
 
-        return { parameters: store.combinedSystem.parameters, attributes: store.combinedSystem.attributes, condition: condition };
+        return { parameters: store.combinedSystem.parameters, attributes: store.combinedSystem.attributes, condition: condition, parameterPairs: store.combinedSystem.parpairs, pairs: store.combinedSystem.pairs  };
     }
 
     let defaultCondition: Interf.Condition = {
         left: '', // guid par/attr
         right: '', // value
-        act: Interf.Operation.None,
+        act: Interf.Operation.Equal,
         parameter: props.mode, 
         guid: '',
         origin: props.type
     }
-    return { parameters: store.combinedSystem.parameters, attributes: store.combinedSystem.attributes, condition: defaultCondition };
+    return { parameters: store.combinedSystem.parameters, attributes: store.combinedSystem.attributes, condition: defaultCondition, parameterPairs: store.combinedSystem.parpairs, pairs: store.combinedSystem.pairs };
 
 
 

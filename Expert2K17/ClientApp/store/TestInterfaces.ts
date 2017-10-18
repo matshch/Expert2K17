@@ -56,13 +56,23 @@ export interface ParameterPair {
     value: string;
     guid: string;
 }
+
+enum LogPsir {
+    Attribute,
+    Parameter
+}
+export interface LogicPair {
+    typeGuid: string;
+    type: LogPsir
+    value: string;
+    logicGuid: string;
+}
 export interface Answer {
     answer: string;
     value: string; //value guid
 }
 
 export enum Operation {
-    None,
     Equal,
     NotEqual,
     Greater,
