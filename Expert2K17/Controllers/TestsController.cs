@@ -1,9 +1,12 @@
+using Expert2K17.Data;
+using Expert2K17.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.AspNetCore.Mvc;
-using Expert2K17.Data;
-using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace Expert2K17.Controllers
 {
@@ -11,10 +14,12 @@ namespace Expert2K17.Controllers
     public class TestsController : Controller
     {
         private readonly Db _db;
+        private readonly UserManager<User> _userManager;
 
-        public TestsController(Db db)
+        public TestsController(Db db, UserManager<User> userManager)
         {
             _db = db;
+            _userManager = userManager;
         }
 
         // GET: api/tests
@@ -41,6 +46,28 @@ namespace Expert2K17.Controllers
                    };
         }
 
+        // GET api/tests/guid
+        [HttpGet("{id}")]
+        public async Task<ActionResult> Get(Guid id)
+        {
+            var test = await _db.Tests.FindAsync(id);
+            if (test == null)
+            {
+                return NotFound();
+            }
+            if (test.Published != true)
+            {
+                var loader = _db.Entry(test).Reference(e => e.User).LoadAsync();
+                var userId = _userManager.GetUserId(User);
+                await loader;
+                if (test.User.Id != userId)
+                {
+                    return BadRequest("Wrong user");
+                }
+            }
+            return new ContentResult { Content = test.PublishedJson, ContentType = "application/json" };
+        }
+
         public class UserJSON
         {
             public string Id;
@@ -57,13 +84,6 @@ namespace Expert2K17.Controllers
             public string Description;
             public string Picture;
             public UserJSON User;
-        }
-
-        // GET api/tests/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            throw new NotImplementedException();
         }
     }
 }
