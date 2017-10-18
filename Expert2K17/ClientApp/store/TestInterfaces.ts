@@ -57,16 +57,6 @@ export interface ParameterPair {
     guid: string;
 }
 
-enum LogPsir {
-    Attribute,
-    Parameter
-}
-export interface LogicPair {
-    typeGuid: string;
-    type: LogPsir
-    value: string;
-    guid: string;
-}
 export interface Answer {
     answer: string;
     value: string; //value guid
@@ -92,10 +82,11 @@ export interface Condition {
     left: string; // guid par/attr
     right: string; // value
     act: Operation;
-    parameter: number; // 1 - par -> 0 - attr -> -1 - not chosen -> -2 - force parameter -> 2 - logicPair
+    parameter: number; // 1 - par -> 0 - attr -> -1 - not chosen
     guid: string;
     origin: ComponentCondition;
 }
+
 export interface KCondition {
     [guid: string]: Condition;
 }

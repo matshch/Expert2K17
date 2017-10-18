@@ -200,6 +200,7 @@ class Condition extends React.Component<ConditionProps, {}>{
                     }
 
                 })
+//доделать чтобы с лог пар работало
             }
             if (this.props.condition.parameter == 0) {
                 let attribute = this.props.attributes.find((e) => {
@@ -229,6 +230,15 @@ class Condition extends React.Component<ConditionProps, {}>{
             value: ''
         }];
     }
+    defaultValueRight = () => {
+        if (this.props.index > -1) {
+            if (this.props.condition.parameter == 1) {
+
+            }
+        }
+
+    }
+
 
     render() {
         return <Card className="createSideBar">
