@@ -176,6 +176,10 @@ type SubjecterAttribute =
     &
     typeof Store.actionCreators;
 
+interface OptionValue {
+    label: string;
+    value: any;
+}
 
 
 interface OptionValue {

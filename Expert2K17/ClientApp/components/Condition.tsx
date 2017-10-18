@@ -25,6 +25,11 @@ interface ConditionAdditionalProps {
     type: Interf.ComponentCondition;
 }
 
+interface OptionValue {
+    label: string;
+    value: any;
+}
+
 
 type ConditionProps =
     ConditionAdditionalProps
@@ -200,7 +205,6 @@ class Condition extends React.Component<ConditionProps, {}>{
                     }
 
                 })
-//доделать чтобы с лог пар работало
             }
             if (this.props.condition.parameter == 0) {
                 let attribute = this.props.attributes.find((e) => {
@@ -233,12 +237,92 @@ class Condition extends React.Component<ConditionProps, {}>{
     defaultValueRight = () => {
         if (this.props.index > -1) {
             if (this.props.condition.parameter == 1) {
+                let parameter = this.props.parameters.find((e) => {
+                    if (e.guid == this.props.condition.left) {
+                        return true;
+                    }
+                })
+                let pair = this.props.parameterPairs.filter((e) => {
+                    if (e.parameterGuid == parameter.guid) {
+                        return true;
+                    }
+                    return false;
+                }).find((e) => {
+                        if (e.guid == this.props.condition.right) {
+                            return true;
+                        }
+                    })
 
+                return {
+                    value: pair.guid,
+                    label: pair.value
+                }
+            }
+            if (this.props.condition.parameter == 0) {
+                let attribute = this.props.attributes.find((e) => {
+                    if (e.guid == this.props.condition.left) {
+                        return true;
+                    }
+                })
+                let pair = this.props.pairs.filter((e) => {
+                    if (e.attributeGuid == attribute.guid) {
+                        return true;
+                    }
+                    return false;
+                }).find((e) => {
+                    if (e.guid == this.props.condition.right) {
+                        return true;
+                    }
+                })
+                return {
+                    value: pair.guid,
+                    label: pair.value
+                }
             }
         }
 
     }
 
+    onVRightChange = (item: any) => {
+        if (this.props.index > -1) {
+            if (!!item && !!item.newOption as any) {
+                let name: string = item.label;
+                var mode: number = -1;
+                if (name.split(' ')[0] == 'Параметр') {
+                    mode = 1;
+                } else if (name.split(' ')[0] == 'Атрибут') {
+                    mode = 0;
+                }
+                let newCondition: Interf.Condition = {
+                    ...this.props.condition,
+                    left: item.value,
+                    parameter: mode
+                }
+                this.props.syncCondition(newCondition);
+                return;
+            }
+
+
+            if (!!item) {
+                let name: string = item.label;
+                var mode: number = -1;
+                if (name.split(' ')[0] == 'Параметр') {
+                    mode = 1;
+                } else if (name.split(' ')[0] == 'Атрибут') {
+                    mode = 0;
+                }
+                let newCondition: Interf.Condition = {
+                    ...this.props.condition,
+                    left: item.value,
+                    parameter: mode
+                }
+                this.props.syncCondition(newCondition);
+                return;
+            }
+
+        }
+
+    }
 
     render() {
         return <Card className="createSideBar">
@@ -263,7 +347,27 @@ class Condition extends React.Component<ConditionProps, {}>{
                             <Col>
                                 <ComboBox.SimpleSelect
                                     options={this.prepareValues()}
-
+                                    createFromSearch={
+                                        (options, search) => {
+                                            if (search.length == 0 || (options.map(function (option) {
+                                                return option.label;
+                                            })).indexOf(search) > -1)
+                                                return null as OptionValue;
+                                            else
+                                                return { label: search, value: search };
+                                        }
+                                    }
+                                    defaultValue={this.defaultValueRight()}
+                                    renderOption={function (item: any) {
+                                        return <div className="simple-option" style={{ display: "flex", alignItems: "center" }}>
+                                            <div style={{
+                                                backgroundColor: item.label, borderRadius: "50%", width: 24, height: 24
+                                            }}></div>
+                                            <div style={{ marginLeft: 10 }}>
+                                                {!!item.newOption ? "Добавить " + item.label + " ..." : item.label}
+                                            </div>
+                                        </div>
+                                    }}
                                 />
                             </Col>
                         </Row>

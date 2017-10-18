@@ -24,6 +24,7 @@ interface AddPairAction {
     type: 'ADD_PAIR';
     attrGuid: string;
     value: string;
+    guid: string;
     subjectGuid: string;
 }
 interface UnPairAction {
@@ -87,7 +88,7 @@ export const reducer: Reducer<Pair[]> = (state: Pair[], action: KnownAction) => 
 
             });
         case "ADD_PAIR":
-            return [...state, { attributeGuid: action.attrGuid, subjectGuids: [action.subjectGuid], value: action.value }];
+            return [...state, { attributeGuid: action.attrGuid, subjectGuids: [action.subjectGuid], value: action.value, guid: action.guid }];
         case "SET_PAIR":
             return state.map((e) => {
                 if (e.attributeGuid == action.attrGuid && e.value == action.value) {

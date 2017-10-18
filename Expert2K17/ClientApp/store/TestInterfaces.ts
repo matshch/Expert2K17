@@ -25,9 +25,9 @@ export interface KAttributes {
 
 
 export interface Pair {
-    //[guid: string]: string;//Attribute -> value
     attributeGuid: string;
     value: string;
+    guid: string;
     subjectGuids: string[];
 }
 export interface Subject {

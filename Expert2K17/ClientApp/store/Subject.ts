@@ -22,6 +22,7 @@ interface AddPairAction {
     attrGuid: string;
     value: string;
     subjectGuid: string;
+    guid: string;
 }
 interface UnPairAction {
     type: 'UN_PAIR';
@@ -73,7 +74,7 @@ export const actionCreators = {
         if (index > -1 && innerIndex > -1) {
             dispatch({ type: 'UN_PAIR', index: index, innerIndex: innerIndex });
         }
-        dispatch({ type: 'ADD_PAIR', attrGuid: attrGuid, value: value, subjectGuid: subjectGuid });
+        dispatch({ type: 'ADD_PAIR', attrGuid: attrGuid, value: value, subjectGuid: subjectGuid, guid: Guid.MakeNew() });
     },
     setPair: (attrGuid: string, value: string, subjectGuid: string): AppThunkAction<SetPairAction | UnPairAction> => (dispatch, getState) => {
         let pairs = getState().combinedSystem.pairs;
