@@ -8,6 +8,7 @@ import * as SystemS from './System'
 import * as SystemI from './TestInterfaces'
 import * as AttributeS from './Attribute'
 import * as combinedSystems from './combinedSystem';
+import * as Test from './Test';
 
 
 // The top-level state object
@@ -19,6 +20,7 @@ export interface ApplicationState {
     login: Login.LoginState;
     register: Register.RegisterState;
     combinedSystem: combinedSystems.SystemCreateState;
+    test: Test.TestStore;
 }
 
 // Whenever an action is dispatched, Redux will update each top-level application state property using
@@ -31,7 +33,8 @@ export const reducers = {
     home: Home.reducer,
     login: Login.reducer,
     register: Register.reducer,
-    combinedSystem: combinedSystems.reducer
+    combinedSystem: combinedSystems.reducer,
+    test: Test.reducer
 };
 
 // This type can be used as a hint on action creators so that its 'dispatch' and 'getState' params are
