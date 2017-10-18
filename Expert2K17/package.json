@@ -3,6 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "dependencies": {
+    "@types/deep-equal": "^1.0.1",
     "@types/history": "^4.6.1",
     "@types/node-fetch": "^1.6.7",
     "@types/react": "^15.6.4",
@@ -26,6 +27,7 @@
     "awesome-typescript-loader": "^3.2.3",
     "bootstrap": "4.0.0-alpha.6",
     "css-loader": "^0.28.7",
+    "deep-equal": "^1.0.1",
     "domain-task": "^3.0.3",
     "empty-string": "^1.1.1",
     "event-source-polyfill": "0.0.11",
