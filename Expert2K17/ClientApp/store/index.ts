@@ -12,7 +12,7 @@ import * as combinedSystems from './combinedSystem';
 
 // The top-level state object
 export interface ApplicationState {
-	user: User.UserState;
+    user: User.UserState;
 	profile: Profile.ProfileState;
     panel: Panel.PanelState;
     home: Home.HomeState;
