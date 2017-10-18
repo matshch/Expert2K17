@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "dependencies": {
-    "@types/history": "^4.6.0",
+    "@types/history": "^4.6.1",
     "@types/node-fetch": "^1.6.7",
     "@types/react": "^15.6.4",
     "@types/react-data-grid": "^2.0.6",
