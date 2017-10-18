@@ -47,10 +47,14 @@ export class Panel extends React.Component<PanelProps, { modal: boolean, showPic
 
     render() {
         if (this.props.location.pathname == '/panel') {
-            return <Redirect to="/panel/users" />
+            return <Redirect to="/panel/users" />;
         }
-        if (this.props.user === null || (this.props.user === undefined && this.props.userLoading === true) || this.props.user.isAdmin === false)
+        if (this.props.user === undefined) {
+            return <Spinner name="ball-scale-multiple" />;
+        }
+        if (this.props.user === null || this.props.user.isAdmin === false) {
             return <Redirect to="/login" />;
+        }
         return (
             <DocumentTitle title="Панель управления">
                 <div>

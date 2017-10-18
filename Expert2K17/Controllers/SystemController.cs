@@ -243,12 +243,12 @@ namespace Expert2K17.Controllers
                 {
                     await form.Picture.CopyToAsync(stream);
                 }
-                path += "?d=" + DateTimeOffset.Now.ToUnixTimeMilliseconds();
-                var oldPath = system.Picture;
+                var oldPath = system.Picture.Split("?").First();
                 if (oldPath != path && !oldPath.StartsWith("/default/"))
                 {
-                    System.IO.File.Delete(_hostingEnvironment.WebRootPath + oldPath.Split("?").First());
+                    System.IO.File.Delete(_hostingEnvironment.WebRootPath + oldPath);
                 }
+                path += "?d=" + DateTimeOffset.Now.ToUnixTimeMilliseconds();
                 system.Picture = path;
             }
 
