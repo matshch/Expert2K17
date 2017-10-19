@@ -316,42 +316,7 @@ class Condition extends React.Component<ConditionProps, {}>{
     }
 
     inputReturner = () => {
-        const combobox = <ComboBox.SimpleSelect
-            options={this.prepareValues()}
-            createFromSearch={
-                (options, search) => {
-                    if (search.length == 0 || (options.map(function (option) {
-                        return option.label;
-                    })).indexOf(search) > -1)
-                        return null as OptionValue;
-                    else
-                        return { label: search, value: search };
-                }
-            }
-            onValueChange={this.onVRightChange}
-            defaultValue={this.defaultValueRight()}
-            renderOption={function (item: any) {
-                return <div className="simple-option" style={{ display: "flex", alignItems: "center" }}>
-                    <div style={{
-                        backgroundColor: item.label, borderRadius: "50%", width: 24, height: 24
-                    }}></div>
-                    <div style={{ marginLeft: 10 }}>
-                        {!!item.newOption ? "Добавить " + item.label + " ..." : item.label}
-                    </div>
-                </div>
-            }}
-        />;
-
-        const attrCombobox = <ComboBox.SimpleSelect
-            options={this.prepareValues()}
-            onValueChange={this.onVRightChange}
-            defaultValue={this.defaultValueRight()}
-           
-        />;
-
-        const inputer = <Input placeholder="Введите значение" value={this.props.condition.right} onChange={this.inputOnChange} />
-
-
+        
         if (this.props.index > -1) {
             if (this.props.condition.parameter == 1) {
                 let parameter = this.props.parameters.find((e) => {
@@ -360,9 +325,34 @@ class Condition extends React.Component<ConditionProps, {}>{
                     }
                 })
                 if (parameter.unitValue) {
-                    return inputer
+                    return <Input placeholder="Введите значение" value={this.props.condition.right} onChange={this.inputOnChange} />
                 }
-                return combobox;
+
+                return <ComboBox.SimpleSelect
+                    options={this.prepareValues()}
+                    createFromSearch={
+                        (options, search) => {
+                            if (search.length == 0 || (options.map(function (option) {
+                                return option.label;
+                            })).indexOf(search) > -1)
+                                return null as OptionValue;
+                            else
+                                return { label: search, value: search };
+                        }
+                    }
+                    onValueChange={this.onVRightChange}
+                    defaultValue={this.defaultValueRight()}
+                    renderOption={function (item: any) {
+                        return <div className="simple-option" style={{ display: "flex", alignItems: "center" }}>
+                            <div style={{
+                                backgroundColor: item.label, borderRadius: "50%", width: 24, height: 24
+                            }}></div>
+                            <div style={{ marginLeft: 10 }}>
+                                {!!item.newOption ? "Добавить " + item.label + " ..." : item.label}
+                            </div>
+                        </div>
+                    }}
+                />;;
             }
             if (this.props.condition.parameter == 0) {
                 let attribute = this.props.attributes.find((e) => {
@@ -371,15 +361,68 @@ class Condition extends React.Component<ConditionProps, {}>{
                     }
                 })
                 if (attribute.unitValue) {
-                    return inputer
+                    return <Input placeholder="Введите значение" value={this.props.condition.right} onChange={this.inputOnChange} />
                 }
-                return attrCombobox;
+                return <ComboBox.SimpleSelect
+                    options={this.prepareValues()}
+                    onValueChange={this.onVRightChange}
+                    defaultValue={this.defaultValueRight()}
+
+                />;;
             }
 
-            return combobox;
+            return <ComboBox.SimpleSelect
+                options={this.prepareValues()}
+                createFromSearch={
+                    (options, search) => {
+                        if (search.length == 0 || (options.map(function (option) {
+                            return option.label;
+                        })).indexOf(search) > -1)
+                            return null as OptionValue;
+                        else
+                            return { label: search, value: search };
+                    }
+                }
+                onValueChange={this.onVRightChange}
+                defaultValue={this.defaultValueRight()}
+                renderOption={function (item: any) {
+                    return <div className="simple-option" style={{ display: "flex", alignItems: "center" }}>
+                        <div style={{
+                            backgroundColor: item.label, borderRadius: "50%", width: 24, height: 24
+                        }}></div>
+                        <div style={{ marginLeft: 10 }}>
+                            {!!item.newOption ? "Добавить " + item.label + " ..." : item.label}
+                        </div>
+                    </div>
+                }}
+            />;;
         }
         else {
-            return combobox;
+            return <ComboBox.SimpleSelect
+                options={this.prepareValues()}
+                createFromSearch={
+                    (options, search) => {
+                        if (search.length == 0 || (options.map(function (option) {
+                            return option.label;
+                        })).indexOf(search) > -1)
+                            return null as OptionValue;
+                        else
+                            return { label: search, value: search };
+                    }
+                }
+                onValueChange={this.onVRightChange}
+                defaultValue={this.defaultValueRight()}
+                renderOption={function (item: any) {
+                    return <div className="simple-option" style={{ display: "flex", alignItems: "center" }}>
+                        <div style={{
+                            backgroundColor: item.label, borderRadius: "50%", width: 24, height: 24
+                        }}></div>
+                        <div style={{ marginLeft: 10 }}>
+                            {!!item.newOption ? "Добавить " + item.label + " ..." : item.label}
+                        </div>
+                    </div>
+                }}
+            />;;
         }
     }
 
