@@ -2,7 +2,7 @@
 import { Action, Reducer, ActionCreator } from "redux";
 import { AppThunkAction } from "./";
 import { SystemCreateState } from "./combinedSystem";
-import { LogicOperation, Operation, QuestionType } from "./TestInterfaces";
+import { LogicOperation, Operation, Question, QuestionType } from "./TestInterfaces";
 import { ApplicationState } from "./";
 import createCachedSelector from "re-reselect";
 import deepEqual from "deep-equal";
@@ -21,10 +21,18 @@ export interface Parameter {
     reasons: number[];
 }
 
+export interface AskedQuestion {
+    guid: string;
+    question: string;
+    type: QuestionType;
+    answers: string[];
+}
+
 export interface TestState extends SystemCreateState {
     answers: Answer[];
     answeredAttributes: Parameter[];
     answeredParameters: Parameter[];
+    askedQuestions: AskedQuestion[];
 }
 
 export interface TestStore {
@@ -210,19 +218,36 @@ const getLogicConditionResult = createCachedSelector(
                                     }
                                 )((state, guid) => guid);
 
+const toAskedQuestion = (q : Question) => ({
+                                               guid: q.guid,
+                                               question: q.question,
+                                               answers: q.answers.map(e => e.value),
+                                               type: q.type
+                                           });
+
 export const reducer: Reducer<TestStore> = (state: TestStore, action: KnownActions) => {
     switch (action.type) {
         case "LOAD_TEST_JSON":
-            return {
+            const test : TestStore = {
                 test: {
                     ...action.data,
                     answers: [],
                     answeredAttributes: [],
-                    answeredParameters: []
+                    answeredParameters: [],
+                    askedQuestions: []
                 },
                 testId: action.data.system.guid,
                 testLoading: false
             };
+            action.data.questions.forEach(q => {
+                if (q.cast_if === "" && q.cast_after === "") {
+                    test.test.askedQuestions.push(toAskedQuestion(q));
+                }
+                if (q.cast_if !== "" && getLogicConditionResult(test.test, q.cast_if)) {
+                    test.test.askedQuestions.push(toAskedQuestion(q));
+                }
+            });
+            return test;
         case "LOADING_TEST":
             return { ...state, testLoading: true };
         case "ANSWER_QUESTION":
@@ -422,6 +447,24 @@ export const reducer: Reducer<TestStore> = (state: TestStore, action: KnownActio
                 console.log(oldTest, newTest);
             } while (!deepEqual(oldTest, newTest));
             console.log("Recalc done.");
+            const newQuestions : AskedQuestion[] = [];
+            newTest.questions.forEach(q => {
+                if (!newTest.askedQuestions.some(e => e.guid === q.guid)) {
+                    if (newTest.answers.some(e => e.question_guid === q.cast_if)) {
+                        newQuestions.push(toAskedQuestion(q));
+                        return;
+                    }
+                    if (q.cast_if !== "" && getLogicConditionResult(newTest, q.cast_if)) {
+                        newQuestions.push(toAskedQuestion(q));
+                    }
+                }
+            });
+            if (newQuestions.length > 0) {
+                newTest = {
+                    ...newTest,
+                    askedQuestions: [...newTest.askedQuestions, ...newQuestions]
+                };
+            }
             return {
                 ...state,
                 test: newTest
