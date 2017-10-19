@@ -367,9 +367,9 @@ export const reducer: Reducer<TestStore> = (state: TestStore, action: KnownActio
                         switch (then.parameter) {
                             case 1: //parameter
                                 newTest = {
-                                    ...state.test,
+                                    ...test,
                                     answeredParameters: [
-                                        ...state.test.answeredParameters
+                                        ...test.answeredParameters
                                     ]
                                 };
                                 const param = getParameter(test, then.left);
@@ -389,9 +389,9 @@ export const reducer: Reducer<TestStore> = (state: TestStore, action: KnownActio
                                 break;
                             case 0: //attribute
                                 newTest = {
-                                    ...state.test,
+                                    ...test,
                                     answeredAttributes: [
-                                        ...state.test.answeredAttributes
+                                        ...test.answeredAttributes
                                     ]
                                 };
                                 const attr = getAttribute(test, then.left);
@@ -405,7 +405,7 @@ export const reducer: Reducer<TestStore> = (state: TestStore, action: KnownActio
                                 };
                                 oldParam = getAnsweredAttributeValue(test, then.left);
                                 const aVal = getAttributeValue(test, then.right);
-                                if (val !== undefined) {
+                                if (aVal !== undefined) {
                                     parValue = aVal.value;
                                 }
                                 break;
@@ -535,6 +535,7 @@ export const reducer: Reducer<TestStore> = (state: TestStore, action: KnownActio
                     askedQuestions: [...newTest.askedQuestions, ...newQuestions]
                 };
             }
+            let changed = false;
             newTest.objects.forEach((o, i) => {
                 const results = o.attributes.map((e => {
                     const ans = getAnsweredAttributeValue(newTest, e.guid);
@@ -569,8 +570,13 @@ export const reducer: Reducer<TestStore> = (state: TestStore, action: KnownActio
                         ...newTest.objects[i],
                         exactness: exactness
                     };
+                    changed = true;
                 }
             });
+            if (changed) {
+                newTest.objects = [...newTest.objects];
+                newTest.objects.sort((a, b) => b.exactness - a.exactness);
+            }
             return {
                 ...state,
                 test: newTest

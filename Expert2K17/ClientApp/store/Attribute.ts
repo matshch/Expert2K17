@@ -29,6 +29,15 @@ interface DeleteAttributeAction {
     type: 'DELETE_ATTRIBUTE';
     attribute: Attribute;
 }
+interface DeletePairAction {
+    type: 'DELETE_PAIR';
+    guid: string;
+}
+interface ChangePairAction {
+    type: 'CHANGE_PAIR';
+    guid: string;
+    value: string;
+}
 // Declare a 'discriminated union' type. This guarantees that all references to 'type' properties contain one of the
 // declared type strings (and not any other arbitrary string).
 type KnownAction = SyncConditionAction | AddConditionAction | DeleteAttributeAction | LoadSystemAction;
@@ -49,6 +58,12 @@ export const actionCreators = {
     },
     deleteAttribute: (attr: Attribute): AppThunkAction<KnownAction> => (dispatch, getState) => {
         dispatch({ type: 'DELETE_ATTRIBUTE', attribute: attr});
+    },
+    deletePair: (guid: string): AppThunkAction<KnownAction | DeletePairAction> => (dispatch, getState) => {
+        dispatch({ type: 'DELETE_PAIR', guid: guid});
+    },
+    renamePair: (guid: string, value: string): AppThunkAction<KnownAction | ChangePairAction> => (dispatch, getState) => {
+        dispatch({ type: 'CHANGE_PAIR', guid: guid, value: value });
     }
 };
 

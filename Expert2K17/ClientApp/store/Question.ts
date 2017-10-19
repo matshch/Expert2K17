@@ -1,7 +1,7 @@
 ﻿// A '.tsx' file enables JSX support in the TypeScript compiler, 
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
-import { Question } from './TestInterfaces'
+import { Question, QuestionType } from './TestInterfaces'
 import { fetch, addTask } from 'domain-task';
 import { Action, Reducer, ActionCreator } from 'redux';
 import { AppThunkAction } from './';
@@ -47,6 +47,7 @@ interface ChangeParameterAction {
     type: 'CHANGE_PARAMETER';
     parameterGuid: string;
     questionGuid: string;
+    typer: QuestionType;
 }
 
 interface LoadSystemAction {
@@ -128,10 +129,17 @@ export const actionCreators = {
         });
     },
     changeParameter: (questionGuid: string, parameterGuid: string): AppThunkAction<KnownAction> => (dispatch, getState) => {
+        var param = getState().combinedSystem.parameters.find((e) => {
+            if (parameterGuid == e.guid) {
+                return true
+            }
+        })
+        var typer = param.unitValue ? QuestionType.Value : QuestionType.Variety
         dispatch({
             type: 'CHANGE_PARAMETER',
             parameterGuid: parameterGuid,
-            questionGuid: questionGuid
+            questionGuid: questionGuid,
+            typer: typer
         });
     }
 
@@ -196,7 +204,8 @@ export const reducer: Reducer<Question[]> = (state: Question[], action: KnownAct
                                 answer: e.answer,
                                 value: ''
                             }
-                        })
+                        }),
+                        type: action.typer
                     }
                 }
                 return e
