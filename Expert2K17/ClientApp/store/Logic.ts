@@ -22,9 +22,20 @@ interface AddLogicAction {
     logic: Logic;
 }
 
+interface LinkResultAction {
+    type: 'LINK_RESULT';
+    logicGuid: string;
+    guid: string;
+}
+interface LinkLogicAction {
+    type: 'LINK_LOGIC';
+    logicGuid: string;
+    guid: string;
+}
+
 // Declare a 'discriminated union' type. This guarantees that all references to 'type' properties contain one of the
 // declared type strings (and not any other arbitrary string).
-type KnownAction = SyncLogicAction | AddLogicAction;
+type KnownAction = SyncLogicAction | AddLogicAction | LinkResultAction | LinkLogicAction;
 
 // ----------------
 // REDUCER - For a given state and action, returns the new state. To support time travel, this must not mutate the old state.
@@ -55,6 +66,26 @@ export const reducer: Reducer<Logic[]> = (state: Logic[], action: KnownAction) =
             return state.map((e) => {
                 if (e.guid == action.logic.guid) {
                     return action.logic
+                }
+                return e
+            })
+        case "LINK_RESULT":
+            return state.map((e) => {
+                if (e.guid == action.logicGuid) {
+                    return {
+                        ...e,
+                        then: action.guid
+                    }
+                }
+                return e
+            })
+        case "LINK_LOGIC":
+            return state.map((e) => {
+                if (e.guid == action.logicGuid) {
+                    return {
+                        ...e,
+                        conditions: [...e.conditions, action.guid]
+                    }
                 }
                 return e
             })

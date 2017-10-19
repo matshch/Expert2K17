@@ -23,6 +23,7 @@ interface ConditionAdditionalProps {
     pairs: Interf.Pair[];
     condition: Interf.Condition;
     type: Interf.ComponentCondition;
+    dependancy: string;
 }
 
 interface OptionValue {
@@ -43,7 +44,7 @@ class Condition extends React.Component<ConditionProps, {}>{
     }
 
     makeOptionsUnited = () => {
-        if (this.props.mode != -2) {
+        if (this.props.type == Interf.ComponentCondition.Result) {
             var values = this.props.parameters.map((e) => {
                 return { label: 'Параметр ' + e.name, value: e.guid }
             }).concat(this.props.attributes.map((e) => {
@@ -97,7 +98,8 @@ class Condition extends React.Component<ConditionProps, {}>{
                 let newCondition: Interf.Condition = {
                     ...this.props.condition,
                     left: item.value,
-                    parameter: mode
+                    parameter: mode,
+                    right: ''
                 }
                 this.props.syncCondition(newCondition);
                 return;
@@ -117,7 +119,7 @@ class Condition extends React.Component<ConditionProps, {}>{
                     parameter: mode,
                     origin: this.props.type
                 }
-                this.props.syncCondition(newCondition);
+                this.props.addCondition(newCondition, this.props.dependancy);
                 return;
             }
         }
@@ -138,12 +140,8 @@ class Condition extends React.Component<ConditionProps, {}>{
         if (this.props.condition.origin == Interf.ComponentCondition.Result) {
             const ifer = [
                 { label: '+', value: Interf.Operation.Add },
-                { label: '==', value: Interf.Operation.Equal },
-                { label: '>', value: Interf.Operation.Greater },
-                { label: '<', value: Interf.Operation.Less },
-                { label: '!=', value: Interf.Operation.NotEqual },
                 { label: '=', value: Interf.Operation.Set },
-                { label: '-', value: Interf.Operation.Substract },
+                { label: '-', value: Interf.Operation.Substract }
             ]
             return ifer;
         }
@@ -236,7 +234,7 @@ class Condition extends React.Component<ConditionProps, {}>{
     }
     defaultValueRight = () => {
         if (this.props.index > -1) {
-            if (this.props.condition.parameter == 1) {
+            if (this.props.condition.parameter == 1 && this.props.condition.right.length > 0) {
                 let parameter = this.props.parameters.find((e) => {
                     if (e.guid == this.props.condition.left) {
                         return true;
@@ -258,7 +256,7 @@ class Condition extends React.Component<ConditionProps, {}>{
                     label: pair.value
                 }
             }
-            if (this.props.condition.parameter == 0) {
+            if (this.props.condition.parameter == 0 && this.props.condition.right.length > 0) {
                 let attribute = this.props.attributes.find((e) => {
                     if (e.guid == this.props.condition.left) {
                         return true;
@@ -296,10 +294,10 @@ class Condition extends React.Component<ConditionProps, {}>{
                 }
                 let newCondition: Interf.Condition = {
                     ...this.props.condition,
-                    left: item.value,
+                    right: item.value,
                     parameter: mode
                 }
-                this.props.syncCondition(newCondition);
+                this.props.syncWithAddCondition(newCondition, item.label);
                 return;
             }
 
@@ -314,7 +312,7 @@ class Condition extends React.Component<ConditionProps, {}>{
                 }
                 let newCondition: Interf.Condition = {
                     ...this.props.condition,
-                    left: item.value,
+                    right: item.value,
                     parameter: mode
                 }
                 this.props.syncCondition(newCondition);
@@ -325,57 +323,108 @@ class Condition extends React.Component<ConditionProps, {}>{
 
     }
 
+    inputOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        let newCondition: Interf.Condition = {
+            ...this.props.condition,
+            right: e.target.value
+        }
+        this.props.syncCondition(newCondition);
+    }
+
+    inputReturner = () => {
+        const combobox = <ComboBox.SimpleSelect
+            options={this.prepareValues()}
+            createFromSearch={
+                (options, search) => {
+                    if (search.length == 0 || (options.map(function (option) {
+                        return option.label;
+                    })).indexOf(search) > -1)
+                        return null as OptionValue;
+                    else
+                        return { label: search, value: search };
+                }
+            }
+            onValueChange={this.onVRightChange}
+            defaultValue={this.defaultValueRight()}
+            renderOption={function (item: any) {
+                return <div className="simple-option" style={{ display: "flex", alignItems: "center" }}>
+                    <div style={{
+                        backgroundColor: item.label, borderRadius: "50%", width: 24, height: 24
+                    }}></div>
+                    <div style={{ marginLeft: 10 }}>
+                        {!!item.newOption ? "Добавить " + item.label + " ..." : item.label}
+                    </div>
+                </div>
+            }}
+        />;
+
+        const attrCombobox = <ComboBox.SimpleSelect
+            options={this.prepareValues()}
+            onValueChange={this.onVRightChange}
+            defaultValue={this.defaultValueRight()}
+           
+        />;
+
+        const inputer = <Input placeholder="Введите значение" value={this.props.condition.right} onChange={this.inputOnChange} />
+
+
+        if (this.props.index > -1) {
+            if (this.props.condition.parameter == 1) {
+                let parameter = this.props.parameters.find((e) => {
+                    if (e.guid == this.props.condition.left) {
+                        return true;
+                    }
+                })
+                if (parameter.unitValue) {
+                    return inputer
+                }
+                return combobox;
+            }
+            if (this.props.condition.parameter == 0) {
+                let attribute = this.props.attributes.find((e) => {
+                    if (e.guid == this.props.condition.left) {
+                        return true;
+                    }
+                })
+                if (attribute.unitValue) {
+                    return inputer
+                }
+                return attrCombobox;
+            }
+
+            return combobox;
+        }
+        else {
+            return combobox;
+        }
+    }
+
+
     render() {
-        return <Card className="createSideBar">
-            <CardBlock>
-                <Form>
+        return   <Form>
                     <FormGroup row>
                         <Row>
-                            <Col>
+                            <Col lg={4}>
                                 <ComboBox.SimpleSelect
                                     options={this.makeOptionsUnited()}
                                     defaultValue={this.defaultValueLeft()}
                                     onValueChange={this.onVLeftChange}
                                 />
                             </Col>
-                            <Col>
+                            <Col lg={4}>
                                 <ComboBox.SimpleSelect
                                     options={this.prepareActs()}
                                     defaultValue={this.defaultValueMiddle()}
                                     onValueChange={this.onValueChangeMiddle}
                                 />
                             </Col>
-                            <Col>
-                                <ComboBox.SimpleSelect
-                                    options={this.prepareValues()}
-                                    createFromSearch={
-                                        (options, search) => {
-                                            if (search.length == 0 || (options.map(function (option) {
-                                                return option.label;
-                                            })).indexOf(search) > -1)
-                                                return null as OptionValue;
-                                            else
-                                                return { label: search, value: search };
-                                        }
-                                    }
-                                    defaultValue={this.defaultValueRight()}
-                                    renderOption={function (item: any) {
-                                        return <div className="simple-option" style={{ display: "flex", alignItems: "center" }}>
-                                            <div style={{
-                                                backgroundColor: item.label, borderRadius: "50%", width: 24, height: 24
-                                            }}></div>
-                                            <div style={{ marginLeft: 10 }}>
-                                                {!!item.newOption ? "Добавить " + item.label + " ..." : item.label}
-                                            </div>
-                                        </div>
-                                    }}
-                                />
+                            <Col lg={4}>
+                                {this.inputReturner()}
                             </Col>
                         </Row>
                     </FormGroup>
                 </Form>
-            </CardBlock>
-        </Card>
+            
     }
 }
 
@@ -384,6 +433,7 @@ interface ConnectProps {
     mode: number;
     index: number;
     type: Interf.ComponentCondition;
+    dependancy: string;
 }
 
 function getConditionProps(store: ApplicationState, props: ConnectProps) {
@@ -406,4 +456,4 @@ function getConditionProps(store: ApplicationState, props: ConnectProps) {
 
 
 }
-let ConnectedQuestion = connect(getConditionProps, Store.actionCreators)(Condition)
+export let ConnectedCondition = connect(getConditionProps, Store.actionCreators)(Condition)

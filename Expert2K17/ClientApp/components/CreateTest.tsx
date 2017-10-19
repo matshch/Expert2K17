@@ -17,6 +17,8 @@ import * as Attributer from './AttributeEdit';
 import * as Subjecter from './SubjectEdit';
 import * as Parameter from './Parameters';
 import * as Question from './Questions';
+import * as Logic from './Logics';
+
 
 type CounterProps =
     Interf.System
@@ -48,6 +50,8 @@ export
                         <Route path='/EditTest/:id/CreateSubject' component={Subjecter.default} />
                         <Route path='/EditTest/:id/CreateParameter' component={Parameter.ConnectedTestParameterEditor} />
                         <Route path='/EditTest/:id/CreateQuestion' component={Question.ConnectedQuestionCreator} />
+                        <Route path='/EditTest/:id/CreateLogic' component={Logic.ConnectedTestLogicEditor} />
+
                     </Col>
                 </Row>
             </Container>
@@ -99,6 +103,9 @@ export class TestCreaterNav extends React.Component<NavProps, {}>{
                     </NavItem>
                     <NavItem>
                         <NavLink exact to={'/EditTest/' + this.props.link + '/CreateQuestion'} className='nav-link' activeClassName='active'>Вопрос</NavLink>
+                    </NavItem>
+                    <NavItem>
+                        <NavLink exact to={'/EditTest/' + this.props.link + '/CreateLogic'} className='nav-link' activeClassName='active'>Вопрос</NavLink>
                     </NavItem>
                 </Nav>
 

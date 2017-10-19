@@ -16,7 +16,6 @@ export interface Attribute {
     system_guid: string;
     name: string;
     guid: string;
-    values: string[];
     unitValue: boolean;
 }
 export interface KAttributes {
@@ -80,7 +79,7 @@ export enum ComponentCondition {
 
 export interface Condition {
     left: string; // guid par/attr
-    right: string; // value
+    right: string; // value or guid
     act: Operation;
     parameter: number; // 1 - par -> 0 - attr -> -1 - not chosen
     guid: string;
