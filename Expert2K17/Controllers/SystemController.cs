@@ -122,9 +122,9 @@ namespace Expert2K17.Controllers
                         response.Error = "Картинка неизвестного формата";
                         return response;
                 }
-                path += "?d=" + DateTimeOffset.Now.ToUnixTimeMilliseconds();
                 stream = new FileStream(_hostingEnvironment.WebRootPath + path, FileMode.Create);
                 pictureTask = system.Picture.CopyToAsync(stream);
+                path += "?d=" + DateTimeOffset.Now.ToUnixTimeMilliseconds();
                 obj.Picture = path;
             }
             var responseObj = new TestJson
