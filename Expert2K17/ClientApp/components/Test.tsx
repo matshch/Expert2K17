@@ -37,7 +37,7 @@ export class Test extends React.Component<TestProps, {}> {
             slidesToScroll: 1
         };
         return (
-            <DocumentTitle title={this.props.test.system.name}>
+            <DocumentTitle title={this.props.test.system.name + " — ЭЗ ПЕЗ"}>
                 <Row>
                     <Col xs="8">
                         <div className="test">
