@@ -23,6 +23,7 @@ export interface KAttributes {
 }
 
 
+
 export interface Pair {
     attributeGuid: string;
     value: string;
@@ -34,6 +35,7 @@ export interface Subject {
     name: string;
     guid: string;
 }
+
 
 export interface KSubject {
     subjects: Subject[];

@@ -66,13 +66,19 @@ interface Naver {
 type NavProps =
     Naver
     &
-    Interf.System;
+    Interf.System
+    &
+    typeof Store.actionCreators
 
 
 export class TestCreaterNav extends React.Component<NavProps, {}>{
     constructor() {
         super();
 
+    }
+
+    saveForce = () => {
+        this.props.saveSystem();
     }
     render() {
         return (
@@ -122,7 +128,7 @@ export class TestCreaterNav extends React.Component<NavProps, {}>{
                 <hr />
 
                 <Button block>Восстановить состояние</Button>
-                <Button block>Сохранить состояние</Button>
+                <Button block onClick={this.saveForce}>Сохранить состояние</Button>
 
                 </CardBlock>
             </Card>
@@ -132,7 +138,7 @@ export class TestCreaterNav extends React.Component<NavProps, {}>{
 
 
 
-let ConnectedTestCreaterNav = connect((store: ApplicationState) => store.combinedSystem.system)(TestCreaterNav);
+let ConnectedTestCreaterNav = connect((store: ApplicationState) => store.combinedSystem.system, Store.actionCreators)(TestCreaterNav);
 let FixedConnectedTestCreaterNav = withRouter(ConnectedTestCreaterNav);
 
 interface linker {

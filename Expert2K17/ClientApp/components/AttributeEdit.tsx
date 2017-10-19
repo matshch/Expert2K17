@@ -87,6 +87,10 @@ class Attribute extends React.Component<AttributeProps, {}>{
         }
     }
 
+    onFullDelete = () => {
+
+    }
+
     render() {
         return <Card className="createSideBar">
             <CardBlock>

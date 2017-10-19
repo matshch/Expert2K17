@@ -69,6 +69,8 @@ export const reducer: Reducer<Logic[]> = (state: Logic[], action: KnownAction) =
     switch (action.type) {
         case "ADD_LOGIC":
             return [...state, action.logic];
+        case "LOAD_SYSTEM":
+            return action.system.logics;
         case "SYNC_LOGIC":
             return state.map((e) => {
                 if (e.guid == action.logic.guid) {

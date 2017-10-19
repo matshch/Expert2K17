@@ -27,6 +27,9 @@ interface LoadSystemAction {
 // declared type strings (and not any other arbitrary string).
 type KnownAction = SyncSystemAction | AddSystemAction | LoadSystemAction;
 
+function CollectState(state: SystemCreateState) {
+    return JSON.stringify(state);
+}
 // ----------------
 // REDUCER - For a given state and action, returns the new state. To support time travel, this must not mutate the old state.
 
@@ -47,8 +50,19 @@ export const actionCreators = {
     syncSystem: (sys: System): AppThunkAction<KnownAction> => (dispatch, getState) => {
         dispatch({ type: "SYNC_SYSTEM", system: sys });
     },
-    saveSystem: (attr: System): AppThunkAction<KnownAction> => (dispatch, getState) => {
+    saveSystem: (): AppThunkAction<KnownAction> => (dispatch, getState) => {
+        let fetchTask = fetch("/api/system/save", {
+            credentials: 'same-origin',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            method: "POST",
+            body: CollectState(getState().combinedSystem)
+        }).then(response => response.json() as Promise<any>).then(data => {
 
+        });
+        addTask(fetchTask);   
     },
     loadGuidSystem: (guid: string): AppThunkAction<KnownAction> => (dispatch, getState) => {
         let fetchTask = fetch("/api/system/get/" + guid, {
@@ -64,8 +78,9 @@ export const actionCreators = {
                 dispatch({ type: 'LOAD_SYSTEM', system: new_data });
             }
         });
-        //addTask(fetchTask);   
-    }
+        addTask(fetchTask);   
+    },
+
 
 };
 

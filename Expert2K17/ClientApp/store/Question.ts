@@ -146,6 +146,8 @@ export const reducer: Reducer<Question[]> = (state: Question[], action: KnownAct
     switch (action.type) {
         case "ADD_QUESTION":
             return [...state, { ...action.question }];
+        case "LOAD_SYSTEM":
+            return action.system.questions;
         case "ADD_ANSWER":
             return state.map((e) => {
                 if (e.guid == action.questionGuid) {

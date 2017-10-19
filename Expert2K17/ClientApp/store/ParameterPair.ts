@@ -36,7 +36,7 @@ interface LoadSystemAction {
 }
 // Declare a 'discriminated union' type. This guarantees that all references to 'type' properties contain one of the
 // declared type strings (and not any other arbitrary string).
-type KnownAction = AddPairAction | UnPairAction | SetPairAction;
+type KnownAction = AddPairAction | UnPairAction | SetPairAction | LoadSystemAction;
 
 // ----------------
 // REDUCER - For a given state and action, returns the new state. To support time travel, this must not mutate the old state.
@@ -60,6 +60,8 @@ export const reducer: Reducer<ParameterPair[]> = (state: ParameterPair[], action
             });
         case "ADD_PARPAIR":
             return [...state, { parameterGuid: action.parameterGuid, guid: action.guid, value: action.value }];
+        case "LOAD_SYSTEM":
+            return action.system.parpairs;
         case "SYNC_PARPAIR":
             return state.map((e) => {
                 if (e.guid == action.guid) {
