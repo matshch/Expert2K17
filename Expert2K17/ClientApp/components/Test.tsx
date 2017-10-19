@@ -55,12 +55,10 @@ export class Test extends React.Component<TestProps, {}> {
                                                             <FormGroup>
                                                                 <legend>Выберите один из ответов:</legend>
                                                                 <FormGroup check>
-                                                                {e.answers.map((a, i) => {
-                                                                    <Label check>
+                                                                {e.answers.map((a, i) => (<Label check>
                                                                         <Input key={i} type="radio" name={e.guid} />{' '}
                                                                         {a}
-                                                                    </Label>
-                                                                })}
+                                                                    </Label>))}
                                                                 </FormGroup>
                                                             </FormGroup>
                                                         </Form>
