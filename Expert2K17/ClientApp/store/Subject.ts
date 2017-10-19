@@ -3,6 +3,7 @@ import { fetch, addTask } from 'domain-task';
 import { Action, Reducer, ActionCreator } from 'redux';
 import { AppThunkAction } from './';
 import Guid from '../guid';
+import { SystemCreateState } from './combinedSystem'
 
 
 // -----------------
@@ -35,9 +36,13 @@ interface SetPairAction {
     value: string;
     subjectGuid: string;
 }
+interface LoadSystemAction {
+    type: 'LOAD_SYSTEM';
+    system: SystemCreateState;
+}
 // Declare a 'discriminated union' type. This guarantees that all references to 'type' properties contain one of the
 // declared type strings (and not any other arbitrary string).
-type KnownAction = SyncSubjectAction | AddSubjectAction;
+type KnownAction = SyncSubjectAction | AddSubjectAction | LoadSystemAction;
 // ----------------
 // REDUCER - For a given state and action, returns the new state. To support time travel, this must not mutate the old state.
 
@@ -109,6 +114,8 @@ export const reducer: Reducer<Subject[]> = (state: Subject[], action: KnownActio
     switch (action.type) {
         case "ADD_SUBJECT":
             return [...state, action.subject];
+        case "LOAD_SYSTEM":
+            return action.system.subjects;
         case "SYNC_SUBJECT":
             return state.map((e) => {
                 if (e.guid == action.subject.guid) {

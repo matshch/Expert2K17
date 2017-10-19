@@ -3,6 +3,7 @@ import { fetch, addTask } from 'domain-task';
 import { Action, Reducer, ActionCreator } from 'redux';
 import { AppThunkAction } from './';
 import Guid from '../guid';
+import { SystemCreateState } from './combinedSystem'
 
 
 // -----------------
@@ -17,9 +18,14 @@ interface AddConditioParameternAction {
     type: 'ADD_PARAMETER';
     parameter: Parameter;
 }
+
+interface LoadSystemAction {
+    type: 'LOAD_SYSTEM';
+    system: SystemCreateState;
+}
 // Declare a 'discriminated union' type. This guarantees that all references to 'type' properties contain one of the
 // declared type strings (and not any other arbitrary string).
-type KnownAction = SyncConditionAction | AddConditioParameternAction;
+type KnownAction = SyncConditionAction | AddConditioParameternAction | LoadSystemAction;
 
 // ----------------
 // REDUCER - For a given state and action, returns the new state. To support time travel, this must not mutate the old state.
@@ -47,7 +53,9 @@ export const unloadedState: Parameter[] =
 export const reducer: Reducer<Parameter[]> = (state: Parameter[], action: KnownAction) => {
     switch (action.type) {
         case "ADD_PARAMETER":
-            return [...state, action.parameter]             
+            return [...state, action.parameter]
+        case "LOAD_SYSTEM":
+            return action.system.parameters;
         case "SYNC_PARAMETER":
             return state.map((val) => {
                 if (val.guid == action.parameter.guid) {

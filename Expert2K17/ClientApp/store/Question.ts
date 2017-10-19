@@ -6,6 +6,7 @@ import { fetch, addTask } from 'domain-task';
 import { Action, Reducer, ActionCreator } from 'redux';
 import { AppThunkAction } from './';
 import Guid from '../guid';
+import { SystemCreateState } from './combinedSystem'
 
 
 // -----------------
@@ -47,9 +48,14 @@ interface ChangeParameterAction {
     parameterGuid: string;
     questionGuid: string;
 }
+
+interface LoadSystemAction {
+    type: 'LOAD_SYSTEM';
+    system: SystemCreateState;
+}
 // Declare a 'discriminated union' type. This guarantees that all references to 'type' properties contain one of the
 // declared type strings (and not any other arbitrary string).
-type KnownAction = SyncQuestionAction | AddQuestionAction | AddAnswerAction | SyncAnswerAction | ChangeParameterAction;
+type KnownAction = SyncQuestionAction | AddQuestionAction | AddAnswerAction | SyncAnswerAction | ChangeParameterAction | LoadSystemAction;
 // ----------------
 // REDUCER - For a given state and action, returns the new state. To support time travel, this must not mutate the old state.
 

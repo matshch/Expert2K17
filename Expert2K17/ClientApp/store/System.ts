@@ -1,9 +1,10 @@
 import { KSystem, System, KCondition, Condition } from './TestInterfaces'
-import { fetch, addTask } from 'domain-task';
+import { fetch, addTask } from '../custom/fetch';
+
 import { Action, Reducer, ActionCreator } from 'redux';
 import { AppThunkAction } from './';
 import Guid from '../guid';
-
+import { SystemCreateState } from './combinedSystem'
 
 // -----------------
 // ACTIONS - These are serializable (hence replayable) descriptions of state transitions.
@@ -19,7 +20,7 @@ interface AddSystemAction {
 }
 interface LoadSystemAction {
     type: 'LOAD_SYSTEM';
-    system: System;
+    system: SystemCreateState;
 }
 
 // Declare a 'discriminated union' type. This guarantees that all references to 'type' properties contain one of the
@@ -59,8 +60,8 @@ export const actionCreators = {
             method: "GET"
         }).then(response => response.json() as Promise<any>).then(data => {
             if (data.succeded) {
-                let new_data = JSON.parse(data.json);
-                dispatch({ type: 'LOAD_SYSTEM', system: data.json });
+                let new_data: SystemCreateState = JSON.parse(data.json);
+                dispatch({ type: 'LOAD_SYSTEM', system: new_data });
             }
         });
         //addTask(fetchTask);   
@@ -89,7 +90,7 @@ export const reducer: Reducer<System> = (state: System, action: KnownAction) => 
             return action.system
             ;
         case "LOAD_SYSTEM":
-            return action.system
+            return action.system.system
             ;
         default:
             // The following line guarantees that every action in the KnownAction union has been covered by a case above
