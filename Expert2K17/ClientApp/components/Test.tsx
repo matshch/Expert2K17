@@ -6,7 +6,9 @@ import { connect } from 'react-redux';
 import { ApplicationState } from '../store';
 import * as TestStore from '../store/Test';
 import * as UserStore from '../store/User';
-import { Alert, ButtonGroup, Label, ListGroup, ListGroupItem, Card, CardImg, CardText, CardBlock, CardTitle, CardSubtitle, Button } from 'reactstrap';
+import { QuestionType } from "../store/TestInterfaces";
+import { Button, Form, FormGroup, Label, Input, FormText, Card, CardImg, CardText, CardBlock, CardTitle, CardSubtitle } from 'reactstrap';
+import DocumentTitle from 'react-document-title';
 import '../css/cards.css';
 
 type TestProps =
@@ -18,12 +20,14 @@ type TestProps =
 
 export class Test extends React.Component<TestProps, {}> {
     render() {
-        if (this.props.location.pathname == "/test/") {
+        if (this.props.location.pathname == "/test") {
             return <Redirect to="/" />
         }
         else {
             this.props.loadTest(this.props.match.params.id)
         }
+        if (this.props.test === null)
+            return <Spinner name="ball-scale-multiple" />
         var settings = {
             className: '',
             dots: false,
@@ -33,82 +37,50 @@ export class Test extends React.Component<TestProps, {}> {
             slidesToScroll: 1
         };
         return (
-            <div className="test">
-                <Slider {...settings}>
-                    <div className="test-container">
-                        <Card>
-                            <CardBlock>
-                                <div className="card-title">
-                                    <h1>{this.props.test.system.name}</h1><hr />
-                                </div>
-                                <div>
-                                    test
+            <DocumentTitle title={this.props.test.system.name}>
+                <div className="test">
+                    <Slider {...settings}>
+                        {this.props.test.askedQuestions.map(e =>
+                            <div className="test-container">
+                                <Card>
+                                    <CardBlock>
+                                        <div className="card-title">
+                                            <h1>{e.question}</h1><hr />
+                                        </div>
+                                        <div>
+                                            {(() => {
+                                                if (e.type === QuestionType.Variety) {
+                                                    return (
+                                                        <Form>
+                                                            <FormGroup>
+                                                                <legend>Выберите один из ответов:</legend>
+                                                                <FormGroup check>
+                                                                {e.answers.map((a, i) => (<Label check>
+                                                                        <Input key={i} type="radio" name={e.guid} />{' '}
+                                                                        {a}
+                                                                    </Label>))}
+                                                                </FormGroup>
+                                                            </FormGroup>
+                                                        </Form>
+                                                    )
+                                                } else {
+                                                    return (
+                                                        <Form>
+                                                            <FormGroup>
+                                                                <Input type="text" name="inputLabel" id="inputLabel" placeholder="Введите свой ответ" />
+                                                            </FormGroup>
+                                                        </Form>
+                                                    )
+                                                }
+                                            })()}
+                                        </div>
+                                    </CardBlock>
+                                </Card>
                             </div>
-                            </CardBlock>
-                        </Card>
-                    </div>
-                    <div className="test-container">
-                        <Card>
-                            <CardBlock>
-                                <div className="card-title">
-                                    <h3>Card 2</h3>
-                                </div>
-                                <div>
-                                    test
-                            </div>
-                            </CardBlock>
-                        </Card>
-                    </div>
-                    <div className="test-container">
-                        <Card>
-                            <CardBlock>
-                                <div className="card-title">
-                                    <h3>Card 3</h3>
-                                </div>
-                                <div>
-                                    test
-                            </div>
-                            </CardBlock>
-                        </Card>
-                    </div>
-                    <div className="test-container">
-                        <Card>
-                            <CardBlock>
-                                <div className="card-title">
-                                    <h3>Card 4</h3>
-                                </div>
-                                <div>
-                                    test
-                            </div>
-                            </CardBlock>
-                        </Card>
-                    </div>
-                    <div className="test-container">
-                        <Card>
-                            <CardBlock>
-                                <div className="card-title">
-                                    <h3>Card 5</h3>
-                                </div>
-                                <div>
-                                    test
-                            </div>
-                            </CardBlock>
-                        </Card>
-                    </div>
-                    <div className="test-container">
-                        <Card>
-                            <CardBlock>
-                                <div className="card-title">
-                                    <h3>Card 6</h3>
-                                </div>
-                                <div>
-                                    test
-                            </div>
-                            </CardBlock>
-                        </Card>
-                    </div>
-                </Slider>
-            </div>);
+                        )}
+                    </Slider>
+                </div>
+            </DocumentTitle>);
     }
 }
 

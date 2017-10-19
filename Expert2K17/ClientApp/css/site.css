@@ -28,6 +28,7 @@ html,
 body,
 body > div,
 .container-fluid,
+body > div > div
 {
     min-width: 100%;
     min-height: 100%;
