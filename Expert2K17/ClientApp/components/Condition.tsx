@@ -198,11 +198,13 @@ class Condition extends React.Component<ConditionProps, {}>{
                     return false;
                 }).map((e, index) => {
                     return {
-                        value: index,
+                        value: e.guid,
                         label: e.value
                     }
 
-                })
+                    })
+                return pairs;
+
             }
             if (this.props.condition.parameter == 0) {
                 let attribute = this.props.attributes.find((e) => {
@@ -217,11 +219,12 @@ class Condition extends React.Component<ConditionProps, {}>{
                     return false;
                 }).map((e,ind) => {
                     return {
-                        value: ind,
+                        value: e.guid,
                         label: e.value
                     }
 
-                })
+                    })
+                return pairs;
             }
 
 
@@ -284,18 +287,9 @@ class Condition extends React.Component<ConditionProps, {}>{
     onVRightChange = (item: any) => {
         if (this.props.index > -1) {
             if (!!item && !!item.newOption as any) {
-
-                let name: string = item.label;
-                var mode: number = -1;
-                if (name.split(' ')[0] == 'Параметр') {
-                    mode = 1;
-                } else if (name.split(' ')[0] == 'Атрибут') {
-                    mode = 0;
-                }
                 let newCondition: Interf.Condition = {
                     ...this.props.condition,
-                    right: item.value,
-                    parameter: mode
+                    right: item.value
                 }
                 this.props.syncWithAddCondition(newCondition, item.label);
                 return;
