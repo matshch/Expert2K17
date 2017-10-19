@@ -427,14 +427,28 @@ function getConditionProps(store: ApplicationState, props: ConnectProps) {
         return { parameters: store.combinedSystem.parameters, attributes: store.combinedSystem.attributes, condition: condition, parameterPairs: store.combinedSystem.parpairs, pairs: store.combinedSystem.pairs  };
     }
 
-    let defaultCondition: Interf.Condition = {
-        left: '', // guid par/attr
-        right: '', // value
-        act: Interf.Operation.Equal,
-        parameter: props.mode, 
-        guid: '',
-        origin: props.type
+
+    if (props.type == Interf.ComponentCondition.Result) {
+        var defaultCondition: Interf.Condition = {
+            left: '', // guid par/attr
+            right: '', // value
+            act: Interf.Operation.Set,
+            parameter: props.mode,
+            guid: '',
+            origin: props.type
+        }
+    } else {
+        var defaultCondition: Interf.Condition = {
+            left: '', // guid par/attr
+            right: '', // value
+            act: Interf.Operation.Equal,
+            parameter: props.mode,
+            guid: '',
+            origin: props.type
+        }
+
     }
+
     return { parameters: store.combinedSystem.parameters, attributes: store.combinedSystem.attributes, condition: defaultCondition, parameterPairs: store.combinedSystem.parpairs, pairs: store.combinedSystem.pairs };
 
 

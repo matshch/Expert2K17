@@ -123,6 +123,28 @@ class Attribute extends React.Component<AttributeProps, {}>{
     }
 }
 
+interface propsValer {
+
+}
+
+
+class Valer extends React.Component<CreateAttribute, {}>{
+    constructor() {
+        super();
+    }
+
+    render() {
+        return <Container fluid>
+
+            {this.props.attr.map((val, key) => {
+                return <ConnectedAttribute key={key} index={key} />
+            })}
+            <ConnectedNewAttribute />
+        </Container>
+    }
+}
+
+
 
 class NewAttribute extends React.Component<typeof Store.actionCreators, Interf.Attribute>{
     constructor() {
