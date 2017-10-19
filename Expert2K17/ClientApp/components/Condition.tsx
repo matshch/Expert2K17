@@ -67,7 +67,7 @@ class Condition extends React.Component<ConditionProps, {}>{
                 })
                 return {
                     value: val.guid,
-                    label: val.name
+                    label: 'Параметр ' + val.name
                 }
             } else if (this.props.condition.parameter == 0) {
                 let val = this.props.attributes.find((e) => {
@@ -78,7 +78,7 @@ class Condition extends React.Component<ConditionProps, {}>{
 
                 return {
                     value: val.guid,
-                    label: val.name
+                    label: 'Атрибут ' + val.name
                 }
             }
             return null;
@@ -294,20 +294,10 @@ class Condition extends React.Component<ConditionProps, {}>{
                 this.props.syncWithAddCondition(newCondition, item.label);
                 return;
             }
-
-
-            if (!!item) {
-                let name: string = item.label;
-                var mode: number = -1;
-                if (name.split(' ')[0] == 'Параметр') {
-                    mode = 1;
-                } else if (name.split(' ')[0] == 'Атрибут') {
-                    mode = 0;
-                }
+            if (!!item) {                
                 let newCondition: Interf.Condition = {
                     ...this.props.condition,
-                    right: item.value,
-                    parameter: mode
+                    right: item.value
                 }
                 this.props.syncCondition(newCondition);
                 return;

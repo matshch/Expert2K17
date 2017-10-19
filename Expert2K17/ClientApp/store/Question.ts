@@ -106,8 +106,7 @@ export const actionCreators = {
                 ...dispatcher,
                 type: 'SYNC_ANSWER'
             });
-        }
-        if (previousValue.value == value) {
+        } else if (previousValue.value == value) {
             let dispatcher = {
                 answer: answer,
                 questionGuid: questionGuid,
