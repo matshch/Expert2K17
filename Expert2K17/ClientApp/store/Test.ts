@@ -28,11 +28,24 @@ export interface AskedQuestion {
     answers: string[];
 }
 
+export interface ParameterValue {
+    guid: string;
+    value: string;
+}
+
+export interface Subject {
+    guid: string;
+    name: string;
+    attributes: ParameterValue[];
+    exactness: number;
+}
+
 export interface TestState extends SystemCreateState {
     answers: Answer[];
     answeredAttributes: Parameter[];
     answeredParameters: Parameter[];
     askedQuestions: AskedQuestion[];
+    objects: Subject[];
 }
 
 export interface TestStore {
@@ -98,6 +111,46 @@ const getAttribute = createCachedSelector(
                          getAttributes,
                          (state : TestState, guid : string) => guid,
                          (attributes, guid) => attributes.find(e => e.guid === guid)
+                     )((state, guid) => guid);
+
+const getObjects = (state : TestState) => state.objects;
+const getMinAttributeValue = createCachedSelector(
+                         getObjects,
+                         (state : TestState, guid : string) => guid,
+                         (objects, guid) => {
+                             const nums : number[] = [];
+                             objects.forEach(e => {
+                                 const b = e.attributes.find(i => i.guid === guid);
+                                 if (b) {
+                                     nums.push(parseFloat(b.value));
+                                 }
+                             });
+                             if (nums.length === 0) {
+                                 return 0;
+                             }
+                             let min = nums[0];
+                             nums.forEach(e => {if (e < min) min = e});
+                             return min;
+                         }
+                     )((state, guid) => guid);
+const getMaxAttributeValue = createCachedSelector(
+                         getObjects,
+                         (state : TestState, guid : string) => guid,
+                         (objects, guid) => {
+                             const nums : number[] = [];
+                             objects.forEach(e => {
+                                 const b = e.attributes.find(i => i.guid === guid);
+                                 if (b) {
+                                     nums.push(parseFloat(b.value));
+                                 }
+                             });
+                             if (nums.length === 0) {
+                                 return 0;
+                             }
+                             let max = nums[0];
+                             nums.forEach(e => {if (e > max) max = e});
+                             return max;
+                         }
                      )((state, guid) => guid);
 
 const getParameterValues = (state : TestState) => state.parpairs;
@@ -234,7 +287,13 @@ export const reducer: Reducer<TestStore> = (state: TestStore, action: KnownActio
                     answers: [],
                     answeredAttributes: [],
                     answeredParameters: [],
-                    askedQuestions: []
+                    askedQuestions: [],
+                    objects: action.data.subjects.map(e => ({
+                        guid: e.guid,
+                        name: e.name,
+                        attributes: [],
+                        exactness: 0
+                    }))
                 },
                 testId: action.data.system.guid,
                 testLoading: false
@@ -246,6 +305,17 @@ export const reducer: Reducer<TestStore> = (state: TestStore, action: KnownActio
                 if (q.cast_if !== "" && getLogicConditionResult(test.test, q.cast_if)) {
                     test.test.askedQuestions.push(toAskedQuestion(q));
                 }
+            });
+            action.data.pairs.forEach(e => {
+                e.subjectGuids.forEach(s => {
+                    let obj = test.test.objects.find(i => i.guid === s);
+                    if (obj) {
+                        obj.attributes.push({
+                            guid: e.attributeGuid,
+                            value: e.value
+                        });
+                    }
+                });
             });
             return test;
         case "LOADING_TEST":
@@ -297,9 +367,9 @@ export const reducer: Reducer<TestStore> = (state: TestStore, action: KnownActio
                         switch (then.parameter) {
                             case 1: //parameter
                                 newTest = {
-                                    ...state.test,
+                                    ...test,
                                     answeredParameters: [
-                                        ...state.test.answeredParameters
+                                        ...test.answeredParameters
                                     ]
                                 };
                                 const param = getParameter(test, then.left);
@@ -319,9 +389,9 @@ export const reducer: Reducer<TestStore> = (state: TestStore, action: KnownActio
                                 break;
                             case 0: //attribute
                                 newTest = {
-                                    ...state.test,
+                                    ...test,
                                     answeredAttributes: [
-                                        ...state.test.answeredAttributes
+                                        ...test.answeredAttributes
                                     ]
                                 };
                                 const attr = getAttribute(test, then.left);
@@ -335,7 +405,7 @@ export const reducer: Reducer<TestStore> = (state: TestStore, action: KnownActio
                                 };
                                 oldParam = getAnsweredAttributeValue(test, then.left);
                                 const aVal = getAttributeValue(test, then.right);
-                                if (val !== undefined) {
+                                if (aVal !== undefined) {
                                     parValue = aVal.value;
                                 }
                                 break;
@@ -464,6 +534,48 @@ export const reducer: Reducer<TestStore> = (state: TestStore, action: KnownActio
                     ...newTest,
                     askedQuestions: [...newTest.askedQuestions, ...newQuestions]
                 };
+            }
+            let changed = false;
+            newTest.objects.forEach((o, i) => {
+                const results = o.attributes.map((e => {
+                    const ans = getAnsweredAttributeValue(newTest, e.guid);
+                    if (ans === undefined) {
+                        return 0;
+                    }
+                    const attr = getAttribute(newTest, e.guid);
+                    if (!attr.unitValue) {
+                        if (ans.value === e.value) {
+                            return 1;
+                        } else {
+                            return 0;
+                        }
+                    } else {
+                        const a = parseFloat(ans.value);
+                        const b = parseFloat(e.value);
+                        let d = a - b;
+                        d = d >= 0 ? d : -d;
+                        const max = getMaxAttributeValue(newTest, e.guid);
+                        const min = getMinAttributeValue(newTest, e.guid);
+                        let exactness = 1 - d / (max - min);
+                        if (exactness > 1) exactness = 1;
+                        if (exactness < 0) exactness = 0;
+                        return exactness;
+                    }
+                }));
+                let sum = 0;
+                results.forEach(e => sum += e);
+                const exactness = sum / o.attributes.length;
+                if (o.exactness !== exactness) {
+                    newTest.objects[i] = {
+                        ...newTest.objects[i],
+                        exactness: exactness
+                    };
+                    changed = true;
+                }
+            });
+            if (changed) {
+                newTest.objects = [...newTest.objects];
+                newTest.objects.sort((a, b) => b.exactness - a.exactness);
             }
             return {
                 ...state,

@@ -55,8 +55,8 @@ export class Test extends React.Component<TestProps, {}> {
                                                             <FormGroup>
                                                                 <legend>Выберите один из ответов:</legend>
                                                                 <FormGroup check>
-                                                                {e.answers.map((a, i) => (<Label check>
-                                                                        <Input key={i} type="radio" name={e.guid} />{' '}
+                                                                    {e.answers.map((a, i) => (<Label check>
+                                                                        <Input onChange={() => this.props.answerQuestion(e.guid, i)} key={i} type="radio" name={e.guid} />{' '}
                                                                         {a}
                                                                     </Label>))}
                                                                 </FormGroup>
@@ -67,7 +67,7 @@ export class Test extends React.Component<TestProps, {}> {
                                                     return (
                                                         <Form>
                                                             <FormGroup>
-                                                                <Input type="text" name="inputLabel" id="inputLabel" placeholder="Введите свой ответ" />
+                                                                <Input onChange={() => (g: React.ChangeEvent<HTMLInputElement>) => this.props.answerQuestion(e.guid, g.target.value)} type="text" name="inputLabel" id="inputLabel" placeholder="Введите свой ответ" />
                                                             </FormGroup>
                                                         </Form>
                                                     )

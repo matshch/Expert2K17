@@ -101,7 +101,8 @@ hr
     border-top: 1px solid black;
 }
 
-.test .card-title {
+.test .card-title
+{
     text-align: center;
 }
 
