@@ -367,9 +367,9 @@ export const reducer: Reducer<TestStore> = (state: TestStore, action: KnownActio
                         switch (then.parameter) {
                             case 1: //parameter
                                 newTest = {
-                                    ...state.test,
+                                    ...test,
                                     answeredParameters: [
-                                        ...state.test.answeredParameters
+                                        ...test.answeredParameters
                                     ]
                                 };
                                 const param = getParameter(test, then.left);
@@ -389,9 +389,9 @@ export const reducer: Reducer<TestStore> = (state: TestStore, action: KnownActio
                                 break;
                             case 0: //attribute
                                 newTest = {
-                                    ...state.test,
+                                    ...test,
                                     answeredAttributes: [
-                                        ...state.test.answeredAttributes
+                                        ...test.answeredAttributes
                                     ]
                                 };
                                 const attr = getAttribute(test, then.left);
@@ -405,7 +405,7 @@ export const reducer: Reducer<TestStore> = (state: TestStore, action: KnownActio
                                 };
                                 oldParam = getAnsweredAttributeValue(test, then.left);
                                 const aVal = getAttributeValue(test, then.right);
-                                if (val !== undefined) {
+                                if (aVal !== undefined) {
                                     parValue = aVal.value;
                                 }
                                 break;
