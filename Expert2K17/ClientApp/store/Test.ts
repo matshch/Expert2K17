@@ -535,6 +535,7 @@ export const reducer: Reducer<TestStore> = (state: TestStore, action: KnownActio
                     askedQuestions: [...newTest.askedQuestions, ...newQuestions]
                 };
             }
+            let changed = false;
             newTest.objects.forEach((o, i) => {
                 const results = o.attributes.map((e => {
                     const ans = getAnsweredAttributeValue(newTest, e.guid);
@@ -569,8 +570,13 @@ export const reducer: Reducer<TestStore> = (state: TestStore, action: KnownActio
                         ...newTest.objects[i],
                         exactness: exactness
                     };
+                    changed = true;
                 }
             });
+            if (changed) {
+                newTest.objects = [...newTest.objects];
+                newTest.objects.sort((a, b) => b.exactness - a.exactness);
+            }
             return {
                 ...state,
                 test: newTest
