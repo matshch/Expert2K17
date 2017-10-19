@@ -88,7 +88,7 @@ class Attribute extends React.Component<AttributeProps, {}>{
     }
 
     onFullDelete = () => {
-
+        this.props.deleteAttribute(this.props.attr);
     }
 
     render() {
@@ -100,7 +100,7 @@ class Attribute extends React.Component<AttributeProps, {}>{
                         <Col sm={9}>
                             <InputGroup>
                                 <Input type="text" name="text" id="texter" onChange={this.name_change} value={this.props.attr.name} placeholder="Название атрибута"></Input>
-                                <InputGroupButton color="danger"><Button color="danger"><i className="fa fa-trash" ></i></Button></InputGroupButton>
+                                <InputGroupButton color="danger"><Button onClick={this.onFullDelete} color="danger"><i className="fa fa-trash" ></i></Button></InputGroupButton>
                             </InputGroup>                                                  
                         </Col>
                     </FormGroup>

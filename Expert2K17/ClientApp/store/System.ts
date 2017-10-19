@@ -22,7 +22,9 @@ interface LoadSystemAction {
     type: 'LOAD_SYSTEM';
     system: SystemCreateState;
 }
-
+interface ClearSystemAction {
+    type: 'CLEAR_STORE';
+}
 // Declare a 'discriminated union' type. This guarantees that all references to 'type' properties contain one of the
 // declared type strings (and not any other arbitrary string).
 type KnownAction = SyncSystemAction | AddSystemAction | LoadSystemAction;
@@ -50,6 +52,9 @@ export const actionCreators = {
     syncSystem: (sys: System): AppThunkAction<KnownAction> => (dispatch, getState) => {
         dispatch({ type: "SYNC_SYSTEM", system: sys });
     },
+    clearSystem: (): AppThunkAction<KnownAction | ClearSystemAction> => (dispatch, getState) => {
+        dispatch({ type: "CLEAR_STORE"});
+    },
     saveSystem: (): AppThunkAction<KnownAction> => (dispatch, getState) => {
         let fetchTask = fetch("/api/system/save", {
             credentials: 'same-origin',
@@ -62,7 +67,21 @@ export const actionCreators = {
         }).then(response => response.json() as Promise<any>).then(data => {
 
         });
-        addTask(fetchTask);   
+    },
+    rollbackGuidSystem: (guid: string): AppThunkAction<KnownAction> => (dispatch, getState) => {
+        let fetchTask = fetch("/api/system/rollback/" + guid, {
+            credentials: 'same-origin',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            method: "GET"
+        }).then(response => response.json() as Promise<any>).then(data => {
+            if (data.succeded) {
+                let new_data: SystemCreateState = JSON.parse(data.json);
+                dispatch({ type: 'LOAD_SYSTEM', system: new_data });
+            }
+        });
     },
     loadGuidSystem: (guid: string): AppThunkAction<KnownAction> => (dispatch, getState) => {
         let fetchTask = fetch("/api/system/get/" + guid, {
