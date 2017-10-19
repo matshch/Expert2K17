@@ -520,11 +520,15 @@ export const reducer: Reducer<TestStore> = (state: TestStore, action: KnownActio
             const newQuestions : AskedQuestion[] = [];
             newTest.questions.forEach(q => {
                 if (!newTest.askedQuestions.some(e => e.guid === q.guid)) {
-                    if (newTest.answers.some(e => e.question_guid === q.cast_if)) {
-                        newQuestions.push(toAskedQuestion(q));
-                        return;
+                    let after = q.cast_after === "";
+                    let ifq = q.cast_if === "";
+                    if (!after && newTest.answers.some(e => e.question_guid === q.cast_after)) {
+                        after = true;
                     }
-                    if (q.cast_if !== "" && getLogicConditionResult(newTest, q.cast_if)) {
+                    if (!ifq && getLogicConditionResult(newTest, q.cast_if)) {
+                        ifq = true;
+                    }
+                    if (after && ifq) {
                         newQuestions.push(toAskedQuestion(q));
                     }
                 }
