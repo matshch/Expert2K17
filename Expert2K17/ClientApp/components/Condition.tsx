@@ -329,6 +329,7 @@ class Condition extends React.Component<ConditionProps, {}>{
                 }
 
                 return <ComboBox.SimpleSelect
+                    placeholder='Выберите значение'
                     options={this.prepareValues()}
                     createFromSearch={
                         (options, search) => {

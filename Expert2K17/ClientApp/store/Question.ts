@@ -54,9 +54,17 @@ interface LoadSystemAction {
     type: 'LOAD_SYSTEM';
     system: SystemCreateState;
 }
+
+interface LinkQuestionAction {
+    type: 'LINK_QUESTION';
+    questionGuid: string;
+    guid: string;
+}
+
+
 // Declare a 'discriminated union' type. This guarantees that all references to 'type' properties contain one of the
 // declared type strings (and not any other arbitrary string).
-type KnownAction = SyncQuestionAction | AddQuestionAction | AddAnswerAction | SyncAnswerAction | ChangeParameterAction | LoadSystemAction;
+type KnownAction = SyncQuestionAction | AddQuestionAction | AddAnswerAction | SyncAnswerAction | ChangeParameterAction | LoadSystemAction | LinkQuestionAction ;
 // ----------------
 // REDUCER - For a given state and action, returns the new state. To support time travel, this must not mutate the old state.
 
@@ -192,6 +200,16 @@ export const reducer: Reducer<Question[]> = (state: Question[], action: KnownAct
                     return action.question
                 }
                 return e
+            });
+        case "LINK_QUESTION":
+            return state.map((e) => {
+                if (e.guid == action.questionGuid) {
+                    return {
+                        ...e,
+                        cast_if: action.guid
+                    }
+                }
+                return e;
             });
         case "CHANGE_PARAMETER":
             return state.map((e) => {

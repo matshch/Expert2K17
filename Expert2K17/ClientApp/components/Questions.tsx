@@ -11,6 +11,7 @@ import { Nav, NavItem, Row, Container, Col, Button, Form, FormGroup, Label, Inpu
 import DocumentTitle from 'react-document-title';
 import * as Interf from '../store/TestInterfaces';
 import * as ComboBox from 'react-selectize';
+import * as Conditioner from './Condition';
 
 type CreateAttribute =
     Interf.KQuestion
@@ -41,6 +42,7 @@ interface PArameterAdditionalProps {
     question: Interf.Question;
     parameters: Interf.Parameter[];
     questions: Interf.Question[];
+    conditions: Interf.Condition[];
 }
 
 
@@ -136,6 +138,19 @@ class Question extends React.Component<QuestionProps, {}>{
             })
         }
     }
+    renderThen = () => {
+        if (this.props.question.cast_if.length > 0) {
+            let ind = this.props.conditions.findIndex((e) => {
+                if (e.guid == this.props.question.cast_if) {
+                    return true;
+                }
+            })
+            return <Conditioner.ConnectedCondition dependancy={this.props.question.guid} index={ind} type={Interf.ComponentCondition.Question} mode={-1} />
+        }
+        return <Conditioner.ConnectedCondition dependancy={this.props.question.guid} index={-1} type={Interf.ComponentCondition.Question} mode={-1} />
+    }
+
+
 
     render() {
         return <Card className="createSideBar">
@@ -171,6 +186,9 @@ class Question extends React.Component<QuestionProps, {}>{
                             </FormGroup>
                         }
                     })()}
+                    {this.renderThen()}
+
+
                     {(() => {
                         if (this.props.index != -1 && this.props.question.parameter_guid.length > 0 && this.props.question.type == Interf.QuestionType.Variety) {
                             return (<div>
@@ -471,7 +489,7 @@ function getQuestionProps(store: ApplicationState, props: NeededPropsQuestion) {
         }
     });
 
-    return { question: question, questions: store.combinedSystem.questions, parameters: store.combinedSystem.parameters };
+    return { question: question, questions: store.combinedSystem.questions, parameters: store.combinedSystem.parameters, conditions: store.combinedSystem.conditions };
 
 
 }
