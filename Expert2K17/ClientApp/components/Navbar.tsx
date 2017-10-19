@@ -32,7 +32,7 @@ class NavBar extends React.Component<NavBarProps, { isOpen: boolean }> {
       <div>
         <Navbar fixed="top" color="inverse" inverse={true} light toggleable>
           <NavbarToggler right onClick={this.toggle} />
-          <Link className='navbar-brand' to={'/'}>ЭЗ ПЕЗ</Link>
+          <Link className='navbar-brand' to={'/'}>ЭЗ ПЕЗ<sup>β</sup></Link>
           <Collapse isOpen={this.state.isOpen} navbar>
             <Nav className="mr-auto" navbar>
               <NavItem>
