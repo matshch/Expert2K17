@@ -56,7 +56,8 @@ export class TestEditorSystem extends React.Component<TestEditSystemT, {}>{
                     <FormGroup row>
                         <Label for="imge" lg={3}>Картинка</Label>
                         <Col lg={9}>
-                            <img className="img-fluid" src={this.props.system.picture} ></img>
+                                <img className="img-fluid" src={this.props.system.picture} ></img>
+                                <br/>
                             <Input type="file" name="file" onChange={this.pictureChange} id="imge"></Input>
                         </Col>
                     </FormGroup>
