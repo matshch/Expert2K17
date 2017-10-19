@@ -1,7 +1,7 @@
 ﻿// A '.tsx' file enables JSX support in the TypeScript compiler, 
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
-import { Pair } from './TestInterfaces'
+import { Pair, Attribute } from './TestInterfaces'
 import { fetch, addTask } from 'domain-task';
 import { Action, Reducer, ActionCreator } from 'redux';
 import { AppThunkAction } from './';
@@ -33,6 +33,11 @@ interface UnPairAction {
     innerIndex: number;
 }
 
+interface DeleteAttributeAction {
+    type: 'DELETE_ATTRIBUTE';
+    attribute: Attribute;
+}
+
 interface SetPairAction {
     type: 'SET_PAIR';
     attrGuid: string;
@@ -41,7 +46,7 @@ interface SetPairAction {
 }
 // Declare a 'discriminated union' type. This guarantees that all references to 'type' properties contain one of the
 // declared type strings (and not any other arbitrary string).
-type KnownAction = SyncSystemAction | AddSystemAction | AddPairAction | UnPairAction | SetPairAction;
+type KnownAction = SyncSystemAction | AddSystemAction | AddPairAction | UnPairAction | SetPairAction | DeleteAttributeAction;
 
 // ----------------
 // REDUCER - For a given state and action, returns the new state. To support time travel, this must not mutate the old state.
@@ -95,6 +100,13 @@ export const reducer: Reducer<Pair[]> = (state: Pair[], action: KnownAction) => 
                     return { ...e, subjectGuids: [...e.subjectGuids, action.subjectGuid] }
                 } 
                 return e
+            });
+        case "DELETE_ATTRIBUTE":
+            return state.filter((e) => {
+                if (e.attributeGuid == action.attribute.guid) {
+                    return false;
+                }
+                return true;
             });
         default:
             // The following line guarantees that every action in the KnownAction union has been covered by a case above

@@ -63,7 +63,7 @@ export const actionCreators = {
                 dispatch({ type: 'LOAD_SYSTEM', system: data.json });
             }
         });
-        addTask(fetchTask);   
+        //addTask(fetchTask);   
     }
 
 };

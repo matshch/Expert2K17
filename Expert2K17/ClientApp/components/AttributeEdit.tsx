@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { ApplicationState } from '../store';
 import * as Store from '../store/Attribute';
 import { NavLink, Route, Redirect } from 'react-router-dom';
-import { Nav, NavItem, Row, Container, Col, Button, Form, FormGroup, Label, Input, FormText, Media, Card, CardBlock, CardTitle, CardText, ListGroup, ListGroupItem, ListGroupItemText } from 'reactstrap'
+import { Nav, NavItem, Row, Container, Col, Button, Form, FormGroup, Label, Input, FormText, Media, Card, CardBlock, CardTitle, CardText, ListGroup, ListGroupItem, ListGroupItemText, InputGroup, InputGroupButton } from 'reactstrap'
 import DocumentTitle from 'react-document-title';
 import * as Interf from '../store/TestInterfaces';
 
@@ -80,6 +80,13 @@ class Attribute extends React.Component<AttributeProps, {}>{
             this.props.attr.guid
         )
     }
+
+    canDeleteAttribute = () => {
+        if (this.props.pairs.length > 0) {
+            return true
+        }
+    }
+
     render() {
         return <Card className="createSideBar">
             <CardBlock>
@@ -87,13 +94,16 @@ class Attribute extends React.Component<AttributeProps, {}>{
                     <FormGroup row>
                         <Label for="texter" sm={3}>Название</Label>
                         <Col sm={9}>
-                            <Input type="text" name="text" id="texter" onChange={this.name_change} value={this.props.attr.name} placeholder="Название атрибута"></Input>
+                            <InputGroup>
+                                <Input type="text" name="text" id="texter" onChange={this.name_change} value={this.props.attr.name} placeholder="Название атрибута"></Input>
+                                <InputGroupButton color="danger"><Button color="danger"><i className="fa fa-trash" ></i></Button></InputGroupButton>
+                            </InputGroup>                                                  
                         </Col>
                     </FormGroup>
                     <FormGroup row>
                         <Label for="chb1" sm={3}>Числовые значения</Label>
                         <Col sm={9}>
-                            <Input type="checkbox" checked={this.props.attr.unitValue} onChange={this.unitChange} id="chb1" />
+                                <Input type="checkbox" checked={this.props.attr.unitValue} onChange={this.unitChange} id="chb1" />
                         </Col>
                     </FormGroup>
                     <hr />

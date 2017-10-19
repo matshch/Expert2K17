@@ -19,9 +19,11 @@ import * as Parameter from './Parameters';
 import * as Question from './Questions';
 import * as Logic from './Logics';
 
-
+interface sys {
+    system: Interf.System
+}
 type CounterProps =
-    Interf.System
+    sys
     & typeof Store.actionCreators
     & RouteComponentProps<{id:string}>;
 export
@@ -33,8 +35,9 @@ export
         if (this.props.location.pathname == '/CreateTest') {
             return <Redirect to="/CreateTest/new" />
         }
-        if (this.props.match.params.id != this.props.guid || this.props.guid != '' && this.props.location.pathname != '/CreateTest/new') {
-           
+
+        if (this.props.match.params.id != this.props.system.guid && this.props.location.pathname != '/CreateTest/new') {
+            this.props.loadGuidSystem(this.props.match.params.id);
         }
 
         return <DocumentTitle title='Создание системы — ЭЗ ПЕЗ'>
@@ -51,7 +54,6 @@ export
                         <Route path='/EditTest/:id/CreateParameter' component={Parameter.ConnectedTestParameterEditor} />
                         <Route path='/EditTest/:id/CreateQuestion' component={Question.ConnectedQuestionCreator} />
                         <Route path='/EditTest/:id/CreateLogic' component={Logic.ConnectedTestLogicEditor} />
-
                     </Col>
                 </Row>
             </Container>
@@ -92,21 +94,29 @@ export class TestCreaterNav extends React.Component<NavProps, {}>{
                                 })()
                             }  
                     </NavItem>
-                    <NavItem>
-                        <NavLink exact to={'/EditTest/' + this.props.link + '/CreateAttribute'} className='nav-link' activeClassName='active'>Атрибуты</NavLink>
-                    </NavItem>
-                    <NavItem>
-                            <NavLink exact to={'/EditTest/' + this.props.link + '/CreateSubject'} className='nav-link' activeClassName='active'>Объекты</NavLink>
-                    </NavItem>
-                    <NavItem>
-                            <NavLink exact to={'/EditTest/' + this.props.link + '/CreateParameter'} className='nav-link' activeClassName='active'>Параметер</NavLink>
-                    </NavItem>
-                    <NavItem>
-                        <NavLink exact to={'/EditTest/' + this.props.link + '/CreateQuestion'} className='nav-link' activeClassName='active'>Вопрос</NavLink>
-                    </NavItem>
-                    <NavItem>
-                        <NavLink exact to={'/EditTest/' + this.props.link + '/CreateLogic'} className='nav-link' activeClassName='active'>Вопрос</NavLink>
-                    </NavItem>
+                    {(() => {
+                            if (typeof this.props.guid != 'undefined' && this.props.guid.length > 0) {
+                                return <div>
+                                    <NavItem>
+                                        <NavLink exact to={'/EditTest/' + this.props.link + '/CreateAttribute'} className='nav-link' activeClassName='active'>Атрибуты</NavLink>
+                                    </NavItem>
+                                    <NavItem>
+                                        <NavLink exact to={'/EditTest/' + this.props.link + '/CreateSubject'} className='nav-link' activeClassName='active'>Объекты</NavLink>
+                                    </NavItem>
+                                    <NavItem>
+                                        <NavLink exact to={'/EditTest/' + this.props.link + '/CreateParameter'} className='nav-link' activeClassName='active'>Параметер</NavLink>
+                                    </NavItem>
+                                    <NavItem>
+                                        <NavLink exact to={'/EditTest/' + this.props.link + '/CreateQuestion'} className='nav-link' activeClassName='active'>Вопрос</NavLink>
+                                    </NavItem>
+                                    <NavItem>
+                                        <NavLink exact to={'/EditTest/' + this.props.link + '/CreateLogic'} className='nav-link' activeClassName='active'>Логика</NavLink>
+                                    </NavItem>
+                                </div>
+                            }
+
+                        })()}
+                    
                 </Nav>
 
                 <hr />
@@ -132,6 +142,6 @@ interface linker {
 
 // Wire up the React component to the Redux store
 export default connect(
-    (state: ApplicationState) => state.combinedSystem.system, // Selects which state properties are merged into the component's props
+    (state: ApplicationState) => { return { system: state.combinedSystem.system } }, // Selects which state properties are merged into the component's props
     Store.actionCreators                 // Selects which action creators are merged into the component's props
 )(TestCreater);

@@ -18,9 +18,14 @@ interface AddConditionAction {
     type: 'ADD_ATTRIBUTE';
     attribute: Attribute;
 }
+
+interface DeleteAttributeAction {
+    type: 'DELETE_ATTRIBUTE';
+    attribute: Attribute;
+}
 // Declare a 'discriminated union' type. This guarantees that all references to 'type' properties contain one of the
 // declared type strings (and not any other arbitrary string).
-type KnownAction = SyncConditionAction | AddConditionAction;
+type KnownAction = SyncConditionAction | AddConditionAction | DeleteAttributeAction;
 
 // ----------------
 // REDUCER - For a given state and action, returns the new state. To support time travel, this must not mutate the old state.
@@ -36,6 +41,9 @@ export const actionCreators = {
     syncAttribute: (attr: Attribute, guid_: string): AppThunkAction<KnownAction> => (dispatch, getState) => {
         dispatch({ type: 'SYNC_ATTRIBUTE', attribute: attr, guid: guid_ });
     },
+    deleteAttribute: (attr: Attribute): AppThunkAction<KnownAction> => (dispatch, getState) => {
+        dispatch({ type: 'DELETE_ATTRIBUTE', attribute: attr});
+    }
 };
 
 
@@ -49,6 +57,13 @@ export const reducer: Reducer<Attribute[]> = (state: Attribute[], action: KnownA
     switch (action.type) {
         case "ADD_ATTRIBUTE":
             return [...state, action.attribute];
+        case "DELETE_ATTRIBUTE":
+            return state.filter((e) => {
+                if (e.guid == action.attribute.guid) {
+                    return false;
+                }
+                return true;
+            });
         case "SYNC_ATTRIBUTE":
             return state.map((e, index) => {
                 if (e.guid == action.guid) {
