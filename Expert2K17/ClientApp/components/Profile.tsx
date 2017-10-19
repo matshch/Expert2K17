@@ -86,7 +86,7 @@ export class Profile extends React.Component<ProfileProps, { showPictureButtons:
                             <div className="card-subtitle"><h4>{this.props.user.surname} {this.props.user.name} {this.props.user.patronymic}</h4><p>{this.props.user.group} {this.props.user.year}</p></div>
                             <h5>Список созданных тестов:</h5>
                             <ListGroup>
-                                {this.props.TestsList.map(e => <Link className="list-group-item list-group-item-action" to={"/test/" + e.id}>{e.name}</Link>)}
+                                {this.props.TestsList.map(e => <Link className="list-group-item list-group-item-action" to={"/EditTest/" + e.id}>{e.name}</Link>)}
                             </ListGroup>
                         </CardBlock>
                         <input ref={(input) => this.file1 = input} accept="image/png,image/gif,image/jpeg" onChange={this.profilePictureChanged} type="file" />
