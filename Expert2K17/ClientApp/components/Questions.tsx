@@ -198,27 +198,27 @@ class Answers extends React.Component<SubjecterAttribute, {}> {
     }
 
     makeOptions = () => {
+        let arra: string[] = this.props.question.answers.map((e) => {
+            return e.value
+        })
+
         return this.props.pairs.filter((e) => {
-            if (e.parameterGuid == this.props.question.parameter_guid) { return true }
+            if (e.parameterGuid == this.props.question.parameter_guid && !arra.includes(e.guid)) { return true }
             else { return false }
         }).map((e) => {
             return {
                 label: e.value,
-                value: e.value
+                value: e.guid
             }
         })
     }
     onVChange = (item: any) => {
             if (!!item && !!item.newOption as any) {
-                if (this.props.index > -1) {
-                    this.props.syncAnswer(this.props.index, this.props.question.guid, this.props.answer.value, this.props.answer.answer, item.value);
-                    return;
-                }
-                this.props.addParpair(item.value, this.props.question.parameter_guid);
+                this.props.syncNewAnswer(this.props.index, this.props.question.guid, this.props.answer.answer, item.label);
                 return;
             }
-            if (!!item && this.props.index > -1) {
-                this.props.syncAnswer(this.props.index, this.props.question.guid, this.props.answer.value, this.props.answer.answer, item.value);
+            if (!!item) {
+                this.props.syncAnswer(this.props.index, this.props.question.guid, item.value, this.props.answer.answer);
                 return;
             }
 
@@ -232,7 +232,7 @@ class Answers extends React.Component<SubjecterAttribute, {}> {
                 }
             }).value + '';*/
 
-            this.props.syncAnswer(this.props.index, this.props.question.guid, this.props.answer.value, e.target.value, this.props.answer.value);
+            this.props.syncAnswer(this.props.index, this.props.question.guid, this.props.answer.value, e.target.value);
         } else {
             this.props.addAnswer(this.props.answer.value, e.target.value, this.props.question.guid);
         }
@@ -266,39 +266,46 @@ class Answers extends React.Component<SubjecterAttribute, {}> {
                     <Col lg={8}>
                         <Input type="textarea" value={this.props.answer.answer} onChange={this.onTextChange} />
                     </Col>
-                </Row>
-                <Row>
-                    <Col lg={6}>
-                        <Label>Значение параметра</Label>
-                    </Col>
-                    <Col lg={6}>
-                        <ComboBox.SimpleSelect options={this.makeOptions()}
-                            createFromSearch={
-                                (options, search) => {
-                                    if (search.length == 0 || (options.map(function (option) {
-                                        return option.label;
-                                    })).indexOf(search) > -1)
-                                        return null as OptionValue;
-                                    else
-                                        return { label: search, value: search };
-                                }
-                            }
-                            defaultValue={this.defaultValue()}
-                            onValueChange={this.onVChange}
+                </Row>     
+                <br/>
+                {(() => {
+                    if (this.props.index > -1) {
+                        return <Row>
+                            <Col lg={6}>
+                                <Label>Значение параметра</Label>
+                            </Col>
+                            <Col lg={6}>
+                                <ComboBox.SimpleSelect options={this.makeOptions()}
+                                    createFromSearch={
+                                        (options, search) => {
+                                            if (search.length == 0 || (options.map(function (option) {
+                                                return option.label;
+                                            })).indexOf(search) > -1)
+                                                return null as OptionValue;
+                                            else
+                                                return { label: search, value: search };
+                                        }
+                                    }
+                                    defaultValue={this.defaultValue()}
+                                    onValueChange={this.onVChange}
 
-                            renderOption={function (item: any) {
-                                return <div className="simple-option" style={{ display: "flex", alignItems: "center" }}>
-                                    <div style={{
-                                        backgroundColor: item.label, borderRadius: "50%", width: 24, height: 24
-                                    }}></div>
-                                    <div style={{ marginLeft: 10 }}>
-                                        {!!item.newOption ? "Добавить " + item.label + " ..." : item.label}
-                                    </div>
-                                </div>
-                            }}
-                            placeholder="Выберите значение параметра"></ComboBox.SimpleSelect>
-                    </Col>
-                </Row>
+                                    renderOption={function (item: any) {
+                                        return <div className="simple-option" style={{ display: "flex", alignItems: "center" }}>
+                                            <div style={{
+                                                backgroundColor: item.label, borderRadius: "50%", width: 24, height: 24
+                                            }}></div>
+                                            <div style={{ marginLeft: 10 }}>
+                                                {!!item.newOption ? "Добавить " + item.label + " ..." : item.label}
+                                            </div>
+                                        </div>
+                                    }}
+                                    placeholder="Выберите значение параметра"></ComboBox.SimpleSelect>
+                            </Col>
+                        </Row>
+                    }
+
+                })()}
+                   
             </CardBlock>
         </Card>
     }

@@ -73,69 +73,43 @@ export const actionCreators = {
     syncQuestion: (question_: Question): AppThunkAction<KnownAction> => (dispatch, getState) => {
         dispatch({ type: 'SYNC_QUESTION', question: question_ });
     },
-    syncAnswer: (index: number, questionGuid: string, valueGuid: string, answer: string, value: string): AppThunkAction<KnownAction | AddPairAction> => (dispatch, getState) => {
+    syncAnswer: (index: number, questionGuid: string, valueGuid: string, answer: string): AppThunkAction<KnownAction | AddPairAction> => (dispatch, getState) => {
         let state = getState().combinedSystem;
-        let previousValue = state.parpairs.find((e) => {
-            if (e.guid == valueGuid) {
-                return true
+            let dispatcher = {
+                answer: answer,
+                questionGuid: questionGuid,
+                guid: valueGuid,
+                index: index
+            }
+            dispatch({
+                ...dispatcher,
+                type: 'SYNC_ANSWER'
+            });
+
+    }, syncNewAnswer: (index: number, questionGuid: string, answer: string, value: string): AppThunkAction<KnownAction | AddPairAction> => (dispatch, getState) => {
+        let state = getState().combinedSystem;  
+        let question = getState().combinedSystem.questions.find((e) => {
+            if (e.guid == questionGuid) {
+                return true;
             }
         })
-        if (typeof previousValue == 'undefined') {
-
-            let question = getState().combinedSystem.questions.find((e) => {
-                if (e.guid == questionGuid) {
-                    return true;
-                }
-            })
-
-
-            let guid = Guid.MakeNew();
-            dispatch({
-                type: 'ADD_PARPAIR',
-                guid: guid,
-                value: value,
-                parameterGuid: question.parameter_guid
-            });
-            let dispatcher = {
-                answer: answer,
-                questionGuid: questionGuid,
-                guid: guid,
-                index: index
-            }
-            dispatch({
-                ...dispatcher,
-                type: 'SYNC_ANSWER'
-            });
-        } else if (previousValue.value == value) {
-            let dispatcher = {
-                answer: answer,
-                questionGuid: questionGuid,
-                guid: previousValue.guid,
-                index: index
-            }
-            dispatch({
-                ...dispatcher,
-                type: 'SYNC_ANSWER'
-            });
-        } else {
-            let guid = Guid.MakeNew();
-            dispatch({
-                type: 'ADD_PARPAIR',
-                guid: guid,
-                value: value,
-                parameterGuid: previousValue.parameterGuid
-            });
-            let dispatcher = {
-                answer: answer,
-                questionGuid: questionGuid,
-                guid: guid,
-                index: index
-            }
-            dispatch({
-                ...dispatcher,
-                type: 'SYNC_ANSWER'
-            });
+        let guid = Guid.MakeNew();
+        dispatch({
+            type: 'ADD_PARPAIR',
+            guid: guid,
+            value: value,
+            parameterGuid: question.parameter_guid
+        });
+        let dispatcher = {
+            answer: answer,
+            questionGuid: questionGuid,
+            guid: guid,
+            index: index
         }
+        dispatch({
+            ...dispatcher,
+            type: 'SYNC_ANSWER'
+        });      
     },
     addAnswer: (valueGuid: string, answer: string, questionGuid: string): AppThunkAction<KnownAction> => (dispatch, getState) => {
         dispatch({
