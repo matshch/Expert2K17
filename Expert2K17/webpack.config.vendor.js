@@ -14,6 +14,7 @@ module.exports = (env) => {
         resolve: { extensions: [ '.js' ] },
         entry: {
             vendor: [
+                'deep-equal',
                 'domain-task',
                 'history',
                 're-reselect',
