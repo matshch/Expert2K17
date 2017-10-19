@@ -255,7 +255,8 @@ export const reducer: Reducer<TestStore> = (state: TestStore, action: KnownActio
             let oldTest = newTest;
             console.log("Beginning recalc...");
             do {
-                oldTest = {
+                oldTest = newTest;
+                newTest = {
                     ...newTest,
                     answeredParameters: newTest.answeredParameters.map(e => e.reasons.length > 0 ? {...e, reasons: []} : e)
                 };
@@ -417,7 +418,7 @@ export const reducer: Reducer<TestStore> = (state: TestStore, action: KnownActio
                         return newTest;
                     }
                     return test;
-                }, oldTest);
+                }, newTest);
                 console.log(oldTest, newTest);
             } while (!deepEqual(oldTest, newTest));
             console.log("Recalc done.");
