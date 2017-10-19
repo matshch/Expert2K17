@@ -33,6 +33,7 @@ export
     }
     render() {
         if (this.props.location.pathname == '/CreateTest') {
+            this.props.clearSystem();
             return <Redirect to="/CreateTest/new" />
         }
 
@@ -79,6 +80,9 @@ export class TestCreaterNav extends React.Component<NavProps, {}>{
 
     saveForce = () => {
         this.props.saveSystem();
+    }
+    rollbackForce = () => {
+        this.props.rollbackGuidSystem(this.props.link);
     }
     render() {
         return (
@@ -127,7 +131,7 @@ export class TestCreaterNav extends React.Component<NavProps, {}>{
 
                 <hr />
 
-                <Button block>Восстановить состояние</Button>
+                <Button block onClick={this.rollbackForce}>Восстановить состояние</Button>
                 <Button block onClick={this.saveForce}>Сохранить состояние</Button>
 
                 </CardBlock>

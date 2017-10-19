@@ -80,6 +80,33 @@ export const actionCreators = {
                 return true
             }
         })
+        if (typeof previousValue == 'undefined') {
+
+            let question = getState().combinedSystem.questions.find((e) => {
+                if (e.guid == questionGuid) {
+                    return true;
+                }
+            })
+
+
+            let guid = Guid.MakeNew();
+            dispatch({
+                type: 'ADD_PARPAIR',
+                guid: guid,
+                value: value,
+                parameterGuid: question.parameter_guid
+            });
+            let dispatcher = {
+                answer: answer,
+                questionGuid: questionGuid,
+                guid: guid,
+                index: index
+            }
+            dispatch({
+                ...dispatcher,
+                type: 'SYNC_ANSWER'
+            });
+        }
         if (previousValue.value == value) {
             let dispatcher = {
                 answer: answer,
@@ -190,7 +217,13 @@ export const reducer: Reducer<Question[]> = (state: Question[], action: KnownAct
                 if (e.guid == action.questionGuid) {
                     return {
                         ...e,
-                        parameter_guid: action.parameterGuid
+                        parameter_guid: action.parameterGuid,
+                        answers: e.answers.map((e) => {
+                            return {
+                                answer: e.answer,
+                                value: ''
+                            }
+                        })
                     }
                 }
                 return e

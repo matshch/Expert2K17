@@ -48,6 +48,9 @@ interface LoadPreviousAction {
 interface AddSystemAction {
     type: 'SYNC_SUBJECT1';
 }
+interface ClearSystemAction {
+    type: 'CLEAR_STORE';
+}
 
 export const actionCreators = {
     loadPreviousSystem: (): AppThunkAction<KnownAction> => (dispatch, getState) => {
@@ -64,7 +67,7 @@ export const actionCreators = {
 
 let defaultReducer = combineReducers<SystemCreateState>(reducers);
 
-type KnownAction = LoadPreviousAction | AddSystemAction;
+type KnownAction = LoadPreviousAction | AddSystemAction | ClearSystemAction;
 
 function CollectState(state: SystemCreateState) {
     return JSON.stringify(state);
@@ -72,6 +75,9 @@ function CollectState(state: SystemCreateState) {
 
 export const reducer: Reducer<SystemCreateState> = (state: SystemCreateState, action: KnownAction) => {
     switch (action.type) {
+        case "CLEAR_STORE":
+            let kek;
+            return defaultReducer(kek, action);
         default:
             let new_state = defaultReducer(state, action);
             if (new_state.system.guid != '') {

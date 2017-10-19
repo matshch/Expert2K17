@@ -124,7 +124,7 @@ class Question extends React.Component<QuestionProps, {}>{
                         </Col>
                     </FormGroup>
                     {(() => {
-                        if (this.props.index != -1) {
+                        if (this.props.index != -1 && this.props.question.parameter_guid.length>0) {
                             return (<div>
                                 <hr />
                                 <ListGroup>
@@ -209,7 +209,6 @@ class Answers extends React.Component<SubjecterAttribute, {}> {
         })
     }
     onVChange = (item: any) => {
-        if (this.props.index > -1) {
             if (!!item && !!item.newOption as any) {
                 if (this.props.index > -1) {
                     this.props.syncAnswer(this.props.index, this.props.question.guid, this.props.answer.value, this.props.answer.answer, item.value);
@@ -222,19 +221,18 @@ class Answers extends React.Component<SubjecterAttribute, {}> {
                 this.props.syncAnswer(this.props.index, this.props.question.guid, this.props.answer.value, this.props.answer.answer, item.value);
                 return;
             }
-        }
 
     }
 
     onTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (this.props.index != -1) {
-            let valer = this.props.pairs.find((e) => {
+            /*let valer = this.props.pairs.find((e) => {
                 if (e.guid == this.props.answer.value) {
                     return true;
                 }
-            }).value + '';
+            }).value + '';*/
 
-            this.props.syncAnswer(this.props.index, this.props.question.guid, this.props.answer.value, e.target.value, valer);
+            this.props.syncAnswer(this.props.index, this.props.question.guid, this.props.answer.value, e.target.value, this.props.answer.value);
         } else {
             this.props.addAnswer(this.props.answer.value, e.target.value, this.props.question.guid);
         }
