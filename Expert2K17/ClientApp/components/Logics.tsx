@@ -91,9 +91,9 @@ class Logic extends React.Component<ParameterProps, {}>{
                     return true;
                 }
             })
-            return <Conditioner.ConnectedCondition dependancy={this.props.logic.guid} index={ind} type={Interf.ComponentCondition.Logic} mode={-1} />
+            return <Conditioner.ConnectedCondition dependancy={this.props.logic.guid} index={ind} type={Interf.ComponentCondition.Result} mode={-1} />
         }
-        return <Conditioner.ConnectedCondition dependancy={this.props.logic.guid} index={-1} type={Interf.ComponentCondition.Logic} mode={-1} />
+        return <Conditioner.ConnectedCondition dependancy={this.props.logic.guid} index={-1} type={Interf.ComponentCondition.Result} mode={-1} />
     }
 
 
