@@ -38,7 +38,16 @@ interface DeleteAttributeAction {
     type: 'DELETE_ATTRIBUTE';
     attribute: Attribute;
 }
+interface DeletePairAction {
+    type: 'DELETE_PAIR';
+    guid: string;
+}
 
+interface ChangePairAction {
+    type: 'CHANGE_PAIR';
+    guid: string;
+    value: string;
+}
 interface SetPairAction {
     type: 'SET_PAIR';
     attrGuid: string;
@@ -52,7 +61,7 @@ interface LoadSystemAction {
 
 // Declare a 'discriminated union' type. This guarantees that all references to 'type' properties contain one of the
 // declared type strings (and not any other arbitrary string).
-type KnownAction = SyncSystemAction | AddSystemAction | AddPairAction | UnPairAction | SetPairAction | DeleteAttributeAction | LoadSystemAction;
+type KnownAction = SyncSystemAction | AddSystemAction | AddPairAction | UnPairAction | SetPairAction | DeleteAttributeAction | LoadSystemAction | DeletePairAction | ChangePairAction;
 
 // ----------------
 // REDUCER - For a given state and action, returns the new state. To support time travel, this must not mutate the old state.
@@ -109,6 +118,24 @@ export const reducer: Reducer<Pair[]> = (state: Pair[], action: KnownAction) => 
                 } 
                 return e
             });
+        case "DELETE_PAIR":
+            return state.filter((e) => {
+                if (e.guid == action.guid) {
+                    return false;
+                }
+                return true;
+            })
+        case "CHANGE_PAIR":
+            return state.map((e) => {
+                if (e.guid == action.guid) {
+                    return {
+                        ...e,
+                        value: action.value
+                    }
+                }
+                return e;
+            })
+
         case "DELETE_ATTRIBUTE":
             return state.filter((e) => {
                 if (e.attributeGuid == action.attribute.guid) {

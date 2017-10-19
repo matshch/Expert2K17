@@ -114,7 +114,7 @@ export class TestCreaterNav extends React.Component<NavProps, {}>{
                                         <NavLink exact to={'/EditTest/' + this.props.link + '/CreateSubject'} className='nav-link' activeClassName='active'>Объекты</NavLink>
                                     </NavItem>
                                     <NavItem>
-                                        <NavLink exact to={'/EditTest/' + this.props.link + '/CreateParameter'} className='nav-link' activeClassName='active'>Параметер</NavLink>
+                                        <NavLink exact to={'/EditTest/' + this.props.link + '/CreateParameter'} className='nav-link' activeClassName='active'>Параметр</NavLink>
                                     </NavItem>
                                     <NavItem>
                                         <NavLink exact to={'/EditTest/' + this.props.link + '/CreateQuestion'} className='nav-link' activeClassName='active'>Вопрос</NavLink>

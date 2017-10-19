@@ -91,6 +91,13 @@ class Attribute extends React.Component<AttributeProps, {}>{
         this.props.deleteAttribute(this.props.attr);
     }
 
+    onPChange = (guid: string, value: string) => {
+        this.props.renamePair(guid, value);
+    }
+    onPDelete = (guid: string) => {
+        this.props.deletePair(guid);
+    }
+
     render() {
         return <Card className="createSideBar">
             <CardBlock>
@@ -113,7 +120,7 @@ class Attribute extends React.Component<AttributeProps, {}>{
                     <hr />
                     <ListGroup>
                         {this.props.pairs.map((val, key) => {
-                            return <ListGroupItem key={key}>{val.value}</ListGroupItem>
+                            return <Valer deleter={this.onPDelete} changer={this.onPChange} guid={val.guid} value={val.value} key={key} />
                         })}
                     </ListGroup>
                                     
@@ -124,23 +131,31 @@ class Attribute extends React.Component<AttributeProps, {}>{
 }
 
 interface propsValer {
-
+    value: string;
+    guid: string;
+    deleter: (guid: string) => void;
+    changer: (guid: string, value: string) => void;
 }
 
 
-class Valer extends React.Component<CreateAttribute, {}>{
+class Valer extends React.Component<propsValer, {}>{
     constructor() {
         super();
     }
-
+    chan = (e: React.ChangeEvent<HTMLInputElement>) => {
+        this.props.changer(this.props.guid, e.target.value);
+    }
+    onDelete = () => {
+        this.props.deleter(this.props.guid);
+    }
     render() {
-        return <Container fluid>
-
-            {this.props.attr.map((val, key) => {
-                return <ConnectedAttribute key={key} index={key} />
-            })}
-            <ConnectedNewAttribute />
-        </Container>
+        return <div>
+            <InputGroup>
+                <Input placeholder="значение" type="text" value={this.props.value} onChange={this.chan} />
+                <InputGroupButton><Button color="danger" onClick={this.onDelete}><i className="fa fa-trash" ></i></Button></InputGroupButton>
+            </InputGroup>
+            <br/>
+        </div>
     }
 }
 

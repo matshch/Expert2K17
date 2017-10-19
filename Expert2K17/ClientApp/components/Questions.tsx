@@ -97,6 +97,32 @@ class Question extends React.Component<QuestionProps, {}>{
             return;
         }
     }
+
+    optionerForQuest = () => {
+        return [
+            { label: 'Множество значений', value: Interf.QuestionType.Variety },
+            { label: 'Вводимое значение', value: Interf.QuestionType.Value },
+        ]
+    }
+
+    defaultQuest = () => {
+        if (this.props.question.type == Interf.QuestionType.Value) {
+            return { label: 'Вводимое значение', value: Interf.QuestionType.Value }
+        }
+        if (this.props.question.type == Interf.QuestionType.Variety) {
+            return { label: 'Множество значений', value: Interf.QuestionType.Variety }
+        }
+    }
+
+    changeQuest = (item: any) => {
+        if (!!item) {
+            this.props.syncQuestion({
+                ...this.props.question,
+                type: item.value
+            })
+        }
+    }
+
     render() {
         return <Card className="createSideBar">
             <CardBlock>
@@ -106,13 +132,7 @@ class Question extends React.Component<QuestionProps, {}>{
                         <Col sm={9}>
                             <Input type="text" name="text" id="texter" value={this.props.question.question} onChange={this.name_change} placeholder="Вопрос"></Input>
                         </Col>
-                    </FormGroup>
-                    <FormGroup row>
-                        <Label for="chb0" sm={3}>Тип ответа</Label>
-                        <Col sm={9}>
-                            
-                        </Col>
-                    </FormGroup>
+                    </FormGroup>                  
                     <FormGroup row>
                         <Label for="chb2" sm={3}>Параметр</Label>
                         <Col sm={9}>
@@ -124,7 +144,7 @@ class Question extends React.Component<QuestionProps, {}>{
                         </Col>
                     </FormGroup>
                     {(() => {
-                        if (this.props.index != -1 && this.props.question.parameter_guid.length>0) {
+                        if (this.props.index != -1 && this.props.question.parameter_guid.length > 0 && this.props.question.type == Interf.QuestionType.Variety) {
                             return (<div>
                                 <hr />
                                 <ListGroup>
@@ -261,7 +281,7 @@ class Answers extends React.Component<SubjecterAttribute, {}> {
             <CardBlock>
                 <Row>
                     <Col lg={4}>
-                        <label>Вопрос</label>
+                        <label>Ответ</label>
                     </Col>
                     <Col lg={8}>
                         <Input type="textarea" value={this.props.answer.answer} onChange={this.onTextChange} />
