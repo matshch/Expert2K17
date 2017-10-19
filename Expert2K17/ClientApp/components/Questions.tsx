@@ -40,6 +40,7 @@ interface PArameterAdditionalProps {
     index: number;
     question: Interf.Question;
     parameters: Interf.Parameter[];
+    questions: Interf.Question[];
 }
 
 
@@ -99,26 +100,39 @@ class Question extends React.Component<QuestionProps, {}>{
     }
 
     optionerForQuest = () => {
-        return [
-            { label: 'Множество значений', value: Interf.QuestionType.Variety },
-            { label: 'Вводимое значение', value: Interf.QuestionType.Value },
-        ]
+        return this.props.questions.filter((e) => {
+            if (e.guid == this.props.question.guid) {
+                return false;
+            }
+            return true
+        }).map((e) => {
+            return {
+                label: e.question,
+                value: e.guid
+            }
+        })
     }
 
     defaultQuest = () => {
-        if (this.props.question.type == Interf.QuestionType.Value) {
-            return { label: 'Вводимое значение', value: Interf.QuestionType.Value }
+        let qq = this.props.questions.find((e) => {
+            if (e.guid == this.props.question.cast_after) {
+                return true;
+            }
+        });
+        if (typeof qq != 'undefined') {
+            return {
+                label: qq.question,
+                value: qq.guid
+            }
         }
-        if (this.props.question.type == Interf.QuestionType.Variety) {
-            return { label: 'Множество значений', value: Interf.QuestionType.Variety }
-        }
+
     }
 
     changeQuest = (item: any) => {
         if (!!item) {
             this.props.syncQuestion({
                 ...this.props.question,
-                type: item.value
+                cast_after: item.value
             })
         }
     }
@@ -143,6 +157,20 @@ class Question extends React.Component<QuestionProps, {}>{
                                 placeholder="Выберите параметр"></ComboBox.SimpleSelect>
                         </Col>
                     </FormGroup>
+                    {(() => {
+                        if (this.props.questions.length > 1) {
+                            return <FormGroup row>
+                                <Label for="chb2" sm={3}>Выводить после</Label>
+                                <Col sm={9}>
+                                    <ComboBox.SimpleSelect
+                                        options={this.optionerForQuest()}
+                                        defaultValue={this.defaultQuest()}
+                                        onValueChange={this.changeQuest}
+                                        placeholder="Выберите вопрос"></ComboBox.SimpleSelect>
+                                </Col>
+                            </FormGroup>
+                        }
+                    })()}
                     {(() => {
                         if (this.props.index != -1 && this.props.question.parameter_guid.length > 0 && this.props.question.type == Interf.QuestionType.Variety) {
                             return (<div>
@@ -443,7 +471,7 @@ function getQuestionProps(store: ApplicationState, props: NeededPropsQuestion) {
         }
     });
 
-    return { question: question, parameters: store.combinedSystem.parameters };
+    return { question: question, questions: store.combinedSystem.questions, parameters: store.combinedSystem.parameters };
 
 
 }
