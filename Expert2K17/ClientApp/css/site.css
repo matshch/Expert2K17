@@ -74,6 +74,18 @@ body
     background-size: 500% 500%;
 }
 
+.jumbotron
+{
+    height: calc(100vh - 20ex);
+    margin: 20px;
+}
+
+.jumbotron .list-group-item
+{
+    font-family: OpenSans-SemiBoldItalic !important;
+    font-size: 15pt;
+}
+
 .test
 {
     display: flex;
@@ -268,11 +280,12 @@ hr
     background-color: rgba(255,255,255,.7);
 }
 
+.jumbotron h1,
 .test-container .card-title,
 .panel .card-title h4
 {
     font-family: Lobster !important;
-    line-height: 18px;
+    line-height: 30px;
 
     display: inline;
 
