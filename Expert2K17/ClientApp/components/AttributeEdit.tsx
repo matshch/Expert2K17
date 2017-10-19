@@ -116,7 +116,6 @@ class NewAttribute extends React.Component<typeof Store.actionCreators, Interf.A
        this.state = {
             system_guid: '',
             name: '',
-            values: [],
             unitValue: false,
             guid: ''
         }
@@ -144,7 +143,6 @@ class NewAttribute extends React.Component<typeof Store.actionCreators, Interf.A
             this.setState({
                 system_guid: '',
                 name: '',
-                values: [],
                 unitValue: false,
                 guid: ''
             });

@@ -6,6 +6,7 @@ import { fetch, addTask } from 'domain-task';
 import { Action, Reducer, ActionCreator } from 'redux';
 import { AppThunkAction } from './';
 import Guid from '../guid';
+
 /*
 enum Operation {
     Equal,
@@ -51,6 +52,22 @@ interface AddPairAction {
     guid: string;
 }
 
+interface LinkResultAction {
+    type: 'LINK_RESULT';
+    logicGuid: string;
+    guid: string;
+}
+interface LinkLogicAction {
+    type: 'LINK_LOGIC';
+    logicGuid: string;
+    guid: string;
+}
+interface LinkQuestionAction {
+    type: 'LINK_QUESTION';
+    questionGuid: string;
+    guid: string;
+}
+
 // Declare a 'discriminated union' type. This guarantees that all references to 'type' properties contain one of the
 // declared type strings (and not any other arbitrary string).
 type KnownAction = AddConditionAction | SyncConditionAction;
@@ -61,14 +78,25 @@ type KnownAction = AddConditionAction | SyncConditionAction;
 
 
 export const actionCreators = {
-    addCondition: (condition: Condition): AppThunkAction<KnownAction> => (dispatch, getState) => {
+    addCondition: (condition: Condition, guid: string): AppThunkAction<KnownAction | LinkResultAction | LinkLogicAction | LinkQuestionAction> => (dispatch, getState) => {
         let condition_ = {
             ...condition,
             guid: Guid.MakeNew()
         }
         dispatch({ type: 'ADD_CONDITION', condition: condition_ });
+        if (condition_.origin == ComponentCondition.Logic) {
+            dispatch({ type: 'LINK_LOGIC', guid: condition_.guid, logicGuid: guid});
+        }
+        if (condition_.origin == ComponentCondition.Result) {
+            dispatch({ type: 'LINK_RESULT', guid: condition_.guid, logicGuid: guid });
+        }
+        if (condition_.origin == ComponentCondition.Question) {
+            dispatch({ type: 'LINK_QUESTION', guid: condition_.guid, questionGuid: guid });
+        }
     },
     syncCondition: (condition: Condition): AppThunkAction<KnownAction> => (dispatch, getState) => {
+
+
         dispatch({ type: 'SYNC_CONDITION', condition: condition });
     },
     syncWithAddCondition: (condition: Condition, label: string): AppThunkAction<KnownAction | AddPairAction> => (dispatch, getState) => {
