@@ -73,6 +73,54 @@ body
     background-size: 500% 500%;
 }
 
+.test
+{
+    display: flex;
+
+    flex-flow: row wrap;
+    justify-content: space-around;
+}
+
+.slick-arrow
+{
+    -webkit-transform: scale(2); /* Safari */
+        -ms-transform: scale(2); /* IE 9 */
+            transform: scale(2);
+}
+
+hr
+{
+    display: block;
+
+    height: 3px;
+    margin: 1em 0;
+    padding: 0;
+
+    border: 0;
+    border-top: 1px solid black;
+}
+
+.test .card-title {
+    text-align: center;
+}
+
+.test-container
+{
+    padding: 20px;
+}
+
+.test-container .card
+{
+    height: calc(100vh - 20ex);
+}
+
+.slick-slider
+{
+    display: inline-block;
+
+    width: 90%;
+}
+
 .panel .nav.nav-pills
 {
     padding-bottom: 12px;
@@ -218,6 +266,7 @@ body
     background-color: rgba(255,255,255,.7);
 }
 
+.test-container .card-title,
 .panel .card-title h4
 {
     font-family: Lobster !important;
