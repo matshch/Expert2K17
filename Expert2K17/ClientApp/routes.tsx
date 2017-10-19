@@ -12,10 +12,10 @@ import Tester from './components/CreateTest';
 export const routes = <Layout>
     <Route exact path='/' component={Home} />
     <Route path='/login' component={Login} />
-    <Route path='/test' component={Test} />
     <Route path='/register' component={Register} />
     <Route path='/panel' component={Panel} />
     <Route path='/Profile' component={Profile} />
     <Route path='/CreateTest' component={Tester}/>
     <Route path='/EditTest/:id' component={Tester} />
+    <Route path='/test/:id' component={Test} />
 </Layout>;

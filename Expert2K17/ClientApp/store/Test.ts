@@ -221,7 +221,7 @@ const getLogicConditionResult = createCachedSelector(
 const toAskedQuestion = (q : Question) => ({
                                                guid: q.guid,
                                                question: q.question,
-                                               answers: q.answers.map(e => e.value),
+                                               answers: q.answers.map(e => e.answer),
                                                type: q.type
                                            });
 
