@@ -19,7 +19,6 @@
     "@types/react-spinkit": "^3.0.2",
     "@types/react-transition-group": "^1.1.2",
     "@types/reactstrap": "^4.6.4",
-    "@types/webpack": "^3.0.12",
     "@types/webpack-env": "^1.13.1",
     "aspnet-prerendering": "^3.0.1",
     "aspnet-webpack": "^2.0.1",
