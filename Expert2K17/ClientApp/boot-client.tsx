@@ -1,4 +1,5 @@
 import './css/site.css';
+import './custom/data-grid-fix';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
@@ -24,9 +25,7 @@ function renderApp(hydrate = false) {
 
     var renderer = ReactDOM.render;
     if (hydrate) {
-        //TODO: React 16
-        //renderer = (ReactDOM as any).hydrate;
-        renderer = ReactDOM.render;
+        renderer = ReactDOM.hydrate;
     }
     renderer(
         <AppContainer>
