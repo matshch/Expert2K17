@@ -9,12 +9,11 @@ type NavBarProps =
     UserStore.UserState
     & typeof UserStore.actionCreators;
 
-class NavBar extends React.Component<NavBarProps, { isOpen: boolean }> {
-  constructor() {
-    super();
-    this.toggle = this.toggle.bind(this);
+class NavBar extends React.Component<NavBarProps, { collapsed: boolean }> {
+  constructor(props: NavBarProps) {
+    super(props);
     this.state = {
-      isOpen: false
+      collapsed: true
     };
   }
 
@@ -22,19 +21,18 @@ class NavBar extends React.Component<NavBarProps, { isOpen: boolean }> {
     this.props.GetUser();
   }
 
-  toggle() {
-    this.setState({
-      isOpen: !this.state.isOpen
-    });
-  }
+  toggle = () => this.setState({
+      collapsed: !this.state.collapsed
+  });
+
   render() {
     return (
       <div>
-        <Navbar fixed="top" color="inverse" inverse={true} light toggleable>
-          <NavbarToggler right onClick={this.toggle} />
+        <Navbar fixed="top" dark color="dark">
+          <NavbarToggler onClick={this.toggle} className="ml-3" />
           <Link className='navbar-brand' to={'/'}>ЭЗ ПЕЗ<sup>β</sup></Link>
-          <Collapse isOpen={this.state.isOpen} navbar>
-            <Nav className="mr-auto" navbar>
+          <Collapse isOpen={!this.state.collapsed} navbar>
+            <Nav navbar>
               <NavItem>
                 <NavLink exact to={'/'} className='nav-link' activeClassName='active'>
                   Список тестов

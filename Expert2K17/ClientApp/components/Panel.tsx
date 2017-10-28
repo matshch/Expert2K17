@@ -8,7 +8,7 @@ import * as DataGrid from 'react-data-grid';
 import * as RegisterStore from "../store/Register";
 import * as Spinner from "react-spinkit";
 import { Link, NavLink, Redirect, Route } from "react-router-dom";
-import { Nav, NavItem, NavDropdown, DropdownItem, DropdownToggle, DropdownMenu, Button, Modal, ModalHeader, ModalBody, ModalFooter, Badge, Row, Col, ListGroup, Card, CardBlock } from "reactstrap";
+import { Nav, NavItem, NavDropdown, DropdownItem, DropdownToggle, DropdownMenu, Button, Modal, ModalHeader, ModalBody, ModalFooter, Badge, Row, Col, ListGroup, Card, CardBody } from "reactstrap";
 import DocumentTitle from "react-document-title";
 import * as UserStore from "../store/User";
 
@@ -60,7 +60,7 @@ export class Panel extends React.Component<PanelProps, { modal: boolean, showPic
                 <div>
                     <div className="flex-container">
                         <Card className="panel">
-                            <CardBlock>
+                            <CardBody>
                                 <div className="card-title">
                                     <h3>Панель управления</h3> <h4>Добро пожаловать, {this.props.user.userName}</h4>
                                 </div>
@@ -70,7 +70,7 @@ export class Panel extends React.Component<PanelProps, { modal: boolean, showPic
                                     <Route path='/panel/tests' component={ConnectedTestsPanel} />
                                     <Route path='/panel/groups' component={ConnectedGroupsPanel} />
                                 </div>
-                            </CardBlock>
+                            </CardBody>
                         </Card>
                     </div>
                 </div>

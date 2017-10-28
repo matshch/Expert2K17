@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { ApplicationState } from '../store';
 import * as Store from '../store/Attribute';
 import { NavLink, Route, Redirect } from 'react-router-dom';
-import { Nav, NavItem, Row, Container, Col, Button, Form, FormGroup, Label, Input, FormText, Media, Card, CardBlock, CardTitle, CardText, ListGroup, ListGroupItem, ListGroupItemText, InputGroup, InputGroupButton } from 'reactstrap'
+import { Nav, NavItem, Row, Container, Col, Button, Form, FormGroup, Label, Input, FormText, Media, Card, CardBody, CardTitle, CardText, ListGroup, ListGroupItem, ListGroupItemText, InputGroup, InputGroupButton } from 'reactstrap'
 import DocumentTitle from 'react-document-title';
 import * as Interf from '../store/TestInterfaces';
 
@@ -100,7 +100,7 @@ class Attribute extends React.Component<AttributeProps, {}>{
 
     render() {
         return <Card className="createSideBar">
-            <CardBlock>
+            <CardBody>
                 <Form>
                     <FormGroup row>
                         <Label for="texter" sm={3}>Название</Label>
@@ -125,7 +125,7 @@ class Attribute extends React.Component<AttributeProps, {}>{
                     </ListGroup>
                                     
                 </Form>
-            </CardBlock>
+            </CardBody>
         </Card>
     }
 }
@@ -202,7 +202,7 @@ class NewAttribute extends React.Component<typeof Store.actionCreators, Interf.A
 
     render() {
         return <Card className="createSideBar">
-            <CardBlock>
+            <CardBody>
                 <Form>
                     <FormGroup row>
                         <Label for="texter" sm={3}>Название</Label>
@@ -218,7 +218,7 @@ class NewAttribute extends React.Component<typeof Store.actionCreators, Interf.A
                     </FormGroup>
                     <Button color="success" onClick={this.addAttribute}>Создать</Button>
                 </Form>
-            </CardBlock>
+            </CardBody>
         </Card>
     }
 }

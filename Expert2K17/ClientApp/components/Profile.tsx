@@ -5,7 +5,7 @@ import { ApplicationState } from '../store';
 import * as ProfileStore from '../store/Profile';
 import * as Spinner from 'react-spinkit';
 import { Link, NavLink, Route, Redirect } from 'react-router-dom';
-import { Alert, ButtonGroup, Label, ListGroup, ListGroupItem, Card, CardImg, CardText, CardBlock, CardTitle, CardSubtitle, Button } from 'reactstrap';
+import { Alert, ButtonGroup, Label, ListGroup, ListGroupItem, Card, CardImg, CardText, CardBody, CardTitle, CardSubtitle, Button } from 'reactstrap';
 import DocumentTitle from 'react-document-title';
 import * as UserStore from '../store/User';
 
@@ -81,14 +81,14 @@ export class Profile extends React.Component<ProfileProps, { showPictureButtons:
                                 )
                             }
                         })()}
-                        <CardBlock>
+                        <CardBody>
                             <CardTitle>{this.props.user.userName}</CardTitle>
                             <div className="card-subtitle"><h4>{this.props.user.surname} {this.props.user.name} {this.props.user.patronymic}</h4><p>{this.props.user.group} {this.props.user.year}</p></div>
                             <h5>Список созданных тестов:</h5>
                             <ListGroup>
                                 {this.props.TestsList.map(e => <Link className="list-group-item list-group-item-action" to={"/EditTest/" + e.id}>{e.name}</Link>)}
                             </ListGroup>
-                        </CardBlock>
+                        </CardBody>
                         <input ref={(input) => this.file1 = input} accept="image/png,image/gif,image/jpeg" onChange={this.profilePictureChanged} type="file" />
                         <input ref={(input) => this.file2 = input} accept="image/png,image/gif,image/jpeg" onChange={this.coverPictureChanged} type="file" />
                     </Card>

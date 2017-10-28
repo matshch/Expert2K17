@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { NavLink, Link } from 'react-router-dom';
-import { Card, CardImg, CardText, CardBlock, CardTitle, CardSubtitle, Button } from 'reactstrap';
+import { Card, CardImg, CardText, CardBody, CardTitle, CardSubtitle, Button } from 'reactstrap';
 
 export interface ListItemProps {
     id: string;
@@ -17,11 +17,11 @@ export default class ListItem extends React.Component<ListItemProps, {}> {
                 <Link to={"/test/" + this.props.id}>
                     <Card>
                         <CardImg top width="300px" src={this.props.image} />
-                        <CardBlock>
+                        <CardBody>
                             <CardTitle>{this.props.title}</CardTitle>
                             <CardSubtitle>{this.props.subtitle}</CardSubtitle>
                             <CardText>{this.props.text}</CardText>
-                        </CardBlock>
+                        </CardBody>
                     </Card>
                 </Link>
             </div>
@@ -36,11 +36,11 @@ export class FirstListItem extends React.Component<{ text: string }, {}> {
                 <Link to={'/CreateTest'}>
                     <Card>
                         <div className="card-img-top"><i className="fa fa-file-text-o" aria-hidden="true"></i></div>
-                        <CardBlock>
+                        <CardBody>
                             <CardTitle>Создать свой тест</CardTitle>
                             <CardSubtitle>Нажмите на эту карточку, если вы хотите создать тест.</CardSubtitle>
                             <CardText>{this.props.text}</CardText>
-                        </CardBlock>
+                        </CardBody>
                     </Card>
                 </Link>
             </div>

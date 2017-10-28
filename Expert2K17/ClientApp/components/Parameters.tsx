@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { ApplicationState } from '../store';
 import * as Store from '../store/Parameters';
 import { NavLink, Route, Redirect } from 'react-router-dom';
-import { Nav, NavItem, Row, Container, Col, Button, Form, FormGroup, Label, Input, FormText, Media, Card, CardBlock, CardTitle, CardText, ListGroup, ListGroupItem, ListGroupItemText } from 'reactstrap'
+import { Nav, NavItem, Row, Container, Col, Button, Form, FormGroup, Label, Input, FormText, Media, Card, CardBody, CardTitle, CardText, ListGroup, ListGroupItem, ListGroupItemText } from 'reactstrap'
 import DocumentTitle from 'react-document-title';
 import * as Interf from '../store/TestInterfaces';
 
@@ -65,7 +65,7 @@ class Parameter extends React.Component<ParameterProps, {}>{
     }
     render() {
         return <Card className="createSideBar">
-            <CardBlock>
+            <CardBody>
                 <Form>
                     <FormGroup row>
                         <Label for="texter" sm={3}>Название</Label>
@@ -93,7 +93,7 @@ class Parameter extends React.Component<ParameterProps, {}>{
                     })()}
 
                 </Form>
-            </CardBlock>
+            </CardBody>
         </Card>
     }
 }
@@ -132,7 +132,7 @@ class NewParameter extends React.Component<typeof Store.actionCreators, Interf.P
     }
     render() {
         return <Card className="createSideBar">
-            <CardBlock>
+            <CardBody>
                 <Form>
                     <FormGroup row>
                         <Label for="texter" sm={3}>Название</Label>
@@ -149,7 +149,7 @@ class NewParameter extends React.Component<typeof Store.actionCreators, Interf.P
                     <Button color="success" onClick={this.saveParameter}>Создать</Button>                         
 
                 </Form>
-            </CardBlock>
+            </CardBody>
         </Card>
     }
 }

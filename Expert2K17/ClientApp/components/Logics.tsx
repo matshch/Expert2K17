@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { ApplicationState } from '../store';
 import * as Store from '../store/Logic';
 import { NavLink, Route, Redirect } from 'react-router-dom';
-import { Nav, NavItem, Row, Container, Col, Button, Form, FormGroup, Label, Input, FormText, Media, Card, CardBlock, CardTitle, CardText, ListGroup, ListGroupItem, ListGroupItemText } from 'reactstrap'
+import { Nav, NavItem, Row, Container, Col, Button, Form, FormGroup, Label, Input, FormText, Media, Card, CardBody, CardTitle, CardText, ListGroup, ListGroupItem, ListGroupItemText } from 'reactstrap'
 import DocumentTitle from 'react-document-title';
 import * as Interf from '../store/TestInterfaces';
 import * as Conditioner from './Condition'
@@ -100,7 +100,7 @@ class Logic extends React.Component<ParameterProps, {}>{
     render() {
         return <Card className="createSideBar">
             <CardTitle>Если</CardTitle>
-            <CardBlock>
+            <CardBody>
                 {(() => {
                     let arr: number[] = [];
                     return this.props.conditions.filter((e, ind) => {
@@ -122,7 +122,7 @@ class Logic extends React.Component<ParameterProps, {}>{
                 <h5>ТО</h5>
                 <br />
                 {this.renderThen()}
-            </CardBlock>
+            </CardBody>
         </Card>
     }
 }
@@ -145,11 +145,11 @@ class NewLogic extends React.Component<typeof Store.actionCreators>{
     }
     render() {
         return <Card className="createSideBar">
-            <CardBlock>
+            <CardBody>
                 <Form>
                     <Button color="success" onClick={this.newLogic}>Создать логику</Button>
                 </Form>
-            </CardBlock>
+            </CardBody>
         </Card>
     }
 }

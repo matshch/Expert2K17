@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 import { ApplicationState } from '../store';
 import * as Store from '../store/System';
 import { NavLink, Route, Redirect, withRouter } from 'react-router-dom';
-import { Nav, NavItem, Row, Container, Col, Button, Form, FormGroup, Label, Input, FormText, Media, Card, CardBlock, CardTitle, CardText, ListGroup, ListGroupItem, ListGroupItemText } from 'reactstrap'
+import { Nav, NavItem, Row, Container, Col, Button, Form, FormGroup, Label, Input, FormText, Media, Card, CardBody, CardTitle, CardText, ListGroup, ListGroupItem, ListGroupItemText } from 'reactstrap'
 import DocumentTitle from 'react-document-title';
 import * as Interf from '../store/TestInterfaces';
 import * as Systemer from './SystemCreate';
@@ -87,7 +87,7 @@ export class TestCreaterNav extends React.Component<NavProps, {}>{
     render() {
         return (
             <Card className="createSideBar">
-                <CardBlock>
+                <CardBody>
                     <div>
                         <h4>{this.props.name == '' ? 'Создайте проект' : this.props.name}</h4> 
                 </div>
@@ -134,7 +134,7 @@ export class TestCreaterNav extends React.Component<NavProps, {}>{
                 <Button block onClick={this.rollbackForce}>Восстановить состояние</Button>
                 <Button block onClick={this.saveForce}>Сохранить состояние</Button>
 
-                </CardBlock>
+                </CardBody>
             </Card>
             );
     }

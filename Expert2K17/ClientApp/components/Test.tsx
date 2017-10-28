@@ -7,7 +7,7 @@ import { ApplicationState } from '../store';
 import * as TestStore from '../store/Test';
 import * as UserStore from '../store/User';
 import { QuestionType } from "../store/TestInterfaces";
-import { Jumbotron, Badge, ListGroup, ListGroupItem, Row, Col, Button, Form, FormGroup, Label, Input, FormText, Card, CardImg, CardText, CardBlock, CardTitle, CardSubtitle } from 'reactstrap';
+import { Jumbotron, Badge, ListGroup, ListGroupItem, Row, Col, Button, Form, FormGroup, Label, Input, FormText, Card, CardImg, CardText, CardBody, CardTitle, CardSubtitle } from 'reactstrap';
 import DocumentTitle from 'react-document-title';
 import '../css/cards.css';
 
@@ -45,7 +45,7 @@ export class Test extends React.Component<TestProps, {}> {
                                 {this.props.test.askedQuestions.map(e =>
                                     <div className="test-container">
                                         <Card>
-                                            <CardBlock>
+                                            <CardBody>
                                                 <div className="card-title">
                                                     <h1>{e.question}</h1><hr />
                                                 </div>
@@ -76,7 +76,7 @@ export class Test extends React.Component<TestProps, {}> {
                                                         }
                                                     })()}
                                                 </div>
-                                            </CardBlock>
+                                            </CardBody>
                                         </Card>
                                     </div>
                                 )}

@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { ApplicationState } from '../store';
 import * as Store from '../store/Subject';
 import { NavLink, Route, Redirect } from 'react-router-dom';
-import { Nav, NavItem, Row, Container, Col, Button, Form, FormGroup, Label, Input, FormText, Media, Card, CardBlock, CardTitle, CardText, ListGroup, ListGroupItem, ListGroupItemText } from 'reactstrap'
+import { Nav, NavItem, Row, Container, Col, Button, Form, FormGroup, Label, Input, FormText, Media, Card, CardBody, CardTitle, CardText, ListGroup, ListGroupItem, ListGroupItemText } from 'reactstrap'
 import DocumentTitle from 'react-document-title';
 import * as Interf from '../store/TestInterfaces';
 import * as ComboBox from 'react-selectize';
@@ -75,7 +75,7 @@ class Subject extends React.Component<SubjectPropsType, {}>{
 
     render() {
         return <Card className="createSideBar">
-            <CardBlock>
+            <CardBody>
                 <Form>
                     <FormGroup row>
                         <Label for="texter" sm={3}>Название</Label>
@@ -97,7 +97,7 @@ class Subject extends React.Component<SubjectPropsType, {}>{
 
                     })()}
                 </Form>
-            </CardBlock>
+            </CardBody>
         </Card>
     }
 }
@@ -188,7 +188,7 @@ class SubjectToAttribute extends React.Component<SubjecterAttribute, {} > {
 
     render() {
         return <Card>
-            <CardBlock>
+            <CardBody>
                 <Row>
                     <Col lg={6}>
                         <Label>{this.props.attr.name}</Label>
@@ -221,7 +221,7 @@ class SubjectToAttribute extends React.Component<SubjecterAttribute, {} > {
                             placeholder="Выберите значение атрибута"></ComboBox.SimpleSelect>
                     </Col>
                 </Row>
-            </CardBlock>
+            </CardBody>
         </Card>
     }
 }
@@ -257,7 +257,7 @@ class NewSubject extends React.Component<typeof Store.actionCreators, Interf.Sub
 
     render() {
         return <Card className="createSideBar">
-            <CardBlock>
+            <CardBody>
                 <Form>
                     <FormGroup row>
                         <Label for="texter" sm={3}>Название</Label>
@@ -267,7 +267,7 @@ class NewSubject extends React.Component<typeof Store.actionCreators, Interf.Sub
                     </FormGroup>
                     <Button color="success" onClick={this.saveSubject}>Создать</Button>
                 </Form>
-            </CardBlock>
+            </CardBody>
         </Card>
     }
 }

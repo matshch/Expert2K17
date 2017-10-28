@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { ApplicationState } from '../store';
 import * as Store from '../store/Question';
 import { NavLink, Route, Redirect } from 'react-router-dom';
-import { Nav, NavItem, Row, Container, Col, Button, Form, FormGroup, Label, Input, FormText, Media, Card, CardBlock, CardTitle, CardText, ListGroup, ListGroupItem, ListGroupItemText } from 'reactstrap'
+import { Nav, NavItem, Row, Container, Col, Button, Form, FormGroup, Label, Input, FormText, Media, Card, CardBody, CardTitle, CardText, ListGroup, ListGroupItem, ListGroupItemText } from 'reactstrap'
 import DocumentTitle from 'react-document-title';
 import * as Interf from '../store/TestInterfaces';
 import * as ComboBox from 'react-selectize';
@@ -154,7 +154,7 @@ class Question extends React.Component<QuestionProps, {}>{
 
     render() {
         return <Card className="createSideBar">
-            <CardBlock>
+            <CardBody>
                 <Form>
                     <FormGroup row>
                         <Label for="texter" sm={3}>Формулировка вопроса</Label>
@@ -205,7 +205,7 @@ class Question extends React.Component<QuestionProps, {}>{
                     })()}
 
                 </Form>
-            </CardBlock>
+            </CardBody>
         </Card>
     }
 }
@@ -324,7 +324,7 @@ class Answers extends React.Component<SubjecterAttribute, {}> {
 
     render() {
         return <Card>
-            <CardBlock>
+            <CardBody>
                 <Row>
                     <Col lg={4}>
                         <label>Ответ</label>
@@ -372,7 +372,7 @@ class Answers extends React.Component<SubjecterAttribute, {}> {
 
                 })()}
                    
-            </CardBlock>
+            </CardBody>
         </Card>
     }
 }
@@ -412,7 +412,7 @@ class NewQuestion extends React.Component<typeof Store.actionCreators, Interf.Qu
 
     render() {
         return <Card className="createSideBar">
-            <CardBlock>
+            <CardBody>
                 <Form>
                     <FormGroup row>
                         <Label for="texter" sm={3}>Вопрос</Label>
@@ -422,7 +422,7 @@ class NewQuestion extends React.Component<typeof Store.actionCreators, Interf.Qu
                     </FormGroup>
                     <Button color="success" onClick={this.saveQuestion}>Создать</Button>
                 </Form>
-            </CardBlock>
+            </CardBody>
         </Card>
     }
 }

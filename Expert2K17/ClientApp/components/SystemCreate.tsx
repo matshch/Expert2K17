@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { ApplicationState } from '../store';
 import * as Store from '../store/System';
 import { NavLink, Route, Redirect } from 'react-router-dom';
-import { Nav, NavItem, Row, Container, Col, Button, Form, FormGroup, Label, Input, FormText, Media, Card, CardBlock, CardTitle, CardText, ListGroup, ListGroupItem, ListGroupItemText } from 'reactstrap'
+import { Nav, NavItem, Row, Container, Col, Button, Form, FormGroup, Label, Input, FormText, Media, Card, CardBody, CardTitle, CardText, ListGroup, ListGroupItem, ListGroupItemText } from 'reactstrap'
 import DocumentTitle from 'react-document-title';
 import * as Interf from '../store/TestInterfaces';
 export class TestEditorSystem extends React.Component<TestEditSystemT, {}>{
@@ -39,7 +39,7 @@ export class TestEditorSystem extends React.Component<TestEditSystemT, {}>{
     render() {
         return <Container fluid>
         <Card className="createSideBar">
-            <CardBlock>
+            <CardBody>
                 <Form>
                     <FormGroup row>
                         <Label for="text" lg={3}>Название</Label>
@@ -68,7 +68,7 @@ export class TestEditorSystem extends React.Component<TestEditSystemT, {}>{
                         </Col>
                     </FormGroup>
                 </Form>
-            </CardBlock>
+            </CardBody>
         </Card>
         </Container>
 
@@ -138,7 +138,7 @@ export class TestCreaterSystem extends React.Component<TestCreaterSystemT, Creat
         }
         return <Container fluid>
             <Card className="createSideBar">
-                <CardBlock>
+                <CardBody>
                     <Form>
                         <FormGroup row>
                             <Label for="text" lg={3}>Название</Label>
@@ -165,7 +165,7 @@ export class TestCreaterSystem extends React.Component<TestCreaterSystemT, Creat
                             </Col>
                         </Row>
                     </Form>
-                </CardBlock>
+                </CardBody>
             </Card>
         </Container>
     }
