@@ -82,8 +82,9 @@ export class Profile extends React.Component<ProfileProps, { showPictureButtons:
                             }
                         })()}
                         <CardBody>
+                            <h3 className="group-year">{this.props.user.group} {this.props.user.year}</h3>
                             <CardTitle>{this.props.user.userName}</CardTitle>
-                            <div className="card-subtitle"><h4>{this.props.user.surname} {this.props.user.name} {this.props.user.patronymic}</h4><p>{this.props.user.group} {this.props.user.year}</p></div>
+                            <div className="card-subtitle"><h4>{this.props.user.surname} {this.props.user.name} {this.props.user.patronymic}</h4></div>
                             <h5>Список созданных тестов:</h5>
                             <ListGroup>
                                 {this.props.TestsList.map(e => <Link className="list-group-item list-group-item-action" to={"/EditTest/" + e.id}>{e.name}</Link>)}
