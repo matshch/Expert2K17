@@ -64,6 +64,10 @@ export const actionCreators = {
         });
         addTask(fetchTask);
         dispatch({ type: 'USELESS_LOGIN_ACTION' });
+    },
+    Logout: (): AppThunkAction<KnownActions> => (dispatch) => {
+        let fetchTask = fetch(`/api/login`, { credentials: 'same-origin', method: "DELETE" })
+                        .then(() => dispatch({ type: 'SET_USER', data: null }));
     }
 };
 

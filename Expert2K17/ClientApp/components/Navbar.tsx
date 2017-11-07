@@ -53,11 +53,16 @@ class NavBar extends React.Component<NavBarProps, { isOpen: boolean }> {
             </Nav>
             <Nav navbar>
               {(this.props.user != undefined && this.props.user != null) ?
-                (<NavItem>
+                ([<NavItem>
                   <NavLink to={'/profile'} className='nav-link' activeClassName='active'>
                     {this.props.user.userName}
                   </NavLink>
-                </NavItem>) :
+                </NavItem>,
+                <NavItem>
+                  <NavLink to={'/logout'} className='nav-link' activeClassName='active'>
+                    Выйти
+                  </NavLink>
+                </NavItem>]) :
                 [<NavItem>
                   <NavLink to={'/login'} className='nav-link' activeClassName='active'>
                     Войти
