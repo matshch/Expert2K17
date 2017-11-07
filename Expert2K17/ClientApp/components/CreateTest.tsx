@@ -43,10 +43,10 @@ export
 
         return <DocumentTitle title='Создание системы — ЭЗ ПЕЗ'>
             <Row>
-                <Col sm={3}>
+                <Col lg={3}>
                     <FixedConnectedTestCreaterNav link={this.props.match.params.id} />
                 </Col>
-                <Col sm={9}>
+                <Col lg={9}>
                     <Route path='/CreateTest/new' component={Systemer.ConnectedTestSystemCreater} />
                     <Route path='/EditTest/:id/CreateSystem' component={Systemer.ConnectedTestSystemEditor} />
                     <Route path='/EditTest/:id/CreateAttribute' component={Attributer.ConnectedTestAttributeEditor} />

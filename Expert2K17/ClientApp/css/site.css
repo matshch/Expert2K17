@@ -238,6 +238,11 @@ hr
     {
         width: 100%;
     }
+
+    .img-fluid
+    {
+        width: 100%
+    }
 }
 
 @media screen and (min-width: 640px) and (max-width: 999px)
@@ -259,6 +264,11 @@ hr
     {
         width: 100%;
     }
+
+    .img-fluid
+    {
+        width: 300px;
+    }
 }
 
 @media screen and (min-width: 1000px)
@@ -279,6 +289,11 @@ hr
     .profile
     {
         width: 80%;
+    }
+
+    .img-fluid
+    {
+        width: 300px;
     }
 }
 
@@ -484,8 +499,6 @@ hr
 {
     display: block;
 
-    max-width: 100%;
-    max-width: 100%;
     height: auto;
     margin: auto;
 
