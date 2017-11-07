@@ -325,15 +325,13 @@ export const reducer: Reducer<TestStore> = (state: TestStore, action: KnownActio
                             question_guid: action.question,
                             answer: action.answer
                         };
-            const param = getAnsweredParameter(state.test, ans);
-            let newTest = {
+            let newTest : TestState = {
                     ...state.test,
                     answers: [
                         ...state.test.answers
                     ],
-                    answeredParameters: [
-                        ...state.test.answeredParameters
-                    ]
+                    answeredParameters: [],
+                    answeredAttributes: []
                 };
             const ansIndex = newTest.answers.findIndex(e => e.question_guid === ans.question_guid);
             if (ansIndex === -1) {
@@ -341,12 +339,9 @@ export const reducer: Reducer<TestStore> = (state: TestStore, action: KnownActio
             } else {
                 newTest.answers[ansIndex] = ans;
             }
-            const parIndex = newTest.answeredParameters.findIndex(e => e.guid === param.guid);
-            if (parIndex === -1) {
-                newTest.answeredParameters.push(param);
-            } else {
-                newTest.answeredParameters[parIndex] = param;
-            }
+
+            newTest.answeredParameters = newTest.answers.map(e => getAnsweredParameter(newTest, ans));
+
             let oldTest = newTest;
             console.log("Beginning recalc...");
             do {
@@ -360,7 +355,7 @@ export const reducer: Reducer<TestStore> = (state: TestStore, action: KnownActio
                          rule.conditions.every((conditionGuid) => getLogicConditionResult(test, conditionGuid))) ||
                         (rule.operation === LogicOperation.Or &&
                          rule.conditions.some((conditionGuid) => getLogicConditionResult(test, conditionGuid)))) {
-                        let newTest : TestState;
+                        let newTest = test;
                         const then = getCondition(test, rule.then);
 
                         let par : Parameter, oldParam : Parameter, parValue : string;
