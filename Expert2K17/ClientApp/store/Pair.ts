@@ -59,9 +59,15 @@ interface LoadSystemAction {
     system: SystemCreateState;
 }
 
+
+interface DeleteSubjectAction {
+    type: 'DELETE_SUBJECT';
+    subjectGuid: string;
+}
+
 // Declare a 'discriminated union' type. This guarantees that all references to 'type' properties contain one of the
 // declared type strings (and not any other arbitrary string).
-type KnownAction = SyncSystemAction | AddSystemAction | AddPairAction | UnPairAction | SetPairAction | DeleteAttributeAction | LoadSystemAction | DeletePairAction | ChangePairAction;
+type KnownAction = SyncSystemAction | AddSystemAction | AddPairAction | UnPairAction | SetPairAction | DeleteAttributeAction | LoadSystemAction | DeletePairAction | ChangePairAction | DeleteSubjectAction;
 
 // ----------------
 // REDUCER - For a given state and action, returns the new state. To support time travel, this must not mutate the old state.
@@ -143,6 +149,23 @@ export const reducer: Reducer<Pair[]> = (state: Pair[], action: KnownAction) => 
                 }
                 return true;
             });
+        case "DELETE_SUBJECT":
+            let buffer_arr = state.map((e, ind)=>{
+                let index = e.subjectGuids.findIndex((e)=>{
+                    if(e == action.subjectGuid){
+                        return true;
+                    }
+                }) 
+                if(index > -1){
+                    let buffer = {...e,
+                        subjectGuids: e.subjectGuids.slice(0,index-1).concat( e.subjectGuids.slice(index+1,e.subjectGuids.length-1))
+                    }
+                    return buffer;
+                }
+                return e;
+            })
+
+            return buffer_arr
         default:
             // The following line guarantees that every action in the KnownAction union has been covered by a case above
             const exhaustiveCheck: never = action;

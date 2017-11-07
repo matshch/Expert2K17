@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { ApplicationState } from '../store';
 import * as Store from '../store/Subject';
 import { NavLink, Route, Redirect } from 'react-router-dom';
-import { Nav, NavItem, Row, Container, Col, Button, Form, FormGroup, Label, Input, FormText, Media, Card, CardBody, CardTitle, CardText, ListGroup, ListGroupItem, ListGroupItemText } from 'reactstrap'
+import { Nav, NavItem, Row, Container, Col, Button, Form, FormGroup, InputGroup , InputGroupButton, Label, Input, FormText, Media, Card, CardBody, CardTitle, CardText, ListGroup, ListGroupItem, ListGroupItemText } from 'reactstrap'
 import DocumentTitle from 'react-document-title';
 import * as Interf from '../store/TestInterfaces';
 import * as ComboBox from 'react-selectize';
@@ -73,6 +73,10 @@ class Subject extends React.Component<SubjectPropsType, {}>{
         this.props.setPair(attrGuid, value, this.props.subject.guid);
     }
 
+    onFullDelete = ()=>{
+        this.props.deleteSubject(this.props.subject.guid);
+    }
+
     render() {
         return <Card className="createSideBar">
             <CardBody>
@@ -80,7 +84,10 @@ class Subject extends React.Component<SubjectPropsType, {}>{
                     <FormGroup row>
                         <Label for="texter" sm={3}>Название</Label>
                         <Col sm={9}>
+                        <InputGroup>
                             <Input type="text" name="text" id="texter" value={this.props.subject.name} placeholder="Название объекта"></Input>
+                            <InputGroupButton color="danger"><Button onClick={this.onFullDelete} color="danger"><i className="fa fa-trash" ></i></Button></InputGroupButton>
+                        </InputGroup>
                         </Col>
                     </FormGroup> 
                     {(() => {
