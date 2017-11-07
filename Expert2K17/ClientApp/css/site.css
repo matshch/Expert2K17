@@ -79,8 +79,8 @@ body
     position: absolute;
     top: 0;
     left: 0;
-    width: 500%;
-    height: 500%;
+    width: 200%;
+    height: 200%;
     content: "";
 
     -webkit-animation: Gradient 60s ease infinite;
