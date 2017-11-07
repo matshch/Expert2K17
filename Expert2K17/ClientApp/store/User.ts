@@ -2,7 +2,7 @@ import { fetch, addTask } from '../custom/fetch';
 import { Action, Reducer, ActionCreator } from 'redux';
 import { AppThunkAction } from './';
 
-interface UserObject {
+export interface UserObject {
     id: string;
     userName: string;
     surname: string;
