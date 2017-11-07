@@ -340,7 +340,7 @@ export const reducer: Reducer<TestStore> = (state: TestStore, action: KnownActio
                 newTest.answers[ansIndex] = ans;
             }
 
-            newTest.answeredParameters = newTest.answers.map(e => getAnsweredParameter(newTest, ans));
+            newTest.answeredParameters = newTest.answers.map(e => getAnsweredParameter(newTest, e));
 
             let oldTest = newTest;
             console.log("Beginning recalc...");
