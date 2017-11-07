@@ -40,9 +40,14 @@ interface LoadSystemAction {
     type: 'LOAD_SYSTEM';
     system: SystemCreateState;
 }
+
+interface DeleteSubjectAction {
+    type: 'DELETE_SUBJECT';
+    subjectGuid: string;
+}
 // Declare a 'discriminated union' type. This guarantees that all references to 'type' properties contain one of the
 // declared type strings (and not any other arbitrary string).
-type KnownAction = SyncSubjectAction | AddSubjectAction | LoadSystemAction;
+type KnownAction = SyncSubjectAction | AddSubjectAction | LoadSystemAction | DeleteSubjectAction ;
 // ----------------
 // REDUCER - For a given state and action, returns the new state. To support time travel, this must not mutate the old state.
 
@@ -101,6 +106,10 @@ export const actionCreators = {
             dispatch({ type: 'UN_PAIR', index: index, innerIndex: innerIndex });
         }
         dispatch({ type: 'SET_PAIR', attrGuid: attrGuid, value: value, subjectGuid: subjectGuid });
+    },
+    deleteSubject: (subjectGuid: string): AppThunkAction<KnownAction> => (dispatch, getState) => {
+        dispatch({type: 'DELETE_SUBJECT', subjectGuid: subjectGuid});
+
     }
 
 };
@@ -116,6 +125,13 @@ export const reducer: Reducer<Subject[]> = (state: Subject[], action: KnownActio
             return [...state, action.subject];
         case "LOAD_SYSTEM":
             return action.system.subjects;
+        case "DELETE_SUBJECT":
+            return state.filter((e)=>{
+                if(e.guid == action.subjectGuid){
+                    return false;
+                }
+                return true;
+            })
         case "SYNC_SUBJECT":
             return state.map((e) => {
                 if (e.guid == action.subject.guid) {
