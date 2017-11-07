@@ -31,7 +31,7 @@ export class Home extends React.Component<HomeProps, {}> {
         var cards = this.props.ResponseObject.map(e => this.renderListItem(e.id, e.name, e.description, e.user.username, e.picture));
         return (
             <div className='flex-container home'>
-                <FirstListItem text={(this.props.user === undefined || this.props.user === null) ? "username" : this.props.user.userName} />
+                <FirstListItem user={this.props.user} />)
             	{cards}
             </div>);
     }
