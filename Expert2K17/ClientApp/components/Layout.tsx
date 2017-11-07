@@ -7,6 +7,7 @@ export class Layout extends React.Component<{}, {}> {
     public render() {
         return <DocumentTitle title='ЭЗ ПЕЗ'>
             <div>
+                <div id="background"></div>
                 <Navbar />
                 <Container fluid>
                     {this.props.children}
