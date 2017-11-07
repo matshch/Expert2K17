@@ -32,7 +32,7 @@ class NavBar extends React.Component<NavBarProps, { isOpen: boolean }> {
           <Link className='navbar-brand' to={'/'}>ЭЗ ПЕЗ<sup>β</sup></Link>
           <NavbarToggler onClick={this.toggle} />
           <Collapse isOpen={this.state.isOpen} navbar>
-            <Nav navbar>
+            <Nav navbar className="mr-auto">
               <NavItem>
                 <NavLink exact to={'/'} className='nav-link' activeClassName='active'>
                   Список тестов
