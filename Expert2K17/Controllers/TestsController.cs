@@ -27,7 +27,7 @@ namespace Expert2K17.Controllers
         public IEnumerable<Test> Get()
         {
             return from s in _db.Tests.Include(e => e.User)
-                   //TODO: where s.Published == true
+                   where s.Published == true
                    orderby s.PublishedAt
                    select new Test
                    {
