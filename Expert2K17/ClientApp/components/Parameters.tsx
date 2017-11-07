@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { ApplicationState } from '../store';
 import * as Store from '../store/Parameters';
 import { NavLink, Route, Redirect } from 'react-router-dom';
-import { Nav, NavItem, Row, Container, Col, Button, Form, FormGroup, Label, Input, FormText, Media, Card, CardBody, CardTitle, CardText, ListGroup, ListGroupItem, ListGroupItemText } from 'reactstrap'
+import { Nav, NavItem, Row, Container, Col, Button, Form, FormGroup, Label, InputGroup, InputGroupButton, Input, FormText, Media, Card, CardBody, CardTitle, CardText, ListGroup, ListGroupItem, ListGroupItemText } from 'reactstrap'
 import DocumentTitle from 'react-document-title';
 import * as Interf from '../store/TestInterfaces';
 
@@ -63,6 +63,9 @@ class Parameter extends React.Component<ParameterProps, {}>{
     unitChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         this.props.syncParameter({ ...this.props.parameter, unitValue: e.target.checked });
     }
+    onFullDelete = ()=>{
+        
+    }
     render() {
         return <Card className="createSideBar">
             <CardBody>
@@ -70,7 +73,10 @@ class Parameter extends React.Component<ParameterProps, {}>{
                     <FormGroup row>
                         <Label for="texter" sm={3}>Название</Label>
                         <Col sm={9}>
+                        <InputGroup>
                             <Input type="text" name="text" id="texter" onChange={this.name_change} value={this.props.parameter.name} placeholder="Название параметра"></Input>
+                            <InputGroupButton color="danger"><Button onClick={this.onFullDelete} color="danger"><i className="fa fa-trash" ></i></Button></InputGroupButton>
+                        </InputGroup>
                         </Col>
                     </FormGroup>
                     <FormGroup row>

@@ -1,4 +1,4 @@
-﻿// A '.tsx' file enables JSX support in the TypeScript compiler, 
+﻿// A '.tsx' file enables JSX support in the TypeScript compiler,
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 import * as React from 'react';
@@ -51,7 +51,7 @@ interface AttrAdditionalProps {
 
 
 type AttributeProps =
-    AttrAdditionalProps  
+    AttrAdditionalProps
     &
     typeof Store.actionCreators;
 
@@ -108,13 +108,13 @@ class Attribute extends React.Component<AttributeProps, {}>{
                             <InputGroup>
                                 <Input type="text" name="text" id="texter" onChange={this.name_change} value={this.props.attr.name} placeholder="Название атрибута"></Input>
                                 <InputGroupButton color="danger"><Button onClick={this.onFullDelete} color="danger"><i className="fa fa-trash" ></i></Button></InputGroupButton>
-                            </InputGroup>                                                  
+                            </InputGroup>
                         </Col>
                     </FormGroup>
                     <FormGroup row>
                         <Label for="chb1" sm={3}>Числовые значения</Label>
                         <Col sm={9}>
-                                <Input type="checkbox" checked={this.props.attr.unitValue} onChange={this.unitChange} id="chb1" />
+                            <Input type="checkbox" checked={this.props.attr.unitValue} onChange={this.unitChange} id="chb1" />
                         </Col>
                     </FormGroup>
                     <hr />
@@ -123,7 +123,7 @@ class Attribute extends React.Component<AttributeProps, {}>{
                             return <Valer deleter={this.onPDelete} changer={this.onPChange} guid={val.guid} value={val.value} key={key} />
                         })}
                     </ListGroup>
-                                    
+
                 </Form>
             </CardBody>
         </Card>
@@ -154,7 +154,7 @@ class Valer extends React.Component<propsValer, {}>{
                 <Input placeholder="значение" type="text" value={this.props.value} onChange={this.chan} />
                 <InputGroupButton><Button color="danger" onClick={this.onDelete}><i className="fa fa-trash" ></i></Button></InputGroupButton>
             </InputGroup>
-            <br/>
+            <br />
         </div>
     }
 }
@@ -164,7 +164,7 @@ class Valer extends React.Component<propsValer, {}>{
 class NewAttribute extends React.Component<typeof Store.actionCreators, Interf.Attribute>{
     constructor() {
         super();
-       this.state = {
+        this.state = {
             system_guid: '',
             name: '',
             unitValue: false,
@@ -239,8 +239,8 @@ function getAttributeProps(store: ApplicationState, props: NeededAttributeProps)
         var pairs = ([] as typeof store.combinedSystem.pairs);
     }
 
-        return { attr: store.combinedSystem.attributes[props.index], pairs: pairs, sys: store.combinedSystem.system };
-   
+    return { attr: store.combinedSystem.attributes[props.index], pairs: pairs, sys: store.combinedSystem.system };
+
 }
 
 
@@ -248,4 +248,4 @@ function getAttributeProps(store: ApplicationState, props: NeededAttributeProps)
 
 export let ConnectedTestAttributeEditor = connect((store: ApplicationState) => { return { attr: store.combinedSystem.attributes, sys: store.combinedSystem.system } }, Store.actionCreators)(TestCreaterAttribute);
 let ConnectedAttribute = connect(getAttributeProps, Store.actionCreators)(Attribute)
-let ConnectedNewAttribute = connect(() => { return {}}, Store.actionCreators)(NewAttribute)
+let ConnectedNewAttribute = connect(() => { return {} }, Store.actionCreators)(NewAttribute)
