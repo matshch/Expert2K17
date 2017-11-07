@@ -335,7 +335,8 @@ hr
 
 .jumbotron h1,
 .test-container .card-title,
-.panel .card-title h4
+.panel .card-title h4,
+.createSideBar h4
 {
     font-family: Lobster !important;
     line-height: 30px;
@@ -405,6 +406,123 @@ hr
 .profileEditButtons .btn
 {
     background-color: rgba(0, 0, 0, .5) !important;
+}
+
+.test-editor label,
+.test-creator label
+{
+    font-family: OpenSans-SemiBoldItalic !important;
+    font-size: 18pt;
+}
+
+.public-system-checkbox
+{
+    margin-left: 20px;
+}
+
+.form-check-input
+{
+    width: 30px;
+    height: 30px;
+}
+
+.form-check-label
+{
+    width: 100%;
+    margin-top: 10px;
+    margin-left: 15px;
+
+    vertical-align: bottom;
+}
+
+.checkBox
+{
+    max-width: 10%;
+}
+
+
+.checkBoxLabel
+{
+    font-size: 16pt;
+
+    width: 100%;
+    max-width: 90%;
+    padding-left: 15px;
+
+    vertical-align: bottom;
+}
+
+.login .alert
+{
+    width: 100%;
+    margin: 0;
+    margin-top: 10px !important;
+}
+
+.createSideBar
+{
+    margin-bottom: 20px;
+}
+
+.img-fluid
+{
+    display: block;
+
+    max-width: 100%;
+    max-width: 100%;
+    height: auto;
+    margin: auto;
+
+    border-radius: .25rem;
+
+    object-fit: cover;
+}
+
+.file_upload
+{
+    font-size: 30px;
+    line-height: 1;
+    /* Для того, чтобы спозиционировать input
+     относительно контейнера. */
+
+    position: relative;
+    /* Скрываем неумещающуюся часть input-а. */
+
+    overflow: hidden;
+
+    width: 100%;
+    padding: 10px;
+
+    text-align: center;
+
+    border: 1px solid #ccc;
+    border-radius: .25rem;
+    /* Украшательство: */
+    background: white;
+}
+
+.file_upload input[type=file]
+{
+    /* Делаем input побольше, чтобы он точно
+     перекрыл контейнер. */
+    font-size: 200px;
+    /* Позиционируем правый верхний край
+     input поверх нашего контейнера.
+     Правый верхний потому как именно там
+     у нас кнопка. */
+
+    position: absolute;
+    top: 0;
+    right: 0;
+    /*  Украшательства: */
+
+    cursor: pointer;
+    /* Делаем input невидимым. По-другому нельзя,
+     иначе браузер не будет на него реагировать. */
+
+    opacity: 0;
+
+    filter: alpha(opacity=0);
 }
 
 

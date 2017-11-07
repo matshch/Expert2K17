@@ -1,4 +1,4 @@
-﻿// A '.tsx' file enables JSX support in the TypeScript compiler, 
+﻿// A '.tsx' file enables JSX support in the TypeScript compiler,
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 import * as React from 'react';
@@ -28,7 +28,7 @@ export class TestEditorSystem extends React.Component<TestEditSystemT, {}>{
         });
     }
     pictureChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        
+
     }
     pubChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         this.props.syncSystem({
@@ -37,41 +37,37 @@ export class TestEditorSystem extends React.Component<TestEditSystemT, {}>{
         });
     }
     render() {
-        return <Container fluid>
-        <Card className="createSideBar">
+        return <Card className="test-editor">
             <CardBody>
                 <Form>
-                    <FormGroup row>
-                        <Label for="text" lg={3}>Название</Label>
-                        <Col lg={9}>
-                            <Input type="text" name="text" value={this.props.system.name} onChange={this.nameChange} id="text" placeholder="Название теста"></Input>
-                        </Col>
+                    <FormGroup>
+                        <Label for="text">Название</Label>
+                        <Input type="text" name="text" value={this.props.system.name} onChange={this.nameChange} id="text" placeholder="Название теста"></Input>
                     </FormGroup>
-                    <FormGroup row>
-                        <Label for="description" lg={3}>О системе</Label>
-                        <Col lg={9}>
-                            <Input type="textarea" value={this.props.system.about} onChange={this.tldrChange} id="description" placeholder="Описаение"></Input>
-                        </Col>
+                    <FormGroup>
+                        <Label for="description">О системе</Label>
+                        <Input type="textarea" value={this.props.system.about} onChange={this.tldrChange} id="description" placeholder="Описаение"></Input>
                     </FormGroup>
-                    <FormGroup row>
-                        <Label for="imge" lg={3}>Картинка</Label>
-                        <Col lg={9}>
-                                <img className="img-fluid" src={this.props.system.picture} ></img>
-                                <br/>
+                    <FormGroup>
+                        <Label for="imge">Картинка</Label>
+                        <img className="img-fluid" src={this.props.system.picture} ></img>
+                        <br />
+                        <div className="file_upload">
+                            <i className="fa fa-picture-o" aria-hidden="true"></i>
                             <Input type="file" name="file" onChange={this.pictureChange} id="imge"></Input>
-                        </Col>
+                        </div>
                     </FormGroup>
-                    <FormGroup row>
-                        <Label for="chb1" lg={3}>Публичный доступ</Label>
-                        <Col lg={9}>
-                            <Input type="checkbox" checked={this.props.system.pub} onChange={this.pubChange} id="chb1" />
-                        </Col>
+                    <FormGroup className="public-system-checkbox">
+                        <div className="checkBox">
+                            <Input checked={this.props.system.pub} onChange={this.pubChange} id="chb1" type="checkbox" />{''}
+                        </div>
+                        <div className="checkBoxLabel">
+                            <div>публичный доступ</div>
+                        </div>
                     </FormGroup>
                 </Form>
             </CardBody>
         </Card>
-        </Container>
-
     }
 }
 
@@ -136,43 +132,33 @@ export class TestCreaterSystem extends React.Component<TestCreaterSystemT, Creat
         if (this.props.guid != '') {
             return <Redirect to={"/EditTest/" + this.props.guid + "/CreateSystem"} />
         }
-        return <Container fluid>
-            <Card className="createSideBar">
-                <CardBody>
-                    <Form>
-                        <FormGroup row>
-                            <Label for="text" lg={3}>Название</Label>
-                            <Col lg={9}>
-                                <Input type="text" onChange={this.nameChange} name="text" id="text" placeholder="Название теста"></Input>
-                            </Col>
-                        </FormGroup>
-                        <FormGroup row>
-                            <Label for="description" lg={3}>О системе</Label>
-                            <Col lg={9}>
-                                <Input type="textarea" onChange={this.tldrChange} id="description" placeholder="Описание"></Input>
-                            </Col>
-                        </FormGroup>
-                        <FormGroup row>
-                            <Label for="imge" lg={3}>Картинка</Label>
-                            <Col lg={9}>
-                                <Input type="file" onChange={this.pictureChange} name="file" id="imge"></Input>
-                            </Col>
-                        </FormGroup>                   
-                        <Row>
-                            <Col lg={3} />
-                            <Col lg={9}>
-                                <Button color="success" onClick={this.saveTest} className="pull-left">Создать тест</Button>
-                            </Col>
-                        </Row>
-                    </Form>
-                </CardBody>
-            </Card>
-        </Container>
+        return <Card className="test-creator">
+            <CardBody>
+                <Form>
+                    <FormGroup>
+                        <Label for="text">Название</Label>
+                        <Input type="text" onChange={this.nameChange} name="text" id="text" placeholder="Название теста"></Input>
+                    </FormGroup>
+                    <FormGroup>
+                        <Label for="description">О системе</Label>
+                        <Input type="textarea" onChange={this.tldrChange} id="description" placeholder="Описание"></Input>
+                    </FormGroup>
+                    <FormGroup>
+                        <Label for="imge">Картинка</Label>
+                        <div className="file_upload">
+                            <i className="fa fa-picture-o" aria-hidden="true"></i>
+                            <Input type="file" onChange={this.pictureChange} name="file" id="imge"></Input>
+                        </div>
+                    </FormGroup>
+                    <Button color="success" onClick={this.saveTest} size="lg" block>Создать тест</Button>
+                </Form>
+            </CardBody>
+        </Card>
     }
 }
 
 
 
 export let ConnectedTestSystemCreater = connect((store: ApplicationState) => store.combinedSystem.system, Store.actionCreators)(TestCreaterSystem);
-export let ConnectedTestSystemEditor = connect((store: ApplicationState) => { return { system: store.combinedSystem.system} }, Store.actionCreators)(TestEditorSystem);
+export let ConnectedTestSystemEditor = connect((store: ApplicationState) => { return { system: store.combinedSystem.system } }, Store.actionCreators)(TestEditorSystem);
 

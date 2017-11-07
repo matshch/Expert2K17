@@ -1,4 +1,4 @@
- // A '.tsx' file enables JSX support in the TypeScript compiler, 
+// A '.tsx' file enables JSX support in the TypeScript compiler, 
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 
@@ -25,7 +25,7 @@ interface sys {
 type CounterProps =
     sys
     & typeof Store.actionCreators
-    & RouteComponentProps<{id:string}>;
+    & RouteComponentProps<{ id: string }>;
 export
     class TestCreater extends React.Component<CounterProps, {}> {
     constructor() {
@@ -42,22 +42,20 @@ export
         }
 
         return <DocumentTitle title='Создание системы — ЭЗ ПЕЗ'>
-            <Container fluid>
-                <Row>
-                    <Col sm={3}>
-                        <FixedConnectedTestCreaterNav link={this.props.match.params.id} />
-                    </Col>
-                    <Col sm={9}>
-                        <Route path='/CreateTest/new' component={Systemer.ConnectedTestSystemCreater} />
-                        <Route path='/EditTest/:id/CreateSystem' component={Systemer.ConnectedTestSystemEditor} />
-                        <Route path='/EditTest/:id/CreateAttribute' component={Attributer.ConnectedTestAttributeEditor} />
-                        <Route path='/EditTest/:id/CreateSubject' component={Subjecter.default} />
-                        <Route path='/EditTest/:id/CreateParameter' component={Parameter.ConnectedTestParameterEditor} />
-                        <Route path='/EditTest/:id/CreateQuestion' component={Question.ConnectedQuestionCreator} />
-                        <Route path='/EditTest/:id/CreateLogic' component={Logic.ConnectedTestLogicEditor} />
-                    </Col>
-                </Row>
-            </Container>
+            <Row>
+                <Col sm={3}>
+                    <FixedConnectedTestCreaterNav link={this.props.match.params.id} />
+                </Col>
+                <Col sm={9}>
+                    <Route path='/CreateTest/new' component={Systemer.ConnectedTestSystemCreater} />
+                    <Route path='/EditTest/:id/CreateSystem' component={Systemer.ConnectedTestSystemEditor} />
+                    <Route path='/EditTest/:id/CreateAttribute' component={Attributer.ConnectedTestAttributeEditor} />
+                    <Route path='/EditTest/:id/CreateSubject' component={Subjecter.default} />
+                    <Route path='/EditTest/:id/CreateParameter' component={Parameter.ConnectedTestParameterEditor} />
+                    <Route path='/EditTest/:id/CreateQuestion' component={Question.ConnectedQuestionCreator} />
+                    <Route path='/EditTest/:id/CreateLogic' component={Logic.ConnectedTestLogicEditor} />
+                </Col>
+            </Row>
         </DocumentTitle>;
     }
 }
@@ -89,22 +87,22 @@ export class TestCreaterNav extends React.Component<NavProps, {}>{
             <Card className="createSideBar">
                 <CardBody>
                     <div>
-                        <h4>{this.props.name == '' ? 'Создайте проект' : this.props.name}</h4> 
-                </div>
+                        <h4>{this.props.name == '' ? 'Создайте проект' : this.props.name}</h4>
+                    </div>
 
-                <hr />
-                <Nav className="nav-pills" vertical>
-                    <NavItem>
+                    <hr />
+                    <Nav className="nav-pills" vertical>
+                        <NavItem>
                             {
                                 (() => {
-                                    if (typeof this.props.link  != 'undefined') {
-                                        return <NavLink to={'/EditTest/' + this.props.link + '/CreateSystem'}  className='nav-link' exact activeClassName='active'>Система</NavLink>
+                                    if (typeof this.props.link != 'undefined') {
+                                        return <NavLink to={'/EditTest/' + this.props.link + '/CreateSystem'} className='nav-link' exact activeClassName='active'>Система</NavLink>
                                     }
                                     return <NavLink to={'/CreateTest/new'} className='nav-link' exact activeClassName='active'>Система</NavLink>
                                 })()
-                            }  
-                    </NavItem>
-                    {(() => {
+                            }
+                        </NavItem>
+                        {(() => {
                             if (typeof this.props.guid != 'undefined' && this.props.guid.length > 0) {
                                 return <div>
                                     <NavItem>
@@ -126,17 +124,17 @@ export class TestCreaterNav extends React.Component<NavProps, {}>{
                             }
 
                         })()}
-                    
-                </Nav>
 
-                <hr />
+                    </Nav>
 
-                <Button block onClick={this.rollbackForce}>Восстановить состояние</Button>
-                <Button block onClick={this.saveForce}>Сохранить состояние</Button>
+                    <hr />
+
+                    <Button block onClick={this.rollbackForce}>Восстановить состояние</Button>
+                    <Button block onClick={this.saveForce}>Сохранить состояние</Button>
 
                 </CardBody>
             </Card>
-            );
+        );
     }
 }
 
