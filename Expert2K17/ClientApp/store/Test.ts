@@ -455,7 +455,7 @@ export const reducer: Reducer<TestStore> = (state: TestStore, action: KnownActio
                                 }
                                 break;
                             case Operation.Substract:
-                                if (param.unitValue) {
+                                if (par.unitValue) {
                                     if (oldParam === undefined) {
                                         par = {
                                             ...par,
