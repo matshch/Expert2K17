@@ -56,6 +56,10 @@ body > div > div
     font-family: Lobster !important;
 }
 
+.navbar-dark hr {
+    border-top-color: rgba(255,255,255,.5);
+}
+
 h6
 {
     font-family: OpenSans-SemiBoldItalic !important;

@@ -55,6 +55,7 @@ class NavBar extends React.Component<NavBarProps, { isOpen: boolean }> {
                   </NavLink>
                 </NavItem>) : null}
             </Nav>
+            <hr />
             <Nav navbar>
               {(this.props.user != undefined && this.props.user != null) ?
                 ([<NavItem>
