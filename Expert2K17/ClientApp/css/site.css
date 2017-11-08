@@ -80,14 +80,14 @@ body
     top: 0;
     left: 0;
     width: 200%;
-    height: 200%;
+    height: 100%;
     content: "";
 
-    -webkit-animation: Gradient 60s ease infinite;
-       -moz-animation: Gradient 60s ease infinite;
-            animation: Gradient 60s ease infinite;
+    -webkit-animation: Gradient 10s ease infinite;
+       -moz-animation: Gradient 10s ease infinite;
+            animation: Gradient 10s ease infinite;
 
-    background: linear-gradient(-45deg, #ee7752, #f590b7, #23a6d5, #23d5ab);
+    background: linear-gradient(-45deg, #1fa2ff, #a6ffcb);
 }
 
 .jumbotron
@@ -219,7 +219,7 @@ hr
     object-fit: cover;
 }
 
-@media screen and (max-width: 639px)
+@media screen and (max-width: 640px)
 {
     .profileImage
     {
@@ -245,7 +245,7 @@ hr
     }
 }
 
-@media screen and (min-width: 640px) and (max-width: 999px)
+@media screen and (min-width: 640px) and (max-width: 1000px)
 {
     .profileImage
     {
@@ -439,14 +439,13 @@ hr
     background-color: rgba(0, 0, 0, .5) !important;
 }
 
-.test-editor label,
-.test-creator label
+.test label
 {
     font-family: OpenSans-SemiBoldItalic !important;
     font-size: 18pt;
 }
 
-.public-system-checkbox
+.test .checkbox
 {
     margin-left: 20px;
 }
@@ -490,7 +489,7 @@ hr
     margin-top: 10px !important;
 }
 
-.createSideBar
+.createSideBar, .test
 {
     margin-bottom: 20px;
 }
@@ -559,15 +558,15 @@ hr
 {
     0%
     {
-        transform: translateX(0) translateY(-50%);
+        transform: translateX(0);
     }
     50%
     {
-        transform: translateX(-50%) translateY(-50%);
+        transform: translateX(-50%);
     }
     100%
     {
-        transform: translateX(0) translateY(-50%);
+        transform: translateX(0);
     }
 }
 
@@ -575,15 +574,15 @@ hr
 {
     0%
     {
-        transform: translateX(0) translateY(-50%);
+        transform: translateX(0);
     }
     50%
     {
-        transform: translateX(-50%) translateY(-50%);
+        transform: translateX(-50%);
     }
     100%
     {
-        transform: translateX(0) translateY(-50%);
+        transform: translateX(0);
     }
 }
 
@@ -591,15 +590,15 @@ hr
 {
     0%
     {
-        transform: translateX(0) translateY(-50%);
+        transform: translateX(0);
     }
     50%
     {
-        transform: translateX(-50%) translateY(-50%);
+        transform: translateX(-50%);
     }
     100%
     {
-        transform: translateX(0) translateY(-50%);
+        transform: translateX(0);
     }
 }
 
@@ -609,7 +608,7 @@ hr
     {
         transform: translateY(0);
     }
-    -50%
+    50%
     {
         transform: translateY(12px);
     }

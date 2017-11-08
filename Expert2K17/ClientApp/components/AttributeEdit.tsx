@@ -29,13 +29,13 @@ class TestCreaterAttribute extends React.Component<CreateAttribute, {}>{
     }
 
     render() {
-        return <Container fluid>
+        return <div>
 
             {this.props.attr.map((val, key) => {
                 return <ConnectedAttribute key={key} index={key} />
             })}
             <ConnectedNewAttribute />
-        </Container>
+        </div>
     }
 }
 
@@ -99,31 +99,29 @@ class Attribute extends React.Component<AttributeProps, {}>{
     }
 
     render() {
-        return <Card className="createSideBar">
+        return <Card className="test attribute">
             <CardBody>
                 <Form>
-                    <FormGroup row>
-                        <Label for="texter" sm={3}>Название</Label>
-                        <Col sm={9}>
-                            <InputGroup>
-                                <Input type="text" name="text" id="texter" onChange={this.name_change} value={this.props.attr.name} placeholder="Название атрибута"></Input>
-                                <InputGroupButton color="danger"><Button onClick={this.onFullDelete} color="danger"><i className="fa fa-trash" ></i></Button></InputGroupButton>
-                            </InputGroup>
-                        </Col>
+                    <FormGroup>
+                        <Label for="texter">Атрибут</Label>
+                        <InputGroup>
+                            <Input type="text" name="text" id="texter" onChange={this.name_change} value={this.props.attr.name} placeholder="Название атрибута"></Input>
+                        </InputGroup>
                     </FormGroup>
-                    <FormGroup row>
-                        <Label for="chb1" sm={3}>Числовые значения</Label>
-                        <Col sm={9}>
-                            <Input type="checkbox" checked={this.props.attr.unitValue} onChange={this.unitChange} id="chb1" />
-                        </Col>
+                    <FormGroup className="checkbox">
+                        <div className="checkBox">
+                            <Input checked={this.props.attr.unitValue} onChange={this.unitChange} id="chb1" type="checkbox" />{''}
+                        </div>
+                        <div className="checkBoxLabel">
+                            <div>числовые значения</div>
+                        </div>
                     </FormGroup>
-                    <hr />
                     <ListGroup>
                         {this.props.pairs.map((val, key) => {
                             return <Valer deleter={this.onPDelete} changer={this.onPChange} guid={val.guid} value={val.value} key={key} />
                         })}
                     </ListGroup>
-
+                    <Button color="danger" onClick={this.onFullDelete} size="xs" block><i className="fa fa-trash" ></i> Удалить</Button>
                 </Form>
             </CardBody>
         </Card>
@@ -201,22 +199,22 @@ class NewAttribute extends React.Component<typeof Store.actionCreators, Interf.A
     }
 
     render() {
-        return <Card className="createSideBar">
+        return <Card className="test attribute">
             <CardBody>
                 <Form>
-                    <FormGroup row>
-                        <Label for="texter" sm={3}>Название</Label>
-                        <Col sm={9}>
-                            <Input type="text" name="text" id="texter" onChange={this.name_change} value={this.state.name} placeholder="Название атрибута"></Input>
-                        </Col>
+                    <FormGroup>
+                        <Label for="texter">Атрибут</Label>
+                        <Input type="text" name="text" id="texter" onChange={this.name_change} value={this.state.name} placeholder="Название атрибута"></Input>
                     </FormGroup>
-                    <FormGroup row>
-                        <Label for="chb1" sm={3}>Числовые значения</Label>
-                        <Col sm={9}>
-                            <Input type="checkbox" checked={this.state.unitValue} onChange={this.unitChange} id="chb1" />
-                        </Col>
+                    <FormGroup className="checkbox">
+                        <div className="checkBox">
+                            <Input checked={this.state.unitValue} onChange={this.unitChange} id="chb1" type="checkbox" />{''}
+                        </div>
+                        <div className="checkBoxLabel">
+                            <div>числовые значения</div>
+                        </div>
                     </FormGroup>
-                    <Button color="success" onClick={this.addAttribute}>Создать</Button>
+                    <Button color="success" onClick={this.addAttribute} size="lg" block>Добавить</Button>
                 </Form>
             </CardBody>
         </Card>

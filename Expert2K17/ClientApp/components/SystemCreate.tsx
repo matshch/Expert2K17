@@ -37,7 +37,7 @@ export class TestEditorSystem extends React.Component<TestEditSystemT, {}>{
         });
     }
     render() {
-        return <Card className="test-editor">
+        return <Card className="test editor">
             <CardBody>
                 <Form>
                     <FormGroup>
@@ -57,7 +57,7 @@ export class TestEditorSystem extends React.Component<TestEditSystemT, {}>{
                             <Input type="file" name="file" onChange={this.pictureChange} id="imge"></Input>
                         </div>
                     </FormGroup>
-                    <FormGroup className="public-system-checkbox">
+                    <FormGroup className="checkbox">
                         <div className="checkBox">
                             <Input checked={this.props.system.pub} onChange={this.pubChange} id="chb1" type="checkbox" />{''}
                         </div>
@@ -132,7 +132,7 @@ export class TestCreaterSystem extends React.Component<TestCreaterSystemT, Creat
         if (this.props.guid != '') {
             return <Redirect to={"/EditTest/" + this.props.guid + "/CreateSystem"} />
         }
-        return <Card className="test-creator">
+        return <Card className="test creator">
             <CardBody>
                 <Form>
                     <FormGroup>
