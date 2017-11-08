@@ -25,6 +25,10 @@ class NavBar extends React.Component<NavBarProps, { isOpen: boolean }> {
       isOpen: !this.state.isOpen
   });
 
+  close = () => this.setState({
+      isOpen: false
+  });
+
   render() {
     return (
       <div>
@@ -34,19 +38,19 @@ class NavBar extends React.Component<NavBarProps, { isOpen: boolean }> {
           <Collapse isOpen={this.state.isOpen} navbar>
             <Nav navbar className="mr-auto">
               <NavItem>
-                <NavLink exact to={'/'} className='nav-link' activeClassName='active'>
+                <NavLink onClick={this.close} exact to={'/'} className='nav-link' activeClassName='active'>
                   Список тестов
                 </NavLink>
               </NavItem>
               {(this.props.user != undefined && this.props.user != null) ?
                 (<NavItem>
-                  <NavLink to={'/CreateTest'} className='nav-link' activeClassName='active'>
+                  <NavLink onClick={this.close} to={'/CreateTest'} className='nav-link' activeClassName='active'>
                     Создание теста
                   </NavLink>
                 </NavItem>) : null}
               {(this.props.user != undefined && this.props.user != null && this.props.user.isAdmin) ?
                 (<NavItem>
-                  <NavLink to={'/panel'} className='nav-link' activeClassName='active'>
+                  <NavLink onClick={this.close} to={'/panel'} className='nav-link' activeClassName='active'>
                     Панель управления
                   </NavLink>
                 </NavItem>) : null}
@@ -54,22 +58,22 @@ class NavBar extends React.Component<NavBarProps, { isOpen: boolean }> {
             <Nav navbar>
               {(this.props.user != undefined && this.props.user != null) ?
                 ([<NavItem>
-                  <NavLink to={'/profile'} className='nav-link' activeClassName='active'>
+                  <NavLink onClick={this.close} to={'/profile'} className='nav-link' activeClassName='active'>
                     {this.props.user.userName}
                   </NavLink>
                 </NavItem>,
                 <NavItem>
-                  <NavLink to={'/logout'} className='nav-link' activeClassName='active'>
+                  <NavLink onClick={this.close} to={'/logout'} className='nav-link' activeClassName='active'>
                     Выйти
                   </NavLink>
                 </NavItem>]) :
                 [<NavItem>
-                  <NavLink to={'/login'} className='nav-link' activeClassName='active'>
+                  <NavLink onClick={this.close} to={'/login'} className='nav-link' activeClassName='active'>
                     Войти
                   </NavLink>
                 </NavItem>,
                 <NavItem key="register">
-                  <NavLink to={'/register'} className='nav-link' activeClassName='active'>
+                  <NavLink onClick={this.close} to={'/register'} className='nav-link' activeClassName='active'>
                     Зарегистрироваться
                   </NavLink>
                 </NavItem>]}
