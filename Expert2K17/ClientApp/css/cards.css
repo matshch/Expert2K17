@@ -65,8 +65,7 @@
 
     height: 100%;
 
-    -webkit-transition: all .6s cubic-bezier(.165, .84, .44, 1);
-            transition: all .6s cubic-bezier(.165, .84, .44, 1);
+    transition: all .6s cubic-bezier(.165, .84, .44, 1);
 
     color: black !important;
     border-radius: 5px;
@@ -84,8 +83,7 @@
     height: 100%;
 
     content: '';
-    -webkit-transition: all .6s cubic-bezier(.165, .84, .44, 1);
-            transition: all .6s cubic-bezier(.165, .84, .44, 1);
+    transition: all .6s cubic-bezier(.165, .84, .44, 1);
 
     opacity: 0;
     border-radius: 5px;
@@ -95,8 +93,7 @@
 .home .card:hover,
 .panel .card:hover
 {
-    -webkit-transform: scale(1.05, 1.05);
-            transform: scale(1.05, 1.05);
+    transform: scale(1.05, 1.05);
 }
 
 .home .card:hover::after,

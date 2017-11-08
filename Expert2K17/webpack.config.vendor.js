@@ -51,7 +51,7 @@ module.exports = (env) => {
         output: { path: path.join(__dirname, 'wwwroot', 'dist') },
         module: {
             rules: [
-                { test: /\.css(\?|$)/, use: extractCSS.extract({ use: isDevBuild ? 'css-loader' : 'css-loader?minimize' }) },
+                { test: /\.css(\?|$)/, use: extractCSS.extract({ use: isDevBuild ? ['css-loader', 'postcss-loader'] : ['css-loader?minimize', 'postcss-loader'] }) },
                 { test: fileExt, use: 
                     {
                         loader: "url-loader",
