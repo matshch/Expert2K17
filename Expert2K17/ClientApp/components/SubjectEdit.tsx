@@ -1,4 +1,4 @@
-﻿// A '.tsx' file enables JSX support in the TypeScript compiler, 
+﻿// A '.tsx' file enables JSX support in the TypeScript compiler,
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
 import * as React from 'react';
@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { ApplicationState } from '../store';
 import * as Store from '../store/Subject';
 import { NavLink, Route, Redirect } from 'react-router-dom';
-import { Nav, NavItem, Row, Container, Col, Button, Form, FormGroup, InputGroup , InputGroupButton, Label, Input, FormText, Media, Card, CardBody, CardTitle, CardText, ListGroup, ListGroupItem, ListGroupItemText } from 'reactstrap'
+import { Nav, NavItem, Row, Container, Col, Button, Form, FormGroup, InputGroup, InputGroupButton, Label, Input, FormText, Media, Card, CardBody, CardTitle, CardText, ListGroup, ListGroupItem, ListGroupItemText } from 'reactstrap'
 import DocumentTitle from 'react-document-title';
 import * as Interf from '../store/TestInterfaces';
 import * as ComboBox from 'react-selectize';
@@ -32,7 +32,7 @@ class TestCreaterSubject extends React.Component<CreateAttribute, {}>{
                 })
 
             })()}
-            <ConnectedNewSubject/>
+            <ConnectedNewSubject />
         </Container>
     }
 }
@@ -73,30 +73,28 @@ class Subject extends React.Component<SubjectPropsType, {}>{
         this.props.setPair(attrGuid, value, this.props.subject.guid);
     }
 
-    onFullDelete = ()=>{
+    onFullDelete = () => {
         this.props.deleteSubject(this.props.subject.guid);
     }
 
     render() {
-        return <Card className="createSideBar">
+        return <Card className="test object">
             <CardBody>
                 <Form>
-                    <FormGroup row>
-                        <Label for="texter" sm={3}>Название</Label>
-                        <Col sm={9}>
+                    <FormGroup>
+                        <Label for="texter">Название</Label>
                         <InputGroup>
                             <Input type="text" name="text" id="texter" value={this.props.subject.name} placeholder="Название объекта"></Input>
                             <InputGroupButton color="danger"><Button onClick={this.onFullDelete} color="danger"><i className="fa fa-trash" ></i></Button></InputGroupButton>
                         </InputGroup>
-                        </Col>
-                    </FormGroup> 
+                    </FormGroup>
                     {(() => {
-                        if (this.props.subject.guid != '' && this.props.attr.length>0) {
+                        if (this.props.subject.guid != '' && this.props.attr.length > 0) {
                             return this.props.attr.map((val, key) => {
                                 return <SubjectToAttribute attr={val} key={key} subject={this.props.subject} selected={this.selectedCallback} added={this.addCallback} pairs={this.props.pairs.filter((pair) => {
                                     if (pair.attributeGuid == val.guid) {
                                         return true;
-                                    } 
+                                    }
                                     return false;
                                 })} />
                             })
@@ -128,7 +126,7 @@ type SubjecterAttribute =
     AdditionalPairs
     &
     STACallbacks;
-    
+
 
 
 interface OptionValue {
@@ -144,7 +142,7 @@ function findSubjectGuid(subj: string, arr: string[]) {
     return false
 }
 
-class SubjectToAttribute extends React.Component<SubjecterAttribute, {} > {
+class SubjectToAttribute extends React.Component<SubjecterAttribute, {}> {
     constructor() {
         super();
 
@@ -152,15 +150,13 @@ class SubjectToAttribute extends React.Component<SubjecterAttribute, {} > {
 
     makeOptions = () => {
         return this.props.pairs.filter((e) => {
-            if (e.attributeGuid == this.props.attr.guid)
-            { return true }
-            else
-            { return false }
-        }).map((e) => {           
-                return {
-                    label: e.value,
-                    value: e.value
-                }           
+            if (e.attributeGuid == this.props.attr.guid) { return true }
+            else { return false }
+        }).map((e) => {
+            return {
+                label: e.value,
+                value: e.value
+            }
         })
     }
     onVChange = (item: any) => {
@@ -169,7 +165,7 @@ class SubjectToAttribute extends React.Component<SubjecterAttribute, {} > {
             return;
         }
         if (!!item) {
-            this.props.selected(item.value, this.props.attr.guid);     
+            this.props.selected(item.value, this.props.attr.guid);
             return;
         }
     }
@@ -196,38 +192,32 @@ class SubjectToAttribute extends React.Component<SubjecterAttribute, {} > {
     render() {
         return <Card>
             <CardBody>
-                <Row>
-                    <Col lg={6}>
-                        <Label>{this.props.attr.name}</Label>
-                    </Col>
-                    <Col lg={6}>
-                        <ComboBox.SimpleSelect options={this.makeOptions()} 
-                            createFromSearch={
-                                (options, search) => {
-                                    if (search.length == 0 || (options.map(function (option) {
-                                        return option.label;
-                                    })).indexOf(search) > -1)
-                                        return null as OptionValue;
-                                    else
-                                        return { label: search, value: search };
-                                }
-                            }
-                            defaultValue={this.defaultValue()}
-                            onValueChange={this.onVChange}
-                            
-                            renderOption={function (item: any) {
-                                return <div className="simple-option" style={{ display: "flex", alignItems: "center" }}>
-                                    <div style={{
-                                        backgroundColor: item.label, borderRadius: "50%", width: 24, height: 24
-                                    }}></div>
-                                    <div style={{ marginLeft: 10 }}>
-                                        {!!item.newOption ? "Добавить " + item.label + " ..." : item.label}
-                                    </div>
-                                </div>
-                            }}
-                            placeholder="Выберите значение атрибута"></ComboBox.SimpleSelect>
-                    </Col>
-                </Row>
+                <Label>{this.props.attr.name}</Label>
+                <ComboBox.SimpleSelect options={this.makeOptions()}
+                    createFromSearch={
+                        (options, search) => {
+                            if (search.length == 0 || (options.map(function(option) {
+                                return option.label;
+                            })).indexOf(search) > -1)
+                                return null as OptionValue;
+                            else
+                                return { label: search, value: search };
+                        }
+                    }
+                    defaultValue={this.defaultValue()}
+                    onValueChange={this.onVChange}
+
+                    renderOption={function(item: any) {
+                        return <div className="simple-option" style={{ display: "flex", alignItems: "center" }}>
+                            <div style={{
+                                backgroundColor: item.label, borderRadius: "50%", width: 24, height: 24
+                            }}></div>
+                            <div style={{ marginLeft: 10 }}>
+                                {!!item.newOption ? "Добавить " + item.label + " ..." : item.label}
+                            </div>
+                        </div>
+                    }}
+                    placeholder="Выберите значение атрибута"></ComboBox.SimpleSelect>
             </CardBody>
         </Card>
     }
@@ -263,16 +253,14 @@ class NewSubject extends React.Component<typeof Store.actionCreators, Interf.Sub
     }
 
     render() {
-        return <Card className="createSideBar">
+        return <Card className="test object">
             <CardBody>
                 <Form>
-                    <FormGroup row>
-                        <Label for="texter" sm={3}>Название</Label>
-                        <Col sm={9}>
-                            <Input type="text" name="text" id="texter" onChange={this.name_change} value={this.state.name} placeholder="Название объекта"></Input>
-                        </Col>
+                    <FormGroup>
+                        <Label for="texter">Название</Label>
+                        <Input type="text" name="text" id="texter" onChange={this.name_change} value={this.state.name} placeholder="Название объекта"></Input>
                     </FormGroup>
-                    <Button color="success" onClick={this.saveSubject}>Создать</Button>
+                    <Button color="success" onClick={this.saveSubject} size="lg" block>Создать</Button>
                 </Form>
             </CardBody>
         </Card>
@@ -307,7 +295,7 @@ function getStore(store: ApplicationState, props: NeededAttributeProps) {
     }
 }
 
-let ConnectedNewSubject = connect(() => { return {}}, Store.actionCreators)(NewSubject);
+let ConnectedNewSubject = connect(() => { return {} }, Store.actionCreators)(NewSubject);
 
 let ConnectedSubject = connect(getStore, Store.actionCreators)(Subject);
 export default connect((store: ApplicationState) => { return { system: store.combinedSystem.system, subjects: store.combinedSystem.subjects } }, Store.actionCreators)(TestCreaterSubject);
