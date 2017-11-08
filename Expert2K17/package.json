@@ -2,6 +2,11 @@
   "name": "expert2k17",
   "private": true,
   "version": "0.0.0",
+  "browserslist": [
+    "> 1% in RU",
+    "last 2 versions",
+    "Firefox ESR"
+  ],
   "dependencies": {
     "@types/create-react-class": "^15.6.0",
     "@types/deep-equal": "^1.0.1",
@@ -71,6 +76,7 @@
     "build:vendor": "webpack --progress --config webpack.config.vendor.js",
     "build:site": "webpack --progress",
     "prepare": "npm-run-all --parallel setup build",
+    "publish": "dotnet publish -c Release -r ubuntu-x64",
     "setup": "cp-file --no-overwrite connections.template.json connections.json",
     "start": "dotnet run"
   },
