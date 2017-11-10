@@ -1,5 +1,10 @@
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
+import './index.css';
+
+const hexagramg = require('./hexagramg.jpg');
+const matshch = require('./matshch.jpg');
+const maxavatar = require('./maxavatar.png');
 
 type AboutProps = RouteComponentProps<{}>;
 
@@ -10,7 +15,7 @@ export default class About extends React.Component<AboutProps, {}> {
                 <div className="about">
                     <div>
                         <div className="card">
-                            <img src="https://avatars2.githubusercontent.com/u/2412121?s=460&amp;v=4" />
+                            <img src={matshch} />
                             <div className="content">
                                 <h1>Лещев А.О.</h1>
                                 <div className="social">
@@ -24,7 +29,7 @@ export default class About extends React.Component<AboutProps, {}> {
                     </div>
                     <div>
                         <div className="card">
-                            <img src="https://avatars2.githubusercontent.com/u/8061587?s=460&amp;v=4" />
+                            <img src={maxavatar} />
                             <div className="content">
                                 <h1>Лясковский М.А.</h1>
                                 <div className="social">
@@ -38,7 +43,7 @@ export default class About extends React.Component<AboutProps, {}> {
                     </div>
                     <div>
                         <div className="card">
-                            <img src="https://avatars2.githubusercontent.com/u/11045290?s=460&amp;v=4" />
+                            <img src={hexagramg} />
                             <div className="content">
                                 <h1>Мельников К.И.</h1>
                                 <div className="social">
