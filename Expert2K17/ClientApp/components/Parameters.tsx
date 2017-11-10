@@ -6,6 +6,7 @@ import { Link, RouteComponentProps } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { ApplicationState } from '../store';
 import * as Store from '../store/Parameters';
+import * as ParStore from '../store/ParameterPair';
 import { NavLink, Route, Redirect } from 'react-router-dom';
 import { Nav, NavItem, Row, Container, Col, Button, Form, FormGroup, Label, InputGroup, InputGroupButton, Input, FormText, Media, Card, CardBody, CardTitle, CardText, ListGroup, ListGroupItem, ListGroupItemText } from 'reactstrap'
 import DocumentTitle from 'react-document-title';
@@ -64,7 +65,7 @@ class Parameter extends React.Component<ParameterProps, {}>{
         this.props.syncParameter({ ...this.props.parameter, unitValue: e.target.checked });
     }
     onFullDelete = ()=>{
-        
+        this.props.deleteParameter(this.props.parameter.guid);
     }
     render() {
         return <Card className="createSideBar">
@@ -91,7 +92,7 @@ class Parameter extends React.Component<ParameterProps, {}>{
                                 <hr />
                                 <ListGroup>
                                     {this.props.pairs.map((val, key) => {
-                                        return <ListGroupItem key={key}>{val.value}</ListGroupItem>
+                                        return <ConnectedParPair key={key} index={key} parGuid={this.props.parameter.guid} />
                                     })}
                                 </ListGroup>
                             </div>)
@@ -101,6 +102,37 @@ class Parameter extends React.Component<ParameterProps, {}>{
                 </Form>
             </CardBody>
         </Card>
+    }
+}
+
+interface PPair {
+    index: number;
+    pair: Interf.ParameterPair;
+    parameter: Interf.Parameter;
+    parGuid: string;
+}
+
+type ppair =
+    PPair
+    &
+    typeof ParStore.actionCreators;
+
+class ParameterPairer extends React.Component<ppair,{}>{
+
+    changer = (e: React.ChangeEvent<HTMLInputElement>) =>{
+        this.props.syncPair(this.props.index, e.target.value);
+    }
+
+    onFullDelete = () => {
+        this.props.deletePair(this.props.pair.guid, this.props.parameter.guid)  
+    }
+    render() {
+        return <div>
+            <InputGroup>
+                <Input type="text" value={this.props.pair.value} onChange={this.changer}></Input>
+                <InputGroupButton color="danger"><Button onClick={this.onFullDelete} color="danger"><i className="fa fa-trash" ></i></Button></InputGroupButton>          
+            </InputGroup>
+        </div>
     }
 }
 
@@ -180,7 +212,24 @@ function getParameterProps(store: ApplicationState, props: NeededParameterProps)
  
 }
 
+interface NeedPProps {
+    index: number;
+    parGuid: string;
+}
+
+function getPairProps(store: ApplicationState, props:  NeedPProps){
+    let pair = store.combinedSystem.parpairs[props.index];
+    let parameter = store.combinedSystem.parameters.find((e)=>{
+        if(e.guid==props.parGuid){
+            return true;
+        }
+        return false;
+    });
+    return {parameter: parameter, pair: pair}
+}
+
 
 export let ConnectedTestParameterEditor = connect((store: ApplicationState) => { return { parameters: store.combinedSystem.parameters, sys: store.combinedSystem.system } }, Store.actionCreators)(TesteCreateParameters);
 let ConnectedParameter = connect(getParameterProps, Store.actionCreators)(Parameter)
 let ConnectedNewParameter = connect(() => ({}), Store.actionCreators)(NewParameter)
+let ConnectedParPair = connect(getPairProps, ParStore.actionCreators)(ParameterPairer);

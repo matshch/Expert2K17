@@ -61,10 +61,18 @@ interface LinkQuestionAction {
     guid: string;
 }
 
+interface DeleteQuestionAction {
+    type: 'DELETE_QUESTION',
+    questionGuid: string
+}
 
+interface DeleteAdditionalConditionsAction {
+    type: 'DELETE_QUESTION',
+    conditionGuids: string[]
+}
 // Declare a 'discriminated union' type. This guarantees that all references to 'type' properties contain one of the
 // declared type strings (and not any other arbitrary string).
-type KnownAction = SyncQuestionAction | AddQuestionAction | AddAnswerAction | SyncAnswerAction | ChangeParameterAction | LoadSystemAction | LinkQuestionAction ;
+type KnownAction = SyncQuestionAction | AddQuestionAction | AddAnswerAction | SyncAnswerAction | ChangeParameterAction | LoadSystemAction | LinkQuestionAction  ;
 // ----------------
 // REDUCER - For a given state and action, returns the new state. To support time travel, this must not mutate the old state.
 
@@ -137,6 +145,20 @@ export const actionCreators = {
         });
     },
     changeParameter: (questionGuid: string, parameterGuid: string): AppThunkAction<KnownAction> => (dispatch, getState) => {
+        var param = getState().combinedSystem.parameters.find((e) => {
+            if (parameterGuid == e.guid) {
+                return true
+            }
+        })
+        var typer = param.unitValue ? QuestionType.Value : QuestionType.Variety
+        dispatch({
+            type: 'CHANGE_PARAMETER',
+            parameterGuid: parameterGuid,
+            questionGuid: questionGuid,
+            typer: typer
+        });
+    },
+    deleteQuestion: (questionGuid: string, parameterGuid: string): AppThunkAction<KnownAction> => (dispatch, getState) => {
         var param = getState().combinedSystem.parameters.find((e) => {
             if (parameterGuid == e.guid) {
                 return true

@@ -23,9 +23,13 @@ interface LoadSystemAction {
     type: 'LOAD_SYSTEM';
     system: SystemCreateState;
 }
+interface DeleteParameterAction {
+    type: 'DELETE_PARAMETER';
+    parameterGuid: string;
+}
 // Declare a 'discriminated union' type. This guarantees that all references to 'type' properties contain one of the
 // declared type strings (and not any other arbitrary string).
-type KnownAction = SyncConditionAction | AddConditioParameternAction | LoadSystemAction;
+type KnownAction = SyncConditionAction | AddConditioParameternAction | LoadSystemAction | DeleteParameterAction;
 
 // ----------------
 // REDUCER - For a given state and action, returns the new state. To support time travel, this must not mutate the old state.
@@ -41,14 +45,15 @@ export const actionCreators = {
     syncParameter: (parameter: Parameter): AppThunkAction<KnownAction> => (dispatch, getState) => {
         dispatch({ type: 'SYNC_PARAMETER', parameter: parameter });
     },
+    deleteParameter: (parameterGuid: string): AppThunkAction<KnownAction> => (dispatch, getState) => {
+        dispatch({ type: 'DELETE_PARAMETER', parameterGuid: parameterGuid});
+    }
 };
 
 
 
 
-export const unloadedState: Parameter[] =
-    []
-    ;
+export const unloadedState: Parameter[] =  [];
 
 export const reducer: Reducer<Parameter[]> = (state: Parameter[], action: KnownAction) => {
     switch (action.type) {
@@ -56,6 +61,13 @@ export const reducer: Reducer<Parameter[]> = (state: Parameter[], action: KnownA
             return [...state, action.parameter]
         case "LOAD_SYSTEM":
             return action.system.parameters;
+        case "DELETE_PARAMETER":
+            return state.filter((e)=>{
+                if(e.guid == action.parameterGuid){
+                    return false;
+                }
+                return true;
+            });
         case "SYNC_PARAMETER":
             return state.map((val) => {
                 if (val.guid == action.parameter.guid) {

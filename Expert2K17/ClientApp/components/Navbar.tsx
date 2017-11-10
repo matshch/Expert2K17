@@ -64,17 +64,17 @@ class NavBar extends React.Component<NavBarProps, { isOpen: boolean }> {
             <hr />
             <Nav navbar>
               {(this.props.user != undefined && this.props.user != null) ?
-                ([<NavItem>
+                ([<NavItem key="profile">
                   <NavLink onClick={this.close} to={'/profile'} className='nav-link' activeClassName='active'>
                     {this.props.user.userName}
                   </NavLink>
                 </NavItem>,
-                <NavItem>
+                <NavItem key="logout">
                   <NavLink onClick={this.close} to={'/logout'} className='nav-link' activeClassName='active'>
                     Выйти
                   </NavLink>
                 </NavItem>]) :
-                [<NavItem>
+                [<NavItem key="login">
                   <NavLink onClick={this.close} to={'/login'} className='nav-link' activeClassName='active'>
                     Войти
                   </NavLink>
