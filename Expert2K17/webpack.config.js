@@ -16,7 +16,7 @@ module.exports = (env) => {
         resolve: { extensions: ['.js', '.jsx', '.ts', '.tsx'] },
         output: {
             filename: '[name].js',
-            publicPath: 'dist/' // Webpack dev middleware, if enabled, handles requests for this URL prefix
+            publicPath: '/dist/' // Webpack dev middleware, if enabled, handles requests for this URL prefix
         },
         module: {
             rules: [
@@ -38,13 +38,12 @@ module.exports = (env) => {
         entry: { 'main-client': './ClientApp/boot-client.tsx' },
         module: {
             rules: [
-                { test: /\.css$/, use: extractCSS.extract({ use: isDevBuild ? ['css-loader', 'postcss-loader'] : ['css-loader?minimize', 'postcss-loader'] }) },
+                { test: /\.css$/, use: extractCSS.extract({ use: [isDevBuild ? 'css-loader?sourceMap' : 'css-loader?minimize', 'postcss-loader'] }) },
                 { test: fileExt, use: 
                     {
                         loader: "url-loader",
                         options: {
-                            limit: 25000,
-                            publicPath: ''
+                            limit: 25000
                         }
                     }
                 }
@@ -75,7 +74,7 @@ module.exports = (env) => {
         entry: { 'main-server': './ClientApp/boot-server.tsx' },
         module: {
             rules: [
-                { test: /\.css$/, use: isDevBuild ? 'css-loader' : 'css-loader?minimize' },
+                { test: /\.css$/, use: 'css-loader' },
                 { test: fileExt, use: 
                     {
                         loader: "file-loader",
