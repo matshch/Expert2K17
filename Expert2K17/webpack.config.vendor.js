@@ -100,7 +100,7 @@ module.exports = (env) => {
         },
         module: {
             rules: [
-            	{ test: /\.css(\?|$)/, use: 'css-loader' },
+                { test: /\.css(\?|$)/, use: 'css-loader' },
                 { test: fileExt, use: 
                     {
                         loader: "file-loader",
