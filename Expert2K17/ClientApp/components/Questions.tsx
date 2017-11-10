@@ -150,7 +150,9 @@ class Question extends React.Component<QuestionProps, {}>{
         return <Conditioner.ConnectedCondition dependancy={this.props.question.guid} index={-1} type={Interf.ComponentCondition.Question} mode={-1} />
     }
 
+    onFullDelete = () => {
 
+    }
 
     render() {
         return <Card className="createSideBar">
@@ -203,6 +205,7 @@ class Question extends React.Component<QuestionProps, {}>{
                             </div>)
                         }
                     })()}
+                    <Button color="danger" onClick={this.onFullDelete} size="xs" block><i className="fa fa-trash" ></i> Удалить</Button>
 
                 </Form>
             </CardBody>

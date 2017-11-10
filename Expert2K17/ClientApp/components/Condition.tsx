@@ -123,6 +123,15 @@ class Condition extends React.Component<ConditionProps, {}>{
                 return;
             }
         }
+        if(typeof item == 'undefined' && this.props.type == Interf.ComponentCondition.Question){
+            let newCondition: Interf.Condition = {
+                ...this.props.condition,
+                left: '',
+                parameter: mode,
+                right: ''
+            }
+            this.props.syncCondition(newCondition);           
+        }
         
     }
 
