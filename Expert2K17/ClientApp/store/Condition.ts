@@ -74,10 +74,15 @@ interface LoadSystemAction {
     system: SystemCreateState;
 }
 
+interface DeletePairAction {
+    type: 'DELETE_PARPAIR',
+    guid: string
+    parGuid: string
+}
 
 // Declare a 'discriminated union' type. This guarantees that all references to 'type' properties contain one of the
 // declared type strings (and not any other arbitrary string).
-type KnownAction = AddConditionAction | SyncConditionAction | LoadSystemAction;
+type KnownAction = AddConditionAction | SyncConditionAction | LoadSystemAction | DeletePairAction;
 
 // ----------------
 // REDUCER - For a given state and action, returns the new state. To support time travel, this must not mutate the old state.
@@ -144,7 +149,16 @@ export const reducer: Reducer<Condition[]> = (state: Condition[], action: KnownA
             });
         case "LOAD_SYSTEM":
             return action.system.conditions;
-        
+        case "DELETE_PARPAIR":
+            return state.map((e)=>{
+                if(e.right == action.guid){
+                    return {
+                        ...e,
+                        right: ''
+                    }
+                }
+                return e;
+            });
         default:
             // The following line guarantees that every action in the KnownAction union has been covered by a case above
             const exhaustiveCheck: never = action;
