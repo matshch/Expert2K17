@@ -145,13 +145,15 @@ class Question extends React.Component<QuestionProps, {}>{
                     return true;
                 }
             })
-            return <Conditioner.ConnectedCondition dependancy={this.props.question.guid} index={ind} type={Interf.ComponentCondition.Question} mode={-1} />
+            return <Conditioner.ConnectedCondition dependancy={this.props.question.guid}
+             index={ind} type={Interf.ComponentCondition.Question} mode={-1} />
         }
-        return <Conditioner.ConnectedCondition dependancy={this.props.question.guid} index={-1} type={Interf.ComponentCondition.Question} mode={-1} />
+        return <Conditioner.ConnectedCondition dependancy={this.props.question.guid}
+         index={-1} type={Interf.ComponentCondition.Question} mode={-1} />
     }
 
     onFullDelete = () => {
-
+        this.props.deleteQuestion(this.props.question.guid);
     }
 
     render() {
@@ -325,6 +327,10 @@ class Answers extends React.Component<SubjecterAttribute, {}> {
         return (null as OptionValue);
     }
 
+    onFullDelete = () => {
+        this.props.deleteAnswer(this.props.question.guid, this.props.index);
+    }
+
     render() {
         return <Card>
             <CardBody>
@@ -339,7 +345,7 @@ class Answers extends React.Component<SubjecterAttribute, {}> {
                 <br/>
                 {(() => {
                     if (this.props.index > -1) {
-                        return <Row>
+                        return <div><Row>
                             <Col lg={6}>
                                 <Label>Значение параметра</Label>
                             </Col>
@@ -371,6 +377,9 @@ class Answers extends React.Component<SubjecterAttribute, {}> {
                                     placeholder="Выберите значение параметра"></ComboBox.SimpleSelect>
                             </Col>
                         </Row>
+                        <Button color="danger" onClick={this.onFullDelete} size="xs" block><i className="fa fa-trash" ></i> Удалить</Button>
+                        
+                        </div>
                     }
 
                 })()}

@@ -67,12 +67,25 @@ interface DeleteQuestionAction {
 }
 
 interface DeleteAdditionalConditionsAction {
-    type: 'DELETE_QUESTION',
-    conditionGuids: string[]
+    type: 'DELETE_QUESTIONCONDITION',
+    conditionGuid: string
 }
+
+interface DeleteAnswerAction {
+    type: 'DELETE_ANSWER',
+    index: number,
+    questionGuid: string
+}
+
+interface DeletePairAction {
+    type: 'DELETE_PARPAIR',
+    guid: string
+    parGuid: string
+}
+
 // Declare a 'discriminated union' type. This guarantees that all references to 'type' properties contain one of the
 // declared type strings (and not any other arbitrary string).
-type KnownAction = SyncQuestionAction | AddQuestionAction | AddAnswerAction | SyncAnswerAction | ChangeParameterAction | LoadSystemAction | LinkQuestionAction  ;
+type KnownAction = SyncQuestionAction | AddQuestionAction | AddAnswerAction | SyncAnswerAction | ChangeParameterAction | LoadSystemAction | LinkQuestionAction | DeleteQuestionAction | DeleteAnswerAction | DeletePairAction;
 // ----------------
 // REDUCER - For a given state and action, returns the new state. To support time travel, this must not mutate the old state.
 
@@ -158,19 +171,28 @@ export const actionCreators = {
             typer: typer
         });
     },
-    deleteQuestion: (questionGuid: string, parameterGuid: string): AppThunkAction<KnownAction> => (dispatch, getState) => {
-        var param = getState().combinedSystem.parameters.find((e) => {
-            if (parameterGuid == e.guid) {
-                return true
+    deleteQuestion: (questionGuid: string): AppThunkAction<KnownAction | DeleteAdditionalConditionsAction> => (dispatch, getState) => {
+        let current_state = getState();
+        let conditionGuid = current_state.combinedSystem.questions.find((e)=>{
+            if(e.guid == questionGuid){
+                return true;
             }
-        })
-        var typer = param.unitValue ? QuestionType.Value : QuestionType.Variety
+            return false;
+        }).cast_if
+
+        if(conditionGuid.length > 0){
+            dispatch({
+                type: 'DELETE_QUESTIONCONDITION',
+                conditionGuid: conditionGuid
+            })
+        }
         dispatch({
-            type: 'CHANGE_PARAMETER',
-            parameterGuid: parameterGuid,
-            questionGuid: questionGuid,
-            typer: typer
+            type: 'DELETE_QUESTION',
+            questionGuid: questionGuid
         });
+    },
+    deleteAnswer: (questionGuid: string ,index: number): AppThunkAction<KnownAction> => (dispatch, getState) => {
+        dispatch({ type: 'DELETE_ANSWER', index: index, questionGuid: questionGuid });
     }
 
 };
@@ -223,6 +245,13 @@ export const reducer: Reducer<Question[]> = (state: Question[], action: KnownAct
                 }
                 return e
             });
+        case "DELETE_QUESTION":
+            return state.filter((e) => {
+                if (e.guid == action.questionGuid) {
+                    return false
+                }
+                return true
+            });
         case "LINK_QUESTION":
             return state.map((e) => {
                 if (e.guid == action.questionGuid) {
@@ -250,6 +279,41 @@ export const reducer: Reducer<Question[]> = (state: Question[], action: KnownAct
                 }
                 return e
             })
+        case "DELETE_ANSWER":
+            return state.map((e) => {
+                if (e.guid == action.questionGuid) {
+                    let answers = e.answers.filter((e, ind)=>{
+                        if(ind == action.index){
+                            return false;
+                        }
+                        return true;
+                    })
+                    return {
+                        ...e,
+                        answers: answers
+                    }
+                }
+                return e;
+            });
+        case "DELETE_PARPAIR":
+            return state.map((e) => {
+                if (e.parameter_guid == action.parGuid) {
+                    let answers = e.answers.map((e, ind)=>{
+                        if(e.value == action.guid){
+                            return {
+                                ...e,
+                                value: ''
+                            };
+                        }
+                        return e;
+                    })
+                    return {
+                        ...e,
+                        answers: answers
+                    }
+                }
+                return e;
+            });
         default:
             // The following line guarantees that every action in the KnownAction union has been covered by a case above
             const exhaustiveCheck: never = action;

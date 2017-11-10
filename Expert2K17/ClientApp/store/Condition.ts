@@ -80,9 +80,14 @@ interface DeletePairAction {
     parGuid: string
 }
 
+interface DeleteAdditionalConditionsAction {
+    type: 'DELETE_QUESTIONCONDITION',
+    conditionGuid: string
+}
+
 // Declare a 'discriminated union' type. This guarantees that all references to 'type' properties contain one of the
 // declared type strings (and not any other arbitrary string).
-type KnownAction = AddConditionAction | SyncConditionAction | LoadSystemAction | DeletePairAction;
+type KnownAction = AddConditionAction | SyncConditionAction | LoadSystemAction | DeletePairAction | DeleteAdditionalConditionsAction;
 
 // ----------------
 // REDUCER - For a given state and action, returns the new state. To support time travel, this must not mutate the old state.
@@ -130,6 +135,9 @@ export const actionCreators = {
         }
         dispatch({ type: 'SYNC_CONDITION', condition: condition_ });
     },
+    deleteCondition: (guid: string): AppThunkAction<KnownAction> => (dispatch, getState) => {
+        dispatch({ type: 'DELETE_QUESTIONCONDITION', conditionGuid: guid });
+    }
 };
 
 
@@ -138,6 +146,13 @@ export const unloadedState: Condition[] = [];
 
 export const reducer: Reducer<Condition[]> = (state: Condition[], action: KnownAction) => {
     switch (action.type) {
+        case "DELETE_QUESTIONCONDITION":
+            return state.filter((e)=>{
+                if(e.guid == action.conditionGuid){
+                    return false;
+                }
+                return true;
+            });
         case "ADD_CONDITION":
             return [...state, { ...action.condition }];
         case "SYNC_CONDITION":

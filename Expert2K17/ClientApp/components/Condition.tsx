@@ -130,8 +130,14 @@ class Condition extends React.Component<ConditionProps, {}>{
                 parameter: mode,
                 right: ''
             }
-            this.props.syncCondition(newCondition);           
+            this.props.syncCondition(newCondition);      
+            return;     
         }
+        if(typeof item == 'undefined' && this.props.type == Interf.ComponentCondition.Logic){
+            this.props.deleteCondition(this.props.condition.guid);      
+            return;     
+        }
+
         
     }
 
