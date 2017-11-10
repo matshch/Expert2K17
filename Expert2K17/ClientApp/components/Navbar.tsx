@@ -54,6 +54,12 @@ class NavBar extends React.Component<NavBarProps, { isOpen: boolean }> {
                     Панель управления
                   </NavLink>
                 </NavItem>) : null}
+              <span className="pl-3"></span>
+              <NavItem>
+                <NavLink onClick={this.close} to={'/about'} className='nav-link' activeClassName='active'>
+                  О сайте
+                </NavLink>
+              </NavItem>
             </Nav>
             <hr />
             <Nav navbar>

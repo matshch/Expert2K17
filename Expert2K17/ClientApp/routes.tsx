@@ -9,6 +9,7 @@ import Register from './components/Register';
 import Panel from './components/Panel';
 import Profile from './components/Profile';
 import Tester from './components/CreateTest';
+import About from './components/About';
 
 export const routes = <Layout>
     <Route exact path='/' component={Home} />
@@ -20,4 +21,5 @@ export const routes = <Layout>
     <Route path='/CreateTest' component={Tester}/>
     <Route path='/EditTest/:id' component={Tester} />
     <Route path='/test/:id' component={Test} />
+    <Route path='/about' component={About} />
 </Layout>;
