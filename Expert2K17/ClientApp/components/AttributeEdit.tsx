@@ -33,8 +33,8 @@ class TestCreaterAttribute extends React.Component<CreateAttribute, {}>{
 
             {this.props.attr.map((val, key) => {
                 return <ConnectedAttribute key={key} index={key} />
-            })}
-            <ConnectedNewAttribute />
+            }).concat(<ConnectedAttribute index={-1} key={this.props.attr.length} />)}
+            
         </div>
     }
 }
@@ -63,13 +63,23 @@ class Attribute extends React.Component<AttributeProps, {}>{
         super();
     }
     name_change = (e: React.ChangeEvent<HTMLInputElement>) => {
-        this.props.syncAttribute(
-            {
-                ...this.props.attr,
-                name: e.target.value
-            },
-            this.props.attr.guid
-        )
+        if(this.props.index > -1){
+            this.props.syncAttribute(
+                {
+                    ...this.props.attr,
+                    name: e.target.value
+                },
+                this.props.attr.guid
+            )
+        } else {
+            this.props.addAttribute({
+                system_guid: '',
+                name: e.target.value,
+                guid: '',
+                unitValue: false
+            })
+        }
+
     }
     unitChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         this.props.syncAttribute(
@@ -99,7 +109,8 @@ class Attribute extends React.Component<AttributeProps, {}>{
     }
 
     render() {
-        return <Card className="test attribute">
+        if(this.props.index != -1){
+            return <Card className="test attribute">
             <CardBody>
                 <Form>
                     <FormGroup>
@@ -125,6 +136,22 @@ class Attribute extends React.Component<AttributeProps, {}>{
                 </Form>
             </CardBody>
         </Card>
+        } else {
+            return <Card className="test attribute">
+            <CardBody>
+                <Form>
+                    <FormGroup>
+                        <Label for="texter">Атрибут</Label>
+                        <InputGroup>
+                            <Input type="text" name="text" id="texter" onChange={this.name_change} value={this.props.attr.name} placeholder="Название атрибута"></Input>
+                        </InputGroup>
+                    </FormGroup>                
+                </Form>
+            </CardBody>
+        </Card>
+        }
+
+
     }
 }
 
@@ -159,85 +186,35 @@ class Valer extends React.Component<propsValer, {}>{
 
 
 
-class NewAttribute extends React.Component<typeof Store.actionCreators, Interf.Attribute>{
-    constructor() {
-        super();
-        this.state = {
-            system_guid: '',
-            name: '',
-            unitValue: false,
-            guid: ''
-        }
-    }
-    name_change = (e: React.ChangeEvent<HTMLInputElement>) => {
-        this.setState(
-            {
-                ...this.state,
-                name: e.target.value
-            }
-        )
-    }
-    unitChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        this.setState(
-            {
-                ...this.state,
-                unitValue: e.target.checked
-            }
-        )
-    }
 
-    addAttribute = () => {
-        if (this.state.name != '') {
-            this.props.addAttribute(this.state);
-            this.setState({
-                system_guid: '',
-                name: '',
-                unitValue: false,
-                guid: ''
-            });
-        }
-    }
-
-    render() {
-        return <Card className="test attribute">
-            <CardBody>
-                <Form>
-                    <FormGroup>
-                        <Label for="texter">Атрибут</Label>
-                        <Input type="text" name="text" id="texter" onChange={this.name_change} value={this.state.name} placeholder="Название атрибута"></Input>
-                    </FormGroup>
-                    <FormGroup className="checkbox">
-                        <div className="checkBox">
-                            <Input checked={this.state.unitValue} onChange={this.unitChange} id="chb1" type="checkbox" />{''}
-                        </div>
-                        <div className="checkBoxLabel">
-                            <div>числовые значения</div>
-                        </div>
-                    </FormGroup>
-                    <Button color="success" onClick={this.addAttribute} size="lg" block>Добавить</Button>
-                </Form>
-            </CardBody>
-        </Card>
-    }
-}
 interface NeededAttributeProps {
     index: number;
 }
 
 function getAttributeProps(store: ApplicationState, props: NeededAttributeProps) {
-    if (store.combinedSystem.pairs.length > 0) {
-        var pairs = store.combinedSystem.pairs.filter((e) => {
-            if (e.attributeGuid == store.combinedSystem.attributes[props.index].guid) {
-                return true;
-
-            }
-            return false;
-        })
-    } else {
-        var pairs = ([] as typeof store.combinedSystem.pairs);
+    if(props.index > -1){
+        if (store.combinedSystem.pairs.length > 0) {
+            var pairs = store.combinedSystem.pairs.filter((e) => {
+                if (e.attributeGuid == store.combinedSystem.attributes[props.index].guid) {
+                    return true;
+    
+                }
+                return false;
+            })
+        } else {
+            var pairs = ([] as typeof store.combinedSystem.pairs);
+        }
+    
+        return { attr: store.combinedSystem.attributes[props.index], pairs: pairs, sys: store.combinedSystem.system };
     }
-
-    return { attr: store.combinedSystem.attributes[props.index], pairs: pairs, sys: store.combinedSystem.system };
+    return {
+         attr:     {system_guid: '',
+         name: '',
+         guid: '',
+         unitValue: false},
+         pairs: [],
+         sys: store.combinedSystem.system
+    }
 
 }
 
@@ -246,4 +223,3 @@ function getAttributeProps(store: ApplicationState, props: NeededAttributeProps)
 
 export let ConnectedTestAttributeEditor = connect((store: ApplicationState) => { return { attr: store.combinedSystem.attributes, sys: store.combinedSystem.system } }, Store.actionCreators)(TestCreaterAttribute);
 let ConnectedAttribute = connect(getAttributeProps, Store.actionCreators)(Attribute)
-let ConnectedNewAttribute = connect(() => { return {} }, Store.actionCreators)(NewAttribute)
