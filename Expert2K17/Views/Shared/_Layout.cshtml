@@ -7,21 +7,15 @@
     <title>@ViewData["Title"]</title>
     <base href="~/" />
 
-    @{
-        var relativePath = "dist/vendor.css";
-        var contentPath = ((IHostingEnvironment)ViewContext.HttpContext.RequestServices.GetService(typeof(IHostingEnvironment))).WebRootPath;
-        var vendorCSSPath = System.IO.Path.Combine(contentPath, relativePath);
-        if (System.IO.File.Exists(vendorCSSPath))
-        {
-            <link rel="stylesheet" href="~/dist/vendor.css" asp-append-version="true" />
-        }
-    }
+    <link rel="stylesheet" href="~/dist/vendor.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/dist/site.css" asp-append-version="true" />
 </head>
 <body>
     @RenderBody()
 
     <script src="~/dist/vendor.js" asp-append-version="true"></script>
+    <script src="~/dist/datagrid.js" asp-append-version="true"></script>
+
     @RenderSection("scripts", required: false)
 </body>
 </html>

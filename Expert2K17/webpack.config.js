@@ -55,6 +55,10 @@ module.exports = (env) => {
             new webpack.DllReferencePlugin({
                 context: __dirname,
                 manifest: require('./wwwroot/dist/vendor-manifest.json')
+            }),
+            new webpack.DllReferencePlugin({
+                context: __dirname,
+                manifest: require('./wwwroot/dist/datagrid-manifest.json')
             })
         ].concat(isDevBuild ? [
             // Plugins that apply in development builds only
@@ -91,6 +95,12 @@ module.exports = (env) => {
                 manifest: require('./ClientApp/dist/vendor-manifest.json'),
                 sourceType: 'commonjs2',
                 name: './vendor'
+            }),
+            new webpack.DllReferencePlugin({
+                context: __dirname,
+                manifest: require('./ClientApp/dist/datagrid-manifest.json'),
+                sourceType: 'commonjs2',
+                name: './datagrid'
             })
         ],
         output: {

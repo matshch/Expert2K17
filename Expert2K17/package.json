@@ -35,8 +35,9 @@
     "url": "https://github.com/matshch/Expert2K17.git"
   },
   "scripts": {
-    "build": "npm-run-all build:vendor build:site",
+    "build": "npm-run-all build:vendor build:datagrid build:site",
     "build:vendor": "webpack --progress --config webpack.config.vendor.js",
+    "build:datagrid": "webpack --progress --config webpack.config.datagrid.js",
     "build:site": "webpack --progress",
     "prepare": "npm-run-all --parallel setup build",
     "publish": "dotnet publish -c Release -r ubuntu-x64",
@@ -58,7 +59,7 @@
     "@types/react-router-redux": "^5.0.9",
     "@types/react-slick": "^0.14.1",
     "@types/react-spinkit": "^3.0.2",
-    "@types/reactstrap": "^4.6.4",
+    "@types/reactstrap": "^5.0.3",
     "@types/webpack-env": "^1.13.2",
     "aspnet-prerendering": "^3.0.1",
     "aspnet-webpack": "^2.0.1",
@@ -97,7 +98,7 @@
     "react-slick": "^0.15.4",
     "react-spinkit": "^3.0.0",
     "react-transition-group": "^1.2.1",
-    "reactstrap": "^5.0.0-alpha.3",
+    "reactstrap": "^5.0.0-alpha.4",
     "redux": "^3.7.2",
     "redux-thunk": "^2.2.0",
     "reselect": "^3.0.1",

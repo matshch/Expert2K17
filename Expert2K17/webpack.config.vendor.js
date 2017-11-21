@@ -19,8 +19,6 @@ module.exports = (env) => {
                 'history',
                 're-reselect',
                 'react',
-                'react-data-grid',
-                'react-data-grid-addons',
                 'react-document-title',
                 'react-router-dom',
                 'react-redux',
@@ -121,13 +119,6 @@ module.exports = (env) => {
             new webpack.DllPlugin({
                 path: path.join(__dirname, 'ClientApp', 'dist', '[name]-manifest.json'),
                 name: '[name]_[hash]'
-            }),
-            // Fixes for react-data-grid-2
-            new webpack.ProvidePlugin({
-                'document': 'min-document',
-                'self': 'node-noop',
-                'self.navigator.userAgent': 'empty-string',
-                'window': 'node-noop'
             })
         ]
     });
