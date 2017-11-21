@@ -96,6 +96,9 @@ class Logic extends React.Component<ParameterProps, {}>{
         return <Conditioner.ConnectedCondition dependancy={this.props.logic.guid} index={-1} type={Interf.ComponentCondition.Result} mode={-1} />
     }
 
+    onFullDelete = () => {
+        this.props.deleteLogic(this.props.logic.guid);
+    }
 
     render() {
         return <Card className="createSideBar">
@@ -122,6 +125,9 @@ class Logic extends React.Component<ParameterProps, {}>{
                 <h5>ТО</h5>
                 <br />
                 {this.renderThen()}
+                <Button color="danger" onClick={this.onFullDelete} size="xs" block><i className="fa fa-trash" ></i> Удалить</Button>
+
+
             </CardBody>
         </Card>
     }

@@ -39,10 +39,15 @@ interface LoadSystemAction {
     system: SystemCreateState;
 }
 
+interface DeleteLogicAction {
+    type: 'DELETE_LOGIC';
+    guid: string;
+}
+
 
 // Declare a 'discriminated union' type. This guarantees that all references to 'type' properties contain one of the
 // declared type strings (and not any other arbitrary string).
-type KnownAction = SyncLogicAction | AddLogicAction | LinkResultAction | LinkLogicAction | LoadSystemAction;
+type KnownAction = SyncLogicAction | AddLogicAction | LinkResultAction | LinkLogicAction | LoadSystemAction | DeleteLogicAction;
 
 // ----------------
 // REDUCER - For a given state and action, returns the new state. To support time travel, this must not mutate the old state.
@@ -57,6 +62,9 @@ export const actionCreators = {
     },
     syncLogic: (logic: Logic): AppThunkAction<KnownAction> => (dispatch, getState) => {
         dispatch({ type: 'SYNC_LOGIC', logic: logic });
+    },
+    deleteLogic: (guid: string): AppThunkAction<KnownAction> => (dispatch, getState) => {
+        dispatch({ type: 'DELETE_LOGIC', guid: guid });
     }
 };
 
@@ -87,6 +95,13 @@ export const reducer: Reducer<Logic[]> = (state: Logic[], action: KnownAction) =
                     }
                 }
                 return e
+            })
+        case "DELETE_LOGIC":
+            return state.filter((e) => {
+                if (e.guid == action.guid) {
+                    return false;
+                }
+                return true;
             })
         case "LINK_LOGIC":
             return state.map((e) => {
