@@ -24,10 +24,6 @@ type CreateParameters =
     typeof Store.actionCreators;
 
 class TesteCreateLogics extends React.Component<CreateParameters, {}>{
-    constructor() {
-        super();
-    }
-
     render() {
         return <Container fluid>
             {this.props.logics.map((val, key) => {
@@ -53,10 +49,6 @@ type ParameterProps =
     typeof Store.actionCreators;
 
 class Logic extends React.Component<ParameterProps, {}>{
-    constructor() {
-        super();
-    }
-
     prepareOptions = () => {
         const option = [
             { label: '&&', value: Interf.LogicOperation.And },
@@ -136,10 +128,6 @@ class Logic extends React.Component<ParameterProps, {}>{
 
 
 class NewLogic extends React.Component<typeof Store.actionCreators>{
-    constructor() {
-        super();
-    }
-
     newLogic = () => {
         let logic: Interf.Logic = {
             conditions: [],

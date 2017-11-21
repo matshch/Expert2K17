@@ -19,10 +19,6 @@ type CreateAttribute =
     typeof Store.actionCreators;
 
 export class TestCreaterQuestions extends React.Component<CreateAttribute, {}>{
-    constructor() {
-        super();
-    }
-
     render() {
         return <Container fluid>
             {(() => {
@@ -53,9 +49,6 @@ type QuestionProps =
     typeof Store.actionCreators;
 
 class Question extends React.Component<QuestionProps, {}>{
-    constructor() {
-        super();
-    }
     name_change = (e: React.ChangeEvent<HTMLInputElement>) => {
         this.props.syncQuestion({
             ...this.props.question,
@@ -263,11 +256,6 @@ function findSubjectGuid(subj: string, arr: string[]) {
 }
 
 class Answers extends React.Component<SubjecterAttribute, {}> {
-    constructor() {
-        super();
-        
-    }
-
     makeOptions = () => {
         let arra: string[] = this.props.question.answers.map((e) => {
             return e.value
@@ -392,8 +380,8 @@ class Answers extends React.Component<SubjecterAttribute, {}> {
 
 
 class NewQuestion extends React.Component<typeof Store.actionCreators, Interf.Question>{
-    constructor() {
-        super();
+    constructor(props : typeof Store.actionCreators) {
+        super(props);
         this.state = {
             question: '',
             guid: '',

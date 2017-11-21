@@ -11,10 +11,6 @@ import { Nav, NavItem, Row, Container, Col, Button, Form, FormGroup, Label, Inpu
 import DocumentTitle from 'react-document-title';
 import * as Interf from '../store/TestInterfaces';
 export class TestEditorSystem extends React.Component<TestEditSystemT, {}>{
-    constructor() {
-        super();
-    }
-
     nameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         this.props.syncSystem({
             ...this.props.system,
@@ -85,8 +81,8 @@ type TestCreaterSystemT = typeof Store.actionCreators
     Interf.System;
 
 export class TestCreaterSystem extends React.Component<TestCreaterSystemT, CreatorSystem>{
-    constructor() {
-        super();
+    constructor(props : TestCreaterSystemT) {
+        super(props);
         this.state = {
             name: '',
             picture: null,

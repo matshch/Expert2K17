@@ -28,9 +28,6 @@ type CounterProps =
     & RouteComponentProps<{ id: string }>;
 export
     class TestCreater extends React.Component<CounterProps, {}> {
-    constructor() {
-        super();
-    }
     render() {
         if (this.props.location.pathname == '/CreateTest') {
             this.props.clearSystem();
@@ -71,11 +68,6 @@ type NavProps =
 
 
 export class TestCreaterNav extends React.Component<NavProps, {}>{
-    constructor() {
-        super();
-
-    }
-
     saveForce = () => {
         this.props.saveSystem();
     }

@@ -15,8 +15,8 @@ type LoginProps =
     & RouteComponentProps<{}>;
 
 export class Login extends React.Component<LoginProps, { username: string, password: string, rememberme: boolean }> {
-    constructor() {
-        super();
+    constructor(props : LoginProps) {
+        super(props);
         this.state = {
             username: "",
             password: "",

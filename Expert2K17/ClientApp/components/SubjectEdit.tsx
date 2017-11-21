@@ -20,10 +20,6 @@ type CreateAttribute =
     typeof Store.actionCreators;
 
 class TestCreaterSubject extends React.Component<CreateAttribute, {}>{
-    constructor() {
-        super();
-    }
-
     render() {
         return <Container fluid>
             {(() => {
@@ -56,9 +52,6 @@ type SubjectPropsType =
 
 
 class Subject extends React.Component<SubjectPropsType, {}>{
-    constructor() {
-        super();
-    }
     name_change = (e: React.ChangeEvent<HTMLInputElement>) => {
         this.props.syncSubject({
             ...this.props.subject,
@@ -143,11 +136,6 @@ function findSubjectGuid(subj: string, arr: string[]) {
 }
 
 class SubjectToAttribute extends React.Component<SubjecterAttribute, {}> {
-    constructor() {
-        super();
-
-    }
-
     makeOptions = () => {
         return this.props.pairs.filter((e) => {
             if (e.attributeGuid == this.props.attr.guid) { return true }
@@ -225,8 +213,8 @@ class SubjectToAttribute extends React.Component<SubjecterAttribute, {}> {
 
 
 class NewSubject extends React.Component<typeof Store.actionCreators, Interf.Subject>{
-    constructor() {
-        super();
+    constructor(props : typeof Store.actionCreators) {
+        super(props);
         this.state = {
             system_guid: '',
             name: '',

@@ -24,10 +24,6 @@ type CreateAttribute =
     typeof Store.actionCreators;
 
 class TestCreaterAttribute extends React.Component<CreateAttribute, {}>{
-    constructor() {
-        super();
-    }
-
     render() {
         return <div>
 
@@ -59,9 +55,6 @@ type AttributeT =
     Interf.Attribute
 
 class Attribute extends React.Component<AttributeProps, {}>{
-    constructor() {
-        super();
-    }
     name_change = (e: React.ChangeEvent<HTMLInputElement>) => {
         if(this.props.index > -1){
             this.props.syncAttribute(
@@ -164,9 +157,6 @@ interface propsValer {
 
 
 class Valer extends React.Component<propsValer, {}>{
-    constructor() {
-        super();
-    }
     chan = (e: React.ChangeEvent<HTMLInputElement>) => {
         this.props.changer(this.props.guid, e.target.value);
     }

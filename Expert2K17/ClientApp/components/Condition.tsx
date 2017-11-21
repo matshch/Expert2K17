@@ -39,10 +39,6 @@ type ConditionProps =
 
 
 class Condition extends React.Component<ConditionProps, {}>{
-    constructor() {
-        super();
-    }
-
     makeOptionsUnited = () => {
         if (this.props.type == Interf.ComponentCondition.Result) {
             var values = this.props.parameters.map((e) => {

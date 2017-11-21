@@ -15,8 +15,8 @@ type RegisterProps =
     & RouteComponentProps<{}>;
 
 export class Register extends React.Component<RegisterProps, { shitpass: boolean, username: string, group: string, year: string, name: string, surname: string, patronymic: string, fpassword: string, spassword: string }> {
-    constructor() {
-        super();
+    constructor(props : RegisterProps) {
+        super(props);
         this.state = {
             username: "",
             name: "",

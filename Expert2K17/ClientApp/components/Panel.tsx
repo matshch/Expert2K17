@@ -28,8 +28,8 @@ type PanelGroupsProps =
     & typeof RegisterStore.actionCreators
 
 export class Panel extends React.Component<PanelProps, { modal: boolean, showPictureButtons: boolean, modalLabel: string }> {
-    constructor() {
-        super();
+    constructor(props : PanelProps) {
+        super(props);
         this.state = { showPictureButtons: false, modal: false, modalLabel: "" };
         this.toggle = this.toggle.bind(this);
     }
@@ -242,8 +242,8 @@ class Table extends React.Component<TableProps, { filters: any, sortColumn: any,
 }
 
 export class Tabs extends React.Component<{}, { dropdownOpen: boolean }> {
-    constructor() {
-        super();
+    constructor(props : {}) {
+        super(props);
 
         this.toggle = this.toggle.bind(this);
         this.state = {

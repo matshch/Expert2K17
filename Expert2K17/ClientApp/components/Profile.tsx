@@ -17,8 +17,8 @@ type ProfileProps =
     & RouteComponentProps<{}>;
 
 export class Profile extends React.Component<ProfileProps, { showPictureButtons: boolean }> {
-    constructor() {
-        super();
+    constructor(props : ProfileProps) {
+        super(props);
         this.state = { showPictureButtons: false }
     }
     componentWillMount() {

@@ -25,10 +25,6 @@ type CreateParameters =
     typeof Store.actionCreators;
 
 class TesteCreateParameters extends React.Component<CreateParameters, {}>{
-    constructor() {
-        super();
-    }
-
     render() {
         return <Container fluid>
             {this.props.parameters.map((val, key) => {
@@ -55,9 +51,6 @@ type ParameterProps =
     typeof Store.actionCreators;
 
 class Parameter extends React.Component<ParameterProps, {}>{
-    constructor() {
-        super();
-    }
     name_change = (e: React.ChangeEvent<HTMLInputElement>) => {
         this.props.syncParameter({ ...this.props.parameter, name: e.target.value });
     }
@@ -139,8 +132,8 @@ class ParameterPairer extends React.Component<ppair,{}>{
 
 
 class NewParameter extends React.Component<typeof Store.actionCreators, Interf.Parameter>{
-    constructor() {
-        super();
+    constructor(props : typeof Store.actionCreators) {
+        super(props);
         this.state = {
             name: '',
             guid: '',
