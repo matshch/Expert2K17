@@ -26,13 +26,11 @@ class TestCreaterSubject extends React.Component<CreateAttribute, {}>{
 
     render() {
         return <Container fluid>
-            {(() => {
-                return this.props.subjects.map((val, key) => {
+            {this.props.subjects.map((val, key) => {
                     return <ConnectedSubject key={key} index={key} />
-                })
+        }).concat(<ConnectedSubject key={this.props.subjects.length} index={-1}/>)
 
-            })()}
-            <ConnectedNewSubject />
+            }
         </Container>
     }
 }
@@ -60,10 +58,21 @@ class Subject extends React.Component<SubjectPropsType, {}>{
         super();
     }
     name_change = (e: React.ChangeEvent<HTMLInputElement>) => {
-        this.props.syncSubject({
-            ...this.props.subject,
-            name: e.target.value
-        });
+        if(this.props.index > -1){
+            this.props.syncSubject({
+                ...this.props.subject,
+                name: e.target.value
+            });
+        } else {
+            this.props.addSubject(
+                {
+                    system_guid: '',
+                    name: e.target.value,
+                    guid: ''
+                }
+            )
+        }
+        
     }
 
     addCallback = (value: string, attrGuid: string) => {
@@ -78,13 +87,14 @@ class Subject extends React.Component<SubjectPropsType, {}>{
     }
 
     render() {
-        return <Card className="test object">
+        if(this.props.index > -1){
+            return <Card className="test object">
             <CardBody>
                 <Form>
                     <FormGroup>
                         <Label for="texter">Название</Label>
                         <InputGroup>
-                            <Input type="text" name="text" id="texter" value={this.props.subject.name} placeholder="Название объекта"></Input>
+                            <Input type="text" name="text" id="texter" onChange={this.name_change} value={this.props.subject.name} placeholder="Название объекта"></Input>
                             <InputGroupButton color="danger"><Button onClick={this.onFullDelete} color="danger"><i className="fa fa-trash" ></i></Button></InputGroupButton>
                         </InputGroup>
                     </FormGroup>
@@ -104,6 +114,22 @@ class Subject extends React.Component<SubjectPropsType, {}>{
                 </Form>
             </CardBody>
         </Card>
+        } else {
+            return <Card className="test object">
+            <CardBody>
+                <Form>
+                    <FormGroup>
+                    <Label for="texter">Название</Label>
+                        <InputGroup>
+                            <Input type="text" name="text" id="texter" onChange={this.name_change} value={this.props.subject.name} placeholder="Название объекта"></Input>
+                        </InputGroup>
+                    </FormGroup>
+                </Form>
+            </CardBody>
+        </Card>
+        }
+
+        
     }
 }
 
@@ -224,48 +250,6 @@ class SubjectToAttribute extends React.Component<SubjecterAttribute, {}> {
 }
 
 
-class NewSubject extends React.Component<typeof Store.actionCreators, Interf.Subject>{
-    constructor() {
-        super();
-        this.state = {
-            system_guid: '',
-            name: '',
-            guid: ''
-        }
-    }
-    name_change = (e: React.ChangeEvent<HTMLInputElement>) => {
-        this.setState(
-            {
-                ...this.state,
-                name: e.target.value
-            }
-        )
-    }
-    saveSubject = () => {
-        if (this.state.name != '') {
-            this.props.addSubject(this.state);
-            this.setState({
-                system_guid: '',
-                name: '',
-                guid: ''
-            })
-        }
-    }
-
-    render() {
-        return <Card className="test object">
-            <CardBody>
-                <Form>
-                    <FormGroup>
-                        <Label for="texter">Название</Label>
-                        <Input type="text" name="text" id="texter" onChange={this.name_change} value={this.state.name} placeholder="Название объекта"></Input>
-                    </FormGroup>
-                    <Button color="success" onClick={this.saveSubject} size="lg" block>Создать</Button>
-                </Form>
-            </CardBody>
-        </Card>
-    }
-}
 
 interface NeededAttributeProps {
     index: number
@@ -294,8 +278,6 @@ function getStore(store: ApplicationState, props: NeededAttributeProps) {
         attr: store.combinedSystem.attributes
     }
 }
-
-let ConnectedNewSubject = connect(() => { return {} }, Store.actionCreators)(NewSubject);
 
 let ConnectedSubject = connect(getStore, Store.actionCreators)(Subject);
 export default connect((store: ApplicationState) => { return { system: store.combinedSystem.system, subjects: store.combinedSystem.subjects } }, Store.actionCreators)(TestCreaterSubject);
