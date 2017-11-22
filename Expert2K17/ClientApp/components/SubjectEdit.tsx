@@ -57,13 +57,16 @@ class Subject extends React.Component<SubjectPropsType, {}>{
                 name: e.target.value
             });
         } else {
-            this.props.addSubject(
-                {
-                    system_guid: '',
-                    name: e.target.value,
-                    guid: ''
-                }
-            )
+            if(e.target.value.length > 0){
+                this.props.addSubject(
+                    {
+                        system_guid: '',
+                        name: e.target.value,
+                        guid: ''
+                    }
+                )
+            }
+
         }
         
     }

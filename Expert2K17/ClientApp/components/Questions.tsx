@@ -21,13 +21,11 @@ type CreateAttribute =
 export class TestCreaterQuestions extends React.Component<CreateAttribute, {}>{
     render() {
         return <Container fluid>
-            {(() => {
-                return this.props.questions.map((val, key) => {
+            { this.props.questions.map((val, key) => {
                     return <ConnectedQuestion index={key} key={key} />
-                })
+                }).concat(<ConnectedQuestion key={this.props.questions.length} index={-1}/>)
 
-            })()}
-            <ConnectedNewQuestion />
+            }
         </Container>
     }
 }
@@ -50,10 +48,28 @@ type QuestionProps =
 
 class Question extends React.Component<QuestionProps, {}>{
     name_change = (e: React.ChangeEvent<HTMLInputElement>) => {
-        this.props.syncQuestion({
-            ...this.props.question,
-            question: e.target.value
-        })
+        if(this.props.index> -1){
+            this.props.syncQuestion({
+                ...this.props.question,
+                question: e.target.value
+            })
+        } else {
+            if(e.target.value.length > 0){
+                this.props.addQuestion(
+                    {
+                        question: e.target.value,
+                        guid: '',
+                        parameter_guid: '',
+                        answers: [],
+                        type: Interf.QuestionType.Variety,
+                        cast_after: '', //Question_guid
+                        cast_if: '' //Condition guid 
+                    }
+                )
+            }
+
+        }
+
 
     }
 
@@ -150,7 +166,8 @@ class Question extends React.Component<QuestionProps, {}>{
     }
 
     render() {
-        return <Card className="createSideBar">
+        if(this.props.index > -1) {
+            return <Card className="createSideBar">
             <CardBody>
                 <Form>
                     <FormGroup row>
@@ -205,6 +222,21 @@ class Question extends React.Component<QuestionProps, {}>{
                 </Form>
             </CardBody>
         </Card>
+        } else {
+            return <Card className="createSideBar">
+            <CardBody>
+                <Form>
+                    <FormGroup row>
+                        <Label for="texter" sm={3}>Формулировка вопроса</Label>
+                        <Col sm={9}>
+                            <Input type="text" name="text" id="texter" value={this.props.question.question} onChange={this.name_change} placeholder="Вопрос"></Input>
+                        </Col>
+                    </FormGroup>                                   
+                </Form>
+            </CardBody>
+        </Card>
+        }
+       
     }
 }
 
@@ -379,55 +411,6 @@ class Answers extends React.Component<SubjecterAttribute, {}> {
 
 
 
-class NewQuestion extends React.Component<typeof Store.actionCreators, Interf.Question>{
-    constructor(props : typeof Store.actionCreators) {
-        super(props);
-        this.state = {
-            question: '',
-            guid: '',
-            parameter_guid: '',
-            answers: [],
-            type: Interf.QuestionType.Variety,
-            cast_after: '', //Question_guid
-            cast_if: '' //Condition guid 
-        }
-    }
-    question_change = (e: React.ChangeEvent<HTMLInputElement>) => {
-        this.setState(
-            {
-                ...this.state,
-                question: e.target.value
-            }
-        )
-    }
-    saveQuestion = () => {
-        if (this.state.question != '') {
-            this.props.addQuestion(this.state);
-            this.setState({
-                question: '',
-                guid: ''
-            })
-        }
-    }
-
-    render() {
-        return <Card className="createSideBar">
-            <CardBody>
-                <Form>
-                    <FormGroup row>
-                        <Label for="texter" sm={3}>Вопрос</Label>
-                        <Col sm={9}>
-                            <Input type="text" name="text" id="texter" onChange={this.question_change} value={this.state.question} placeholder="Формулировка вопроса"></Input>
-                        </Col>
-                    </FormGroup>
-                    <Button color="success" onClick={this.saveQuestion}>Создать</Button>
-                </Form>
-            </CardBody>
-        </Card>
-    }
-}
-
-
 interface NeededPropsAnswers{
     index: number;
     questionGuid: string;
@@ -473,7 +456,6 @@ function getAnswerProps(store: ApplicationState, props: NeededPropsAnswers) {
 
 }
 
-let ConnectedNewQuestion = connect(() => ({}), Store.actionCreators)(NewQuestion)
 let ConnectedAnswer = connect(getAnswerProps, Store.actionCreators)(Answers)
 
 
@@ -483,13 +465,30 @@ interface NeededPropsQuestion {
 
 
 function getQuestionProps(store: ApplicationState, props: NeededPropsQuestion) {
-    let question = store.combinedSystem.questions.find((e, ind) => {
-        if (ind == props.index) {
-            return true;
-        }
-    });
-
-    return { question: question, questions: store.combinedSystem.questions, parameters: store.combinedSystem.parameters, conditions: store.combinedSystem.conditions };
+    if(props.index > -1){
+        let question = store.combinedSystem.questions.find((e, ind) => {
+            if (ind == props.index) {
+                return true;
+            }
+        });
+    
+        return { question: question, questions: store.combinedSystem.questions, parameters: store.combinedSystem.parameters, conditions: store.combinedSystem.conditions };
+    
+    } else {
+        return { question: 
+            {
+                question: '',
+                guid: '',
+                parameter_guid: '',
+                answers: [],
+                type: Interf.QuestionType.Variety,
+                cast_after: '', //Question_guid
+                cast_if: '' //Condition guid 
+            },
+            questions: store.combinedSystem.questions,
+            parameters: store.combinedSystem.parameters,
+            conditions: store.combinedSystem.conditions };        
+    }
 
 
 }
