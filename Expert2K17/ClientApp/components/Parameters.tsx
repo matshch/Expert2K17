@@ -29,8 +29,7 @@ class TesteCreateParameters extends React.Component<CreateParameters, {}>{
         return <Container fluid>
             {this.props.parameters.map((val, key) => {
                 return <ConnectedParameter key={key} index={key} />
-            })}
-            <ConnectedNewParameter/>
+            }).concat(<ConnectedParameter key={this.props.parameters.length} index={-1}/>)}
         </Container>
     }
 }
@@ -52,7 +51,20 @@ type ParameterProps =
 
 class Parameter extends React.Component<ParameterProps, {}>{
     name_change = (e: React.ChangeEvent<HTMLInputElement>) => {
-        this.props.syncParameter({ ...this.props.parameter, name: e.target.value });
+        if(this.props.index > -1){
+            this.props.syncParameter({ ...this.props.parameter, name: e.target.value });            
+        } else {
+            if(e.target.value.length > 0){
+                this.props.addParameter(
+                    {
+                        name: e.target.value,
+                        guid: '',
+                        unitValue: false
+                    }
+                )
+            }
+
+        }
     }
     unitChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         this.props.syncParameter({ ...this.props.parameter, unitValue: e.target.checked });
@@ -61,7 +73,8 @@ class Parameter extends React.Component<ParameterProps, {}>{
         this.props.deleteParameter(this.props.parameter.guid);
     }
     render() {
-        return <Card className="createSideBar">
+        if(this.props.index> -1){
+            return <Card className="createSideBar">
             <CardBody>
                 <Form>
                     <FormGroup row>
@@ -95,6 +108,24 @@ class Parameter extends React.Component<ParameterProps, {}>{
                 </Form>
             </CardBody>
         </Card>
+        } else {
+            return <Card className="createSideBar">
+            <CardBody>
+                <Form>
+                    <FormGroup row>
+                        <Label for="texter" sm={3}>Название</Label>
+                        <Col sm={9}>
+                        <InputGroup>
+                            <Input type="text" name="text" id="texter" onChange={this.name_change} value={this.props.parameter.name} placeholder="Название параметра"></Input>                           
+                        </InputGroup>
+                        </Col>
+                    </FormGroup>                  
+                </Form>
+            </CardBody>
+        </Card>
+        }
+
+       
     }
 }
 
@@ -131,59 +162,6 @@ class ParameterPairer extends React.Component<ppair,{}>{
 
 
 
-class NewParameter extends React.Component<typeof Store.actionCreators, Interf.Parameter>{
-    constructor(props : typeof Store.actionCreators) {
-        super(props);
-        this.state = {
-            name: '',
-            guid: '',
-            unitValue: false
-        };
-    }
-    name_change = (e: React.ChangeEvent<HTMLInputElement>) => {
-        this.setState({
-            ...this.state,
-            name: e.target.value
-        })
-    }
-    unitChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        this.setState({
-            ...this.state,
-            unitValue: e.target.checked
-        })
-    }
-
-    saveParameter = () => {
-        this.props.addParameter(this.state);
-        this.setState({
-            name: '',
-            guid: '',
-            unitValue: false
-        })
-    }
-    render() {
-        return <Card className="createSideBar">
-            <CardBody>
-                <Form>
-                    <FormGroup row>
-                        <Label for="texter" sm={3}>Название</Label>
-                        <Col sm={9}>
-                            <Input type="text" name="text" id="texter" onChange={this.name_change} value={this.state.name} placeholder="Название параметра"></Input>
-                        </Col>
-                    </FormGroup>
-                    <FormGroup row>
-                        <Label for="chb1" sm={3}>Числовые значения</Label>
-                        <Col sm={9}>
-                            <Input type="checkbox" checked={this.state.unitValue} onChange={this.unitChange} id="chb1" />
-                        </Col>
-                    </FormGroup>
-                    <Button color="success" onClick={this.saveParameter}>Создать</Button>                         
-
-                </Form>
-            </CardBody>
-        </Card>
-    }
-}
 
 
 
@@ -193,6 +171,7 @@ interface NeededParameterProps {
 }
 
 function getParameterProps(store: ApplicationState, props: NeededParameterProps) {
+    if(props.index > -1){
     let pairs = store.combinedSystem.parpairs.filter((e) => {
         if (e.parameterGuid == store.combinedSystem.parameters[props.index].guid) {
             return true;
@@ -201,7 +180,15 @@ function getParameterProps(store: ApplicationState, props: NeededParameterProps)
 
     })
     return { parameter: store.combinedSystem.parameters[props.index], sys: store.combinedSystem.system, pairs: pairs };
-
+    } else {
+        return {parameter: {
+            name: '',
+            guid: '',
+            unitValue: false
+        }, pairs: [],
+        sys: store.combinedSystem.system
+    }
+    }
  
 }
 
@@ -211,18 +198,20 @@ interface NeedPProps {
 }
 
 function getPairProps(store: ApplicationState, props:  NeedPProps){
-    let pair = store.combinedSystem.parpairs[props.index];
-    let parameter = store.combinedSystem.parameters.find((e)=>{
-        if(e.guid==props.parGuid){
-            return true;
-        }
-        return false;
-    });
-    return {parameter: parameter, pair: pair}
+
+        let pair = store.combinedSystem.parpairs[props.index];
+        let parameter = store.combinedSystem.parameters.find((e)=>{
+            if(e.guid==props.parGuid){
+                return true;
+            }
+            return false;
+        });
+        return {parameter: parameter, pair: pair}
+   
+
 }
 
 
 export let ConnectedTestParameterEditor = connect((store: ApplicationState) => { return { parameters: store.combinedSystem.parameters, sys: store.combinedSystem.system } }, Store.actionCreators)(TesteCreateParameters);
 let ConnectedParameter = connect(getParameterProps, Store.actionCreators)(Parameter)
-let ConnectedNewParameter = connect(() => ({}), Store.actionCreators)(NewParameter)
 let ConnectedParPair = connect(getPairProps, ParStore.actionCreators)(ParameterPairer);
