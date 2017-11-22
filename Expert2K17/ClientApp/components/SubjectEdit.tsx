@@ -68,10 +68,6 @@ class Subject extends React.Component<SubjectPropsType, {}>{
             }
 
         }
-<<<<<<< HEAD
-=======
-
->>>>>>> 222191586c44254ee1164fa4a7fc7abeec0ad6fb
     }
 
     addCallback = (value: string, attrGuid: string) => {
@@ -129,11 +125,6 @@ class Subject extends React.Component<SubjectPropsType, {}>{
                 </CardBody>
             </Card>
         }
-<<<<<<< HEAD
-=======
-
-
->>>>>>> 222191586c44254ee1164fa4a7fc7abeec0ad6fb
     }
 }
 
