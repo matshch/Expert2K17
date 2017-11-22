@@ -230,7 +230,7 @@ class Question extends React.Component<QuestionProps, {}>{
                             if (this.props.index != -1 && this.props.question.parameter_guid.length > 0 && this.props.question.type == Interf.QuestionType.Variety) {
                                 return (<div>
                                     <hr />
-                                    <ListGroup>
+                                    <ListGroup className='listGrouperTest'>
                                         {this.props.question.answers.map((val, key) => {
                                             return <ConnectedAnswer index={key} questionGuid={this.props.question.guid} key={key} />
                                         }).concat([

@@ -96,7 +96,7 @@ class Parameter extends React.Component<ParameterProps, {}>{
                         if (this.props.index != -1) {
                             return (<div>
                                 <hr />
-                                <ListGroup>
+                                <ListGroup className='listGrouperTest'>
                                     {this.props.pairs.map((val, key) => {
                                         return <ConnectedParPair key={key} index={key} parGuid={this.props.parameter.guid} />
                                     })}
@@ -151,8 +151,8 @@ class ParameterPairer extends React.Component<ppair,{}>{
         this.props.deletePair(this.props.pair.guid, this.props.parameter.guid)  
     }
     render() {
-        return <div>
-            <InputGroup>
+        return <div className="itemer">
+            <InputGroup >
                 <Input type="text" value={this.props.pair.value} onChange={this.changer}></Input>
                 <InputGroupButton color="danger"><Button onClick={this.onFullDelete} color="danger"><i className="fa fa-trash" ></i></Button></InputGroupButton>          
             </InputGroup>
