@@ -591,3 +591,36 @@ hr
         transform: translateY(12px);
     }
 }
+
+.question.btn-group {
+    margin-top: 9px;
+}
+
+.question.delete.btn
+{
+    margin-top: 9px;
+}
+
+.react-selectize.root-node
+{
+    width:inherit;
+    min-width: 150px;
+}
+
+.TestNav
+{
+    white-space:normal; 
+}
+
+.testColoumnContainer {
+    min-width: 500px !important;
+}
+
+.conditionColoumn
+{
+    width: 120px;
+}
+.conditionColoumnMain
+{
+    min-width:200px;
+}

@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { ApplicationState } from '../store';
 import * as Store from '../store/Question';
 import { NavLink, Route, Redirect } from 'react-router-dom';
-import { Nav, NavItem, Row, Container, Col, Button, Form, FormGroup, Label, Input, FormText, Media, Card, CardBody, CardTitle, CardText, ListGroup, ListGroupItem, ListGroupItemText } from 'reactstrap'
+import { Nav, NavItem, Row, Container, Col, Button, Form, FormGroup, Label, Input, FormText, Media, Card, CardBody, CardTitle, CardText, ListGroup, ListGroupItem, ListGroupItemText, ButtonGroup } from 'reactstrap'
 import DocumentTitle from 'react-document-title';
 import * as Interf from '../store/TestInterfaces';
 import * as ComboBox from 'react-selectize';
@@ -21,9 +21,9 @@ type CreateAttribute =
 export class TestCreaterQuestions extends React.Component<CreateAttribute, {}>{
     render() {
         return <Container fluid>
-            { this.props.questions.map((val, key) => {
-                    return <ConnectedQuestion index={key} key={key} />
-                }).concat(<ConnectedQuestion key={this.props.questions.length} index={-1}/>)
+            {this.props.questions.map((val, key) => {
+                return <ConnectedQuestion index={key} key={key} />
+            }).concat(<ConnectedQuestion key={this.props.questions.length} index={-1} />)
 
             }
         </Container>
@@ -48,13 +48,13 @@ type QuestionProps =
 
 class Question extends React.Component<QuestionProps, {}>{
     name_change = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if(this.props.index> -1){
+        if (this.props.index > -1) {
             this.props.syncQuestion({
                 ...this.props.question,
                 question: e.target.value
             })
         } else {
-            if(e.target.value.length > 0){
+            if (e.target.value.length > 0) {
                 this.props.addQuestion(
                     {
                         question: e.target.value,
@@ -154,89 +154,126 @@ class Question extends React.Component<QuestionProps, {}>{
                     return true;
                 }
             })
-            return <Conditioner.ConnectedCondition dependancy={this.props.question.guid}
-             index={ind} type={Interf.ComponentCondition.Question} mode={-1} />
+            return <FormGroup row>
+                <Label for="chb2" xl={3}>Выводить если</Label>
+                <Col xl={9}>
+                    <Conditioner.ConnectedCondition dependancy={this.props.question.guid}
+                        index={ind} type={Interf.ComponentCondition.Question} mode={-1} />
+                </Col>
+            </FormGroup>
         }
-        return <Conditioner.ConnectedCondition dependancy={this.props.question.guid}
-         index={-1} type={Interf.ComponentCondition.Question} mode={-1} />
+        return <FormGroup row>
+            <Label for="chb2" xl={3}>Выводить если</Label>
+            <Col xl={9}>
+                <Conditioner.ConnectedCondition dependancy={this.props.question.guid}
+                    index={-1} type={Interf.ComponentCondition.Question} mode={-1} />
+            </Col>
+        </FormGroup>
     }
 
     onFullDelete = () => {
         this.props.deleteQuestion(this.props.question.guid);
     }
 
+    sortDown = () => {
+        if (this.props.index != (this.props.questions.length - 1)) {
+            this.props.sortQuestionDown(this.props.index)
+        }
+
+    }
+
+    sortUp = () => {
+        if (this.props.index != 0) {
+            this.props.sortQuestionUp(this.props.index);
+        }
+    }
+
     render() {
-        if(this.props.index > -1) {
-            return <Card className="createSideBar">
-            <CardBody>
-                <Form>
-                    <FormGroup row>
-                        <Label for="texter" sm={3}>Формулировка вопроса</Label>
-                        <Col sm={9}>
-                            <Input type="text" name="text" id="texter" value={this.props.question.question} onChange={this.name_change} placeholder="Вопрос"></Input>
-                        </Col>
-                    </FormGroup>                  
-                    <FormGroup row>
-                        <Label for="chb2" sm={3}>Параметр</Label>
-                        <Col sm={9}>
-                            <ComboBox.SimpleSelect 
-                                options={this.makeOptions()}
-                                defaultValue={this.defaultValue()}
-                                onValueChange={this.onVChange} 
-                                placeholder="Выберите параметр"></ComboBox.SimpleSelect>
-                        </Col>
-                    </FormGroup>
-                    {(() => {
-                        if (this.props.questions.length > 1) {
-                            return <FormGroup row>
-                                <Label for="chb2" sm={3}>Выводить после</Label>
-                                <Col sm={9}>
-                                    <ComboBox.SimpleSelect
-                                        options={this.optionerForQuest()}
-                                        defaultValue={this.defaultQuest()}
-                                        onValueChange={this.changeQuest}
-                                        placeholder="Выберите вопрос"></ComboBox.SimpleSelect>
-                                </Col>
-                            </FormGroup>
+        if (this.props.index > -1) {
+            return <Card className="createSideBar question">
+                <CardBody>
+                    <Form>
+                        <FormGroup row>
+                            <Label for="texter" lg={3}>Формулировка вопроса</Label>
+                            <Col lg={9}>
+                                <Input type="text" name="text" id="texter" value={this.props.question.question} onChange={this.name_change} placeholder="Вопрос"></Input>
+                            </Col>
+                        </FormGroup>
+                        <FormGroup row>
+                            <Label for="chb2" lg={3}>Параметр</Label>
+                            <Col lg={9}>
+                                <ComboBox.SimpleSelect
+                                    options={this.makeOptions()}
+                                    defaultValue={this.defaultValue()}
+                                    onValueChange={this.onVChange}
+                                    placeholder="Выберите параметр"></ComboBox.SimpleSelect>
+                            </Col>
+                        </FormGroup>
+                        {(() => {
+                            if (this.props.questions.length > 1) {
+                                return <FormGroup row className="">
+                                    <Label for="chb2" lg={3}>Выводить после</Label>
+                                    <Col lg={9}>
+                                        <ComboBox.SimpleSelect
+                                            options={this.optionerForQuest()}
+                                            defaultValue={this.defaultQuest()}
+                                            onValueChange={this.changeQuest}
+                                            placeholder="Выберите вопрос"></ComboBox.SimpleSelect>
+                                    </Col>
+                                </FormGroup>
+                            }
+                        })()}
+                        {this.renderThen()}
+
+
+                        {(() => {
+                            if (this.props.index != -1 && this.props.question.parameter_guid.length > 0 && this.props.question.type == Interf.QuestionType.Variety) {
+                                return (<div>
+                                    <hr />
+                                    <ListGroup>
+                                        {this.props.question.answers.map((val, key) => {
+                                            return <ConnectedAnswer index={key} questionGuid={this.props.question.guid} key={key} />
+                                        }).concat([
+                                            <ConnectedAnswer index={-1} key={this.props.question.answers.length} questionGuid={this.props.question.guid} />
+                                        ])}
+                                    </ListGroup>
+                                </div>)
+                            }
+
+                        })()}
+                        {
+                            (() => {
+                                if (this.props.questions.length > 1) {
+                                    return <ButtonGroup className='question'>
+                                        <Button color="primary" onClick={this.sortUp}><i className="fa fa-arrow-up" ></i></Button>
+                                        <Button color="primary" onClick={this.sortDown}><i className="fa fa-arrow-down"></i></Button>
+                                    </ButtonGroup>
+                                }
+
+                            })()
+
                         }
-                    })()}
-                    {this.renderThen()}
 
+                        <Button color="danger" className="question delete" onClick={this.onFullDelete} size="xs" block><i className="fa fa-trash" ></i> Удалить</Button>
 
-                    {(() => {
-                        if (this.props.index != -1 && this.props.question.parameter_guid.length > 0 && this.props.question.type == Interf.QuestionType.Variety) {
-                            return (<div>
-                                <hr />
-                                <ListGroup>
-                                    {this.props.question.answers.map((val, key) => {
-                                        return <ConnectedAnswer index={key} questionGuid={this.props.question.guid} key={key} />
-                                    }).concat([
-                                        <ConnectedAnswer index={-1} key={this.props.question.answers.length} questionGuid={this.props.question.guid} />
-                                    ])}
-                                </ListGroup>
-                            </div>)
-                        }
-                    })()}
-                    <Button color="danger" onClick={this.onFullDelete} size="xs" block><i className="fa fa-trash" ></i> Удалить</Button>
-
-                </Form>
-            </CardBody>
-        </Card>
+                    </Form>
+                </CardBody>
+            </Card>
         } else {
             return <Card className="createSideBar">
-            <CardBody>
-                <Form>
-                    <FormGroup row>
-                        <Label for="texter" sm={3}>Формулировка вопроса</Label>
-                        <Col sm={9}>
-                            <Input type="text" name="text" id="texter" value={this.props.question.question} onChange={this.name_change} placeholder="Вопрос"></Input>
-                        </Col>
-                    </FormGroup>                                   
-                </Form>
-            </CardBody>
-        </Card>
+                <CardBody>
+                    <Form>
+                        <FormGroup row>
+                            <Label for="texter" lg={3}>Формулировка вопроса</Label>
+                            <Col lg={9}>
+                                <Input type="text" name="text" id="texter" value={this.props.question.question} onChange={this.name_change} placeholder="Вопрос"></Input>
+                            </Col>
+                        </FormGroup>
+                    </Form>
+                </CardBody>
+            </Card>
         }
-       
+
     }
 }
 
@@ -304,14 +341,14 @@ class Answers extends React.Component<SubjecterAttribute, {}> {
         })
     }
     onVChange = (item: any) => {
-            if (!!item && !!item.newOption as any) {
-                this.props.syncNewAnswer(this.props.index, this.props.question.guid, this.props.answer.answer, item.label);
-                return;
-            }
-            if (!!item) {
-                this.props.syncAnswer(this.props.index, this.props.question.guid, item.value, this.props.answer.answer);
-                return;
-            }
+        if (!!item && !!item.newOption as any) {
+            this.props.syncNewAnswer(this.props.index, this.props.question.guid, this.props.answer.answer, item.label);
+            return;
+        }
+        if (!!item) {
+            this.props.syncAnswer(this.props.index, this.props.question.guid, item.value, this.props.answer.answer);
+            return;
+        }
 
     }
 
@@ -355,14 +392,14 @@ class Answers extends React.Component<SubjecterAttribute, {}> {
         return <Card>
             <CardBody>
                 <Row>
-                    <Col lg={4}>
+                    <Col sm={4}>
                         <label>Ответ</label>
                     </Col>
-                    <Col lg={8}>
+                    <Col sm={8}>
                         <Input type="textarea" value={this.props.answer.answer} onChange={this.onTextChange} />
                     </Col>
-                </Row>     
-                <br/>
+                </Row>
+                <br />
                 {(() => {
                     if (this.props.index > -1) {
                         return <div><Row>
@@ -397,13 +434,13 @@ class Answers extends React.Component<SubjecterAttribute, {}> {
                                     placeholder="Выберите значение параметра"></ComboBox.SimpleSelect>
                             </Col>
                         </Row>
-                        <Button color="danger" onClick={this.onFullDelete} size="xs" block><i className="fa fa-trash" ></i> Удалить</Button>
-                        
+                            <Button color="danger" onClick={this.onFullDelete} size="xs" block><i className="fa fa-trash" ></i> Удалить</Button>
+
                         </div>
                     }
 
                 })()}
-                   
+
             </CardBody>
         </Card>
     }
@@ -411,7 +448,7 @@ class Answers extends React.Component<SubjecterAttribute, {}> {
 
 
 
-interface NeededPropsAnswers{
+interface NeededPropsAnswers {
     index: number;
     questionGuid: string;
 }
@@ -445,8 +482,8 @@ function getAnswerProps(store: ApplicationState, props: NeededPropsAnswers) {
     }).answers.find((e, ind) => {
         if (ind == props.index) {
             return true;
-        } 
-        })
+        }
+    })
 
 
 
@@ -465,17 +502,18 @@ interface NeededPropsQuestion {
 
 
 function getQuestionProps(store: ApplicationState, props: NeededPropsQuestion) {
-    if(props.index > -1){
+    if (props.index > -1) {
         let question = store.combinedSystem.questions.find((e, ind) => {
             if (ind == props.index) {
                 return true;
             }
         });
-    
+
         return { question: question, questions: store.combinedSystem.questions, parameters: store.combinedSystem.parameters, conditions: store.combinedSystem.conditions };
-    
+
     } else {
-        return { question: 
+        return {
+            question:
             {
                 question: '',
                 guid: '',
@@ -487,7 +525,8 @@ function getQuestionProps(store: ApplicationState, props: NeededPropsQuestion) {
             },
             questions: store.combinedSystem.questions,
             parameters: store.combinedSystem.parameters,
-            conditions: store.combinedSystem.conditions };        
+            conditions: store.combinedSystem.conditions
+        };
     }
 
 

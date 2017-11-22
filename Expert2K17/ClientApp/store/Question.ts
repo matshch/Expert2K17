@@ -82,10 +82,20 @@ interface DeletePairAction {
     guid: string
     parGuid: string
 }
+interface SortUpAction {
+    type: 'SORT_UP',
+    index: number
+}
+interface SortDownAction {
+    type: 'SORT_DOWN',
+    index: number
+}
 
 // Declare a 'discriminated union' type. This guarantees that all references to 'type' properties contain one of the
 // declared type strings (and not any other arbitrary string).
-type KnownAction = SyncQuestionAction | AddQuestionAction | AddAnswerAction | SyncAnswerAction | ChangeParameterAction | LoadSystemAction | LinkQuestionAction | DeleteQuestionAction | DeleteAnswerAction | DeletePairAction;
+type KnownAction = SyncQuestionAction | AddQuestionAction | AddAnswerAction | SyncAnswerAction |
+    ChangeParameterAction | LoadSystemAction | LinkQuestionAction | DeleteQuestionAction | DeleteAnswerAction | DeletePairAction |
+    SortUpAction | SortDownAction;
 // ----------------
 // REDUCER - For a given state and action, returns the new state. To support time travel, this must not mutate the old state.
 
@@ -193,6 +203,12 @@ export const actionCreators = {
     },
     deleteAnswer: (questionGuid: string ,index: number): AppThunkAction<KnownAction> => (dispatch, getState) => {
         dispatch({ type: 'DELETE_ANSWER', index: index, questionGuid: questionGuid });
+    },
+    sortQuestionUp: (index: number): AppThunkAction<KnownAction> => (dispatch, getState) => {
+        dispatch({ type: 'SORT_UP', index: index});
+    },
+    sortQuestionDown: (index: number): AppThunkAction<KnownAction> => (dispatch, getState) => {
+        dispatch({ type: 'SORT_DOWN', index: index });
     }
 
 };
@@ -262,6 +278,16 @@ export const reducer: Reducer<Question[]> = (state: Question[], action: KnownAct
                 }
                 return e;
             });
+        case "SORT_UP":
+            let new_stateUp = [...state];                       
+            new_stateUp[action.index - 1] = state[action.index];
+            new_stateUp[action.index] = state[action.index - 1];
+            return new_stateUp;
+        case "SORT_DOWN":
+            let new_state = [...state];
+            new_state[action.index + 1] = state[action.index];
+            new_state[action.index] = state[action.index + 1];
+            return new_state;
         case "CHANGE_PARAMETER":
             return state.map((e) => {
                 if (e.guid == action.questionGuid) {
