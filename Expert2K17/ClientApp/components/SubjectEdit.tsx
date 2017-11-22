@@ -21,13 +21,13 @@ type CreateAttribute =
 
 class TestCreaterSubject extends React.Component<CreateAttribute, {}>{
     render() {
-        return <Container fluid>
+        return <div>
             {this.props.subjects.map((val, key) => {
                     return <ConnectedSubject key={key} index={key} />
         }).concat(<ConnectedSubject key={this.props.subjects.length} index={-1}/>)
 
             }
-        </Container>
+            </div>
     }
 }
 
@@ -68,7 +68,6 @@ class Subject extends React.Component<SubjectPropsType, {}>{
             }
 
         }
-        
     }
 
     addCallback = (value: string, attrGuid: string) => {
@@ -124,8 +123,6 @@ class Subject extends React.Component<SubjectPropsType, {}>{
             </CardBody>
         </Card>
         }
-
-        
     }
 }
 

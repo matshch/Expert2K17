@@ -122,8 +122,8 @@ export class TestCreaterNav extends React.Component<NavProps, {}>{
 
                     <hr />
 
-                    <Button block className="TestNav" onClick={this.rollbackForce}>Восстановить состояние</Button>
-                    <Button block className="TestNav" onClick={this.saveForce}>Сохранить состояние</Button>
+                    <Button block color="success" className="TestNav" onClick={this.saveForce}><i className="fa fa-floppy-o px-1" aria-hidden="true"></i>Сохранить</Button>
+                    <Button block color="primary" className="TestNav" onClick={this.rollbackForce}><i className="fa fa-undo px-1" aria-hidden="true"></i>Восстановить</Button>
 
                 </CardBody>
             </Card>
