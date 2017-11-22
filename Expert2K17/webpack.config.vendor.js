@@ -10,8 +10,6 @@ module.exports = (env) => {
     const fileExt = /\.(png|jpg|jpeg|gif|woff|woff2|eot|ttf|svg)(\?|$)/;
 
     const sharedConfig = {
-        stats: { modules: false },
-        resolve: { extensions: [ '.js' ] },
         entry: {
             vendor: [
                 'deep-equal',
@@ -37,8 +35,12 @@ module.exports = (env) => {
             filename: '[name].js',
             library: '[name]_[hash]',
         },
+        stats: {
+            modules: false
+        },
         plugins: [
-            new webpack.NormalModuleReplacementPlugin(/\/iconv-loader$/, require.resolve('node-noop')), // Workaround for https://github.com/andris9/encoding/issues/16
+            // Workaround for https://github.com/andris9/encoding/issues/16
+            new webpack.NormalModuleReplacementPlugin(/\/iconv-loader$/, require.resolve('node-noop')),
             new webpack.DefinePlugin({
                 'process.env.NODE_ENV': isDevBuild ? '"development"' : '"production"'
             })
@@ -46,21 +48,6 @@ module.exports = (env) => {
     };
 
     const clientBundleConfig = merge(sharedConfig, {
-        output: { path: path.join(__dirname, 'wwwroot', 'dist') },
-        module: {
-            rules: [
-                { test: /\.css(\?|$)/, use: extractCSS.extract({ use: [isDevBuild ? 'css-loader?sourceMap' : 'css-loader?minimize', 'postcss-loader'] }) },
-                { test: fileExt, use: 
-                    {
-                        loader: "url-loader",
-                        options: {
-                            limit: 100000,
-                            publicPath: ''
-                        }
-                    }
-                }
-            ]
-        },
         entry: {
             vendor: [
                 'bootstrap/dist/css/bootstrap.css',
@@ -71,6 +58,29 @@ module.exports = (env) => {
                 'slick-carousel/slick/slick.css',
                 'slick-carousel/slick/slick-theme.css'
             ].concat(isDevBuild ? ['event-source-polyfill'] : [])
+        },
+        module: {
+            rules: [
+                {
+                    test: /\.css(\?|$)/,
+                    use: extractCSS.extract({
+                        use: [isDevBuild ? 'css-loader?sourceMap' : 'css-loader?minimize', 'postcss-loader']
+                    })
+                },
+                {
+                    test: fileExt,
+                    use: {
+                        loader: "url-loader",
+                        options: {
+                            limit: 100000,
+                            publicPath: ''
+                        }
+                    }
+                }
+            ]
+        },
+        output: {
+            path: path.join(__dirname, 'wwwroot', 'dist')
         },
         plugins: [
             extractCSS,
@@ -85,36 +95,35 @@ module.exports = (env) => {
                 moduleFilenameTemplate: path.relative('./wwwroot/dist', '[resourcePath]') // Point sourcemap entries to the original file locations on disk
             })
         ] : [
+            // Plugins that apply in production builds only
             new webpack.optimize.UglifyJsPlugin()
         ])
     });
 
     const serverBundleConfig = merge(sharedConfig, {
-        target: 'node',
-        resolve: { mainFields: ['main'] },
-        output: {
-            path: path.join(__dirname, 'ClientApp', 'dist'),
-            libraryTarget: 'commonjs2',
-        },
-        module: {
-            rules: [
-                { test: /\.css(\?|$)/, use: 'css-loader' },
-                { test: fileExt, use: 
-                    {
-                        loader: "file-loader",
-                        options: {
-                            emitFile: false
-                        }
-                    }
-                }
-            ]
-        },
         entry: {
             vendor: [
                 'aspnet-prerendering',
                 'react-dom/server'
             ]
         },
+        module: {
+            rules: [
+                {
+                    test: /\.css(\?|$)/,
+                    use: 'css-loader'
+                },
+                {
+                    test: fileExt,
+                    use: "file-loader?emitFile=false"
+                }
+            ]
+        },
+        output: {
+            path: path.join(__dirname, 'ClientApp', 'dist'),
+            libraryTarget: 'commonjs2',
+        },
+        target: 'node',
         plugins: [
             new webpack.DllPlugin({
                 path: path.join(__dirname, 'ClientApp', 'dist', '[name]-manifest.json'),

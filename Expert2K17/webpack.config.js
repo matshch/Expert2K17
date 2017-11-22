@@ -12,20 +12,27 @@ module.exports = (env) => {
 
     // Configuration in common to both client-side and server-side bundles
     const sharedConfig = () => ({
-        stats: { modules: false },
-        resolve: { extensions: ['.js', '.jsx', '.ts', '.tsx'] },
         output: {
             filename: '[name].js',
             publicPath: '/dist/' // Webpack dev middleware, if enabled, handles requests for this URL prefix
         },
         module: {
             rules: [
-                { test: /\.tsx?$/, include: /ClientApp/, use: 'awesome-typescript-loader?silent=true' }
+                {
+                    test: /\.tsx?$/,
+                    include: /ClientApp/,
+                    use: 'awesome-typescript-loader?silent=true'
+                }
             ]
+        },
+        resolve: {
+            extensions: ['.js', '.jsx', '.ts', '.tsx']
+        },
+        stats: {
+            modules: false
         },
         plugins: [
             new CheckerPlugin(),
-            new webpack.NormalModuleReplacementPlugin(/\/iconv-loader$/, require.resolve('node-noop')), // Workaround for https://github.com/andris9/encoding/issues/16
             new webpack.DefinePlugin({
                 'process.env.NODE_ENV': isDevBuild ? '"development"' : '"production"'
             })
@@ -35,21 +42,26 @@ module.exports = (env) => {
     // Configuration for client-side bundle suitable for running in browsers
     const clientBundleOutputDir = './wwwroot/dist';
     const clientBundleConfig = merge(sharedConfig(), {
-        entry: { 'main-client': './ClientApp/boot-client.tsx' },
+        entry: {
+            'main-client': './ClientApp/boot-client.tsx'
+        },
         module: {
             rules: [
-                { test: /\.css$/, use: extractCSS.extract({ use: [isDevBuild ? 'css-loader?sourceMap' : 'css-loader?minimize', 'postcss-loader'] }) },
-                { test: fileExt, use: 
-                    {
-                        loader: "url-loader",
-                        options: {
-                            limit: 25000
-                        }
-                    }
+                {
+                    test: /\.css$/,
+                    use: extractCSS.extract({
+                        use: [isDevBuild ? 'css-loader?sourceMap' : 'css-loader?minimize', 'postcss-loader']
+                    })
+                },
+                {
+                    test: fileExt,
+                    use: "url-loader?limit=25000"
                 }
             ]
         },
-        output: { path: path.join(__dirname, clientBundleOutputDir) },
+        output: {
+            path: path.join(__dirname, clientBundleOutputDir)
+        },
         plugins: [
             extractCSS,
             new webpack.DllReferencePlugin({
@@ -74,41 +86,40 @@ module.exports = (env) => {
 
     // Configuration for server-side (prerendering) bundle suitable for running in Node
     const serverBundleConfig = merge(sharedConfig(), {
-        resolve: { mainFields: ['main'] },
-        entry: { 'main-server': './ClientApp/boot-server.tsx' },
+        entry: {
+            'main-server': './ClientApp/boot-server.tsx'
+        },
         module: {
             rules: [
-                { test: /\.css$/, use: 'css-loader' },
-                { test: fileExt, use: 
-                    {
-                        loader: "file-loader",
-                        options: {
-                            emitFile: false
-                        }
-                    }
+                {
+                    test: /\.css$/,
+                    use: 'css-loader'
+                },
+                {
+                    test: fileExt,
+                    use: "file-loader?emitFile=false"
                 }
             ]
         },
-        plugins: [
-            new webpack.DllReferencePlugin({
-                context: __dirname,
-                manifest: require('./ClientApp/dist/vendor-manifest.json'),
-                sourceType: 'commonjs2',
-                name: './vendor'
-            }),
-            new webpack.DllReferencePlugin({
-                context: __dirname,
-                manifest: require('./ClientApp/dist/datagrid-manifest.json'),
-                sourceType: 'commonjs2',
-                name: './datagrid'
-            })
-        ],
         output: {
             libraryTarget: 'commonjs',
             path: path.join(__dirname, './ClientApp/dist')
         },
         target: 'node',
-        devtool: 'inline-source-map'
+        plugins: [
+            new webpack.DllReferencePlugin({
+                context: __dirname,
+                manifest: require('./ClientApp/dist/vendor-manifest.json'),
+                name: './vendor',
+                sourceType: 'commonjs2'
+            }),
+            new webpack.DllReferencePlugin({
+                context: __dirname,
+                manifest: require('./ClientApp/dist/datagrid-manifest.json'),
+                name: './datagrid',
+                sourceType: 'commonjs2'
+            })
+        ]
     });
 
     return [clientBundleConfig, serverBundleConfig];
