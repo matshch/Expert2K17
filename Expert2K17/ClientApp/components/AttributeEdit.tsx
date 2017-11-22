@@ -120,7 +120,7 @@ class Attribute extends React.Component<AttributeProps, {}>{
                             <div>числовые значения</div>
                         </div>
                     </FormGroup>
-                    <ListGroup>
+                    <ListGroup className='listGrouperTest'>
                         {this.props.pairs.map((val, key) => {
                             return <Valer deleter={this.onPDelete} changer={this.onPChange} guid={val.guid} value={val.value} key={key} />
                         })}
@@ -164,12 +164,11 @@ class Valer extends React.Component<propsValer, {}>{
         this.props.deleter(this.props.guid);
     }
     render() {
-        return <div>
+        return <div className="itemer">
             <InputGroup>
                 <Input placeholder="значение" type="text" value={this.props.value} onChange={this.chan} />
                 <InputGroupButton><Button color="danger" onClick={this.onDelete}><i className="fa fa-trash" ></i></Button></InputGroupButton>
             </InputGroup>
-            <br />
         </div>
     }
 }

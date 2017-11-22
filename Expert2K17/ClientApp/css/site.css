@@ -593,12 +593,12 @@ hr
 }
 
 .question.btn-group {
-    margin-top: 9px;
+    margin-top: 3px;
 }
 
 .question.delete.btn
 {
-    margin-top: 9px;
+    margin-top: 10px;
 }
 
 .react-selectize.root-node
@@ -623,4 +623,17 @@ hr
 .conditionColoumnMain
 {
     min-width:200px;
+}
+
+.listGrouperTest .card
+{
+    margin-bottom: 7px;
+}
+
+.listGrouperTest .itemer {
+    margin-bottom: 7px;
+}
+
+.listGrouperTest input {
+    height: 38px !important;
 }
