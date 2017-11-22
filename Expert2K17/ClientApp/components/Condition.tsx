@@ -119,22 +119,22 @@ class Condition extends React.Component<ConditionProps, {}>{
                 return;
             }
         }
-        if(typeof item == 'undefined' && this.props.type == Interf.ComponentCondition.Question){
+        if (typeof item == 'undefined' && this.props.type == Interf.ComponentCondition.Question) {
             let newCondition: Interf.Condition = {
                 ...this.props.condition,
                 left: '',
                 parameter: mode,
                 right: ''
             }
-            this.props.syncCondition(newCondition);      
-            return;     
+            this.props.syncCondition(newCondition);
+            return;
         }
-        if(typeof item == 'undefined' && this.props.type == Interf.ComponentCondition.Logic){
-            this.props.deleteCondition(this.props.condition.guid);      
-            return;     
+        if (typeof item == 'undefined' && this.props.type == Interf.ComponentCondition.Logic) {
+            this.props.deleteCondition(this.props.condition.guid);
+            return;
         }
 
-        
+
     }
 
     prepareActs = () => {
@@ -213,7 +213,7 @@ class Condition extends React.Component<ConditionProps, {}>{
                         label: e.value
                     }
 
-                    })
+                })
                 return pairs;
 
             }
@@ -228,13 +228,13 @@ class Condition extends React.Component<ConditionProps, {}>{
                         return true;
                     }
                     return false;
-                }).map((e,ind) => {
+                }).map((e, ind) => {
                     return {
                         value: e.guid,
                         label: e.value
                     }
 
-                    })
+                })
                 return pairs;
             }
 
@@ -260,10 +260,10 @@ class Condition extends React.Component<ConditionProps, {}>{
                     }
                     return false;
                 }).find((e) => {
-                        if (e.guid == this.props.condition.right) {
-                            return true;
-                        }
-                    })
+                    if (e.guid == this.props.condition.right) {
+                        return true;
+                    }
+                })
 
                 return {
                     value: pair.guid,
@@ -305,7 +305,7 @@ class Condition extends React.Component<ConditionProps, {}>{
                 this.props.syncWithAddCondition(newCondition, item.label);
                 return;
             }
-            if (!!item) {                
+            if (!!item) {
                 let newCondition: Interf.Condition = {
                     ...this.props.condition,
                     right: item.value
@@ -327,7 +327,7 @@ class Condition extends React.Component<ConditionProps, {}>{
     }
 
     inputReturner = () => {
-        
+
         if (this.props.index > -1) {
             if (this.props.condition.parameter == 1) {
                 let parameter = this.props.parameters.find((e) => {
@@ -440,30 +440,30 @@ class Condition extends React.Component<ConditionProps, {}>{
 
 
     render() {
-        return   <Form>
-                    <FormGroup row>
-                        <Row>
-                            <Col lg={4}>
-                                <ComboBox.SimpleSelect
-                                    options={this.makeOptionsUnited()}
-                                    defaultValue={this.defaultValueLeft()}
-                                    onValueChange={this.onVLeftChange}
-                                />
-                            </Col>
-                            <Col lg={4}>
-                                <ComboBox.SimpleSelect
-                                    options={this.prepareActs()}
-                                    defaultValue={this.defaultValueMiddle()}
-                                    onValueChange={this.onValueChangeMiddle}
-                                />
-                            </Col>
-                            <Col lg={4}>
-                                {this.inputReturner()}
-                            </Col>
-                        </Row>
-                    </FormGroup>
-                </Form>
-            
+        return <Form>
+            <FormGroup>
+                <Row>
+                    <Col xl className="conditionColoumnMain">
+                        <ComboBox.SimpleSelect
+                            options={this.makeOptionsUnited()}
+                            defaultValue={this.defaultValueLeft()}
+                            onValueChange={this.onVLeftChange}
+                        />
+                    </Col>
+                    <Col xl className="conditionColoumn">
+                        <ComboBox.SimpleSelect
+                            options={this.prepareActs()}
+                            defaultValue={this.defaultValueMiddle()}
+                            onValueChange={this.onValueChangeMiddle}
+                        />
+                    </Col>
+                    <Col xl>
+                        {this.inputReturner()}
+                    </Col>
+                </Row>
+            </FormGroup>
+        </Form>
+
     }
 }
 
@@ -479,7 +479,7 @@ function getConditionProps(store: ApplicationState, props: ConnectProps) {
     if (props.index >= 0) {
         let condition = store.combinedSystem.conditions[props.index];
 
-        return { parameters: store.combinedSystem.parameters, attributes: store.combinedSystem.attributes, condition: condition, parameterPairs: store.combinedSystem.parpairs, pairs: store.combinedSystem.pairs  };
+        return { parameters: store.combinedSystem.parameters, attributes: store.combinedSystem.attributes, condition: condition, parameterPairs: store.combinedSystem.parpairs, pairs: store.combinedSystem.pairs };
     }
 
 

@@ -40,10 +40,10 @@ export
 
         return <DocumentTitle title='Создание системы — ЭЗ ПЕЗ'>
             <Row>
-                <Col lg={3}>
+                <Col md={4} lg={3}>
                     <FixedConnectedTestCreaterNav link={this.props.match.params.id} />
                 </Col>
-                <Col lg={9}>
+                <Col md={8} lg={9} className="testColoumnContainer">
                     <Route path='/CreateTest/new' component={Systemer.ConnectedTestSystemCreater} />
                     <Route path='/EditTest/:id/CreateSystem' component={Systemer.ConnectedTestSystemEditor} />
                     <Route path='/EditTest/:id/CreateAttribute' component={Attributer.ConnectedTestAttributeEditor} />
@@ -53,6 +53,7 @@ export
                     <Route path='/EditTest/:id/CreateLogic' component={Logic.ConnectedTestLogicEditor} />
                 </Col>
             </Row>
+
         </DocumentTitle>;
     }
 }
@@ -121,8 +122,8 @@ export class TestCreaterNav extends React.Component<NavProps, {}>{
 
                     <hr />
 
-                    <Button block onClick={this.rollbackForce}>Восстановить состояние</Button>
-                    <Button block onClick={this.saveForce}>Сохранить состояние</Button>
+                    <Button block className="TestNav" onClick={this.rollbackForce}>Восстановить состояние</Button>
+                    <Button block className="TestNav" onClick={this.saveForce}>Сохранить состояние</Button>
 
                 </CardBody>
             </Card>
