@@ -17,8 +17,9 @@ module.exports = (env) => {
             publicPath: 'dist/',
             library: '[name]_[hash]'
         },
-        stats: { modules: false },
-        resolve: { extensions: [ '.js' ] },
+        stats: {
+            modules: false
+        },
         plugins: [
             new webpack.DefinePlugin({
                 'process.env.NODE_ENV': isDevBuild ? '"development"' : '"production"'
@@ -27,7 +28,9 @@ module.exports = (env) => {
     };
 
     const clientBundleConfig = merge(sharedConfig, {
-        output: { path: path.join(__dirname, 'wwwroot', 'dist') },
+        output: {
+            path: path.join(__dirname, 'wwwroot', 'dist')
+        },
         plugins: [
             new webpack.DllReferencePlugin({
                 context: __dirname,
@@ -44,23 +47,23 @@ module.exports = (env) => {
                 moduleFilenameTemplate: path.relative('./wwwroot/dist', '[resourcePath]') // Point sourcemap entries to the original file locations on disk
             })
         ] : [
+            // Plugins that apply in production builds only
             new webpack.optimize.UglifyJsPlugin()
         ])
     });
 
     const serverBundleConfig = merge(sharedConfig, {
-        target: 'node',
-        resolve: { mainFields: ['main'] },
         output: {
             path: path.join(__dirname, 'ClientApp', 'dist'),
             libraryTarget: 'commonjs2',
         },
+        target: 'node',
         plugins: [
             new webpack.DllReferencePlugin({
                 context: __dirname,
                 manifest: require('./ClientApp/dist/vendor-manifest.json'),
-                sourceType: 'commonjs2',
-                name: './vendor'
+                name: './vendor',
+                sourceType: 'commonjs2'
             }),
             new webpack.DllPlugin({
                 path: path.join(__dirname, 'ClientApp', 'dist', '[name]-manifest.json'),

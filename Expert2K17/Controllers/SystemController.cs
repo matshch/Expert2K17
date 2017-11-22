@@ -66,6 +66,25 @@ namespace Expert2K17.Controllers
             return response;
         }
 
+        // DELETE: api/system/delete/cee8e768-6490-45a8-9848-090c7a89878a
+        [HttpDelete("{id}")]
+        public async Task<MyResponse> Remove(Guid id)
+        {
+            var response = new MyResponse();
+            var (system, error) = await GetPrepare(id.ToString());
+
+            if (error != null)
+            {
+                response.Error = error;
+                return response;
+            }
+
+            _db.Tests.Remove(system);
+            await _db.SaveChangesAsync();
+            response.Succeded = true;
+            return response;
+        }
+
         // POST: api/system/create
         [HttpPost]
         public async Task<CreateSystemResponse> Create(CreateSystem system)

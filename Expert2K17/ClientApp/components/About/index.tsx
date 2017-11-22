@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import './index.css';
+import '../../css/hover-min.css';
 
 const hexagramg = require('./hexagramg.jpg');
 const matshch = require('./matshch.jpg');
@@ -14,7 +15,7 @@ export default class About extends React.Component<AboutProps, {}> {
             <div className="aboutSubcontainer">
                 <div className="about">
                     <div>
-                        <div className="card">
+                        <div className="card hvr-wobble-vertical">
                             <img src={matshch} />
                             <div className="content">
                                 <h1>Лещев А.О.</h1>
@@ -27,8 +28,9 @@ export default class About extends React.Component<AboutProps, {}> {
                             </div>
                         </div>
                     </div>
+                    <br/>
                     <div>
-                        <div className="card">
+                        <div className="card hvr-bounce-in">
                             <img src={maxavatar} />
                             <div className="content">
                                 <h1>Лясковский М.А.</h1>
@@ -41,8 +43,9 @@ export default class About extends React.Component<AboutProps, {}> {
                             </div>
                         </div>
                     </div>
+                    <br/>
                     <div>
-                        <div className="card">
+                        <div className="card hvr-buzz-out">
                             <img src={hexagramg} />
                             <div className="content">
                                 <h1>Мельников К.И.</h1>
