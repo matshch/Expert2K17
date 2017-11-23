@@ -55,12 +55,12 @@ export class Test extends React.Component<TestProps, {}> {
                                                             return (
                                                                 <Form>
                                                                     <FormGroup>
-                                                                        <legend>Выберите один из ответов:</legend>
+                                                                        <legend>Выберите один из вариантов:</legend>
                                                                         <FormGroup check>
-                                                                            {e.answers.map((a, i) => (<Label check>
-                                                                                <Input onChange={() => this.props.answerQuestion(e.guid, i)} key={i} type="radio" name={e.guid} />{' '}
-                                                                                {a}
-                                                                            </Label>))}
+                                                                            {e.answers.map((a, i) => (<div><div className="radioButton">
+                                                                                <Input onChange={() => this.props.answerQuestion(e.guid, i)} key={i} type="radio" name={e.guid} /></div>
+                                                                                <div className="radioLabel"><div>{a}</div></div></div>
+                                                                            ))}
                                                                         </FormGroup>
                                                                     </FormGroup>
                                                                 </Form>
@@ -86,7 +86,7 @@ export class Test extends React.Component<TestProps, {}> {
                     <Col xs="4">
                         <div>
                             <Jumbotron className="card">
-                                <h1>Список объектов:</h1><hr />
+                                <h1>Список объектов</h1><hr />
                                 <ListGroup>
                                     {this.props.test.objects.map(e => <ListGroupItem className="justify-content-between">{e.name}<Badge pill>{(e.exactness * 100).toFixed(0) + "%"}</Badge></ListGroupItem>)}
                                 </ListGroup>

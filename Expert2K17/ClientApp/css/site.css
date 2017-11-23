@@ -113,6 +113,12 @@ body
     font-size: 15pt;
 }
 
+.jumbotron .list-group-item span
+{
+    float: right;
+    line-height: 1.5;
+}
+
 .test
 {
     display: flex;
@@ -191,11 +197,6 @@ hr
 
 @media screen and (min-height: 1000px)
 {
-    .profile
-    {
-        height: calc(100vh - 15ex);
-    }
-
     .profile .list-group
     {
         overflow-x: none;
@@ -454,7 +455,8 @@ hr
     font-size: 18pt;
 }
 
-.test .checkbox
+.test .checkbox,
+.test .radioButton
 {
     margin-left: 20px;
 }
@@ -474,13 +476,15 @@ hr
     vertical-align: bottom;
 }
 
-.checkBox
+.checkBox,
+.radioButton
 {
     max-width: 10%;
 }
 
 
-.checkBoxLabel
+.checkBoxLabel,
+.test .radioLabel
 {
     font-size: 16pt;
 
@@ -489,6 +493,12 @@ hr
     padding-left: 15px;
 
     vertical-align: bottom;
+}
+
+.test .radioLabel
+{
+    padding-left: 35px !important;
+    line-height: 1.6;
 }
 
 .login .alert
@@ -506,6 +516,7 @@ hr
 
 .img-fluid
 {
+    cursor: pointer;
     display: block;
 
     height: auto;
@@ -593,12 +604,12 @@ hr
 }
 
 .question.btn-group {
-    margin-top: 9px;
+    margin-top: 3px;
 }
 
 .question.delete.btn
 {
-    margin-top: 9px;
+    margin-top: 10px;
 }
 
 .react-selectize.root-node
@@ -623,4 +634,17 @@ hr
 .conditionColoumnMain
 {
     min-width:200px;
+}
+
+.listGrouperTest .card
+{
+    margin-bottom: 7px;
+}
+
+.listGrouperTest .itemer {
+    margin-bottom: 7px;
+}
+
+.listGrouperTest input {
+    height: 38px !important;
 }

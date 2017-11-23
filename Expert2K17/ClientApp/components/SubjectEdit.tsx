@@ -21,13 +21,13 @@ type CreateAttribute =
 
 class TestCreaterSubject extends React.Component<CreateAttribute, {}>{
     render() {
-        return <Container fluid>
+        return <div>
             {this.props.subjects.map((val, key) => {
-                    return <ConnectedSubject key={key} index={key} />
-        }).concat(<ConnectedSubject key={this.props.subjects.length} index={-1}/>)
+                return <ConnectedSubject key={key} index={key} />
+            }).concat(<ConnectedSubject key={this.props.subjects.length} index={-1} />)
 
             }
-        </Container>
+            </div>
     }
 }
 
@@ -51,13 +51,13 @@ type SubjectPropsType =
 
 class Subject extends React.Component<SubjectPropsType, {}>{
     name_change = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if(this.props.index > -1){
+        if (this.props.index > -1) {
             this.props.syncSubject({
                 ...this.props.subject,
                 name: e.target.value
             });
         } else {
-            if(e.target.value.length > 0){
+            if (e.target.value.length > 0) {
                 this.props.addSubject(
                     {
                         system_guid: '',
@@ -68,7 +68,6 @@ class Subject extends React.Component<SubjectPropsType, {}>{
             }
 
         }
-        
     }
 
     addCallback = (value: string, attrGuid: string) => {
@@ -83,49 +82,49 @@ class Subject extends React.Component<SubjectPropsType, {}>{
     }
 
     render() {
-        if(this.props.index > -1){
+        if (this.props.index > -1) {
             return <Card className="test object">
-            <CardBody>
-                <Form>
-                    <FormGroup>
-                        <Label for="texter">Название</Label>
-                        <InputGroup>
-                            <Input type="text" name="text" id="texter" onChange={this.name_change} value={this.props.subject.name} placeholder="Название объекта"></Input>
-                            <InputGroupButton color="danger"><Button onClick={this.onFullDelete} color="danger"><i className="fa fa-trash" ></i></Button></InputGroupButton>
-                        </InputGroup>
-                    </FormGroup>
-                    {(() => {
-                        if (this.props.subject.guid != '' && this.props.attr.length > 0) {
-                            return this.props.attr.map((val, key) => {
-                                return <SubjectToAttribute attr={val} key={key} subject={this.props.subject} selected={this.selectedCallback} added={this.addCallback} pairs={this.props.pairs.filter((pair) => {
-                                    if (pair.attributeGuid == val.guid) {
-                                        return true;
-                                    }
-                                    return false;
-                                })} />
-                            })
-                        }
+                <CardBody>
+                    <Form>
+                        <FormGroup>
+                            <Label for="texter">Название</Label>
+                            <InputGroup>
+                                <Input type="text" name="text" id="texter" onChange={this.name_change} value={this.props.subject.name} placeholder="Название объекта"></Input>
+                                <InputGroupButton color="danger"><Button onClick={this.onFullDelete} color="danger"><i className="fa fa-trash" ></i></Button></InputGroupButton>
+                            </InputGroup>
+                        </FormGroup>
+                        <ListGroup className='listGrouperTest'>
+                            {(() => {
+                                if (this.props.subject.guid != '' && this.props.attr.length > 0) {
+                                    return this.props.attr.map((val, key) => {
+                                        return <SubjectToAttribute attr={val} key={key} subject={this.props.subject} selected={this.selectedCallback} added={this.addCallback} pairs={this.props.pairs.filter((pair) => {
+                                            if (pair.attributeGuid == val.guid) {
+                                                return true;
+                                            }
+                                            return false;
+                                        })} />
+                                    })
+                                }
 
-                    })()}
-                </Form>
-            </CardBody>
-        </Card>
+                            })()}
+                        </ListGroup>
+                    </Form>
+                </CardBody>
+            </Card>
         } else {
             return <Card className="test object">
-            <CardBody>
-                <Form>
-                    <FormGroup>
-                    <Label for="texter">Название</Label>
-                        <InputGroup>
-                            <Input type="text" name="text" id="texter" onChange={this.name_change} value={this.props.subject.name} placeholder="Название объекта"></Input>
-                        </InputGroup>
-                    </FormGroup>
-                </Form>
-            </CardBody>
-        </Card>
+                <CardBody>
+                    <Form>
+                        <FormGroup>
+                            <Label for="texter">Название</Label>
+                            <InputGroup>
+                                <Input type="text" name="text" id="texter" onChange={this.name_change} value={this.props.subject.name} placeholder="Название объекта"></Input>
+                            </InputGroup>
+                        </FormGroup>
+                    </Form>
+                </CardBody>
+            </Card>
         }
-
-        
     }
 }
 
@@ -213,7 +212,7 @@ class SubjectToAttribute extends React.Component<SubjecterAttribute, {}> {
                 <ComboBox.SimpleSelect options={this.makeOptions()}
                     createFromSearch={
                         (options, search) => {
-                            if (search.length == 0 || (options.map(function(option) {
+                            if (search.length == 0 || (options.map(function (option) {
                                 return option.label;
                             })).indexOf(search) > -1)
                                 return null as OptionValue;
@@ -224,7 +223,7 @@ class SubjectToAttribute extends React.Component<SubjecterAttribute, {}> {
                     defaultValue={this.defaultValue()}
                     onValueChange={this.onVChange}
 
-                    renderOption={function(item: any) {
+                    renderOption={function (item: any) {
                         return <div className="simple-option" style={{ display: "flex", alignItems: "center" }}>
                             <div style={{
                                 backgroundColor: item.label, borderRadius: "50%", width: 24, height: 24

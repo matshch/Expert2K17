@@ -46,9 +46,9 @@ export class TestEditorSystem extends React.Component<TestEditSystemT, {}>{
                     </FormGroup>
                     <FormGroup>
                         <Label for="imge">Картинка</Label>
-                        <img className="img-fluid" src={this.props.system.picture} ></img>
+                        <img className="img-fluid" onClick={() => document.getElementById('imge').click()} src={this.props.system.picture} ></img>
                         <br />
-                        <div className="file_upload">
+                        <div className="file_upload" style={{display: 'none'}}>
                             <i className="fa fa-picture-o" aria-hidden="true"></i>
                             <Input type="file" name="file" onChange={this.pictureChange} id="imge"></Input>
                         </div>
@@ -70,6 +70,7 @@ export class TestEditorSystem extends React.Component<TestEditSystemT, {}>{
 interface CreatorSystem {
     name: string;
     picture: FileList | null;
+    preview: string;
     tldr: string;
     pub: boolean;
 }
@@ -81,13 +82,14 @@ type TestCreaterSystemT = typeof Store.actionCreators
     Interf.System;
 
 export class TestCreaterSystem extends React.Component<TestCreaterSystemT, CreatorSystem>{
-    constructor(props : TestCreaterSystemT) {
+    constructor(props: TestCreaterSystemT) {
         super(props);
         this.state = {
             name: '',
             picture: null,
             tldr: '',
-            pub: false
+            pub: false,
+            preview: null
         }
 
     }
@@ -105,10 +107,21 @@ export class TestCreaterSystem extends React.Component<TestCreaterSystemT, Creat
         })
     }
     pictureChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        this.setState({
-            ...this.state,
-            picture: e.target.files
-        })
+        var filename = e.target.value.split('.');
+        if (filename[filename.length - 1] == 'jpg' ||
+            filename[filename.length - 1] == 'png' ||
+            filename[filename.length - 1] == 'jpeg' ||
+            filename[filename.length - 1] == 'gif') {
+            document.getElementById('imge').parentElement.style.display = 'none';
+            var tmppath = URL.createObjectURL(e.target.files[0]);
+            this.setState({
+                ...this.state,
+                picture: e.target.files,
+                preview: tmppath
+            })
+        } else {
+            alert("Поддерживаемые форматы: jpg, png, gif.")
+        }
     }
 
     saveTest = () => {
@@ -141,9 +154,11 @@ export class TestCreaterSystem extends React.Component<TestCreaterSystemT, Creat
                     </FormGroup>
                     <FormGroup>
                         <Label for="imge">Картинка</Label>
+                        <img className="img-fluid" onClick={() => document.getElementById('imge').click()} src={this.state.preview} ></img>
+                        <br />
                         <div className="file_upload">
                             <i className="fa fa-picture-o" aria-hidden="true"></i>
-                            <Input type="file" onChange={this.pictureChange} name="file" id="imge"></Input>
+                            <Input type="file" name="file" onChange={this.pictureChange} id="imge"></Input>
                         </div>
                     </FormGroup>
                     <Button color="success" onClick={this.saveTest} size="lg" block>Создать тест</Button>
