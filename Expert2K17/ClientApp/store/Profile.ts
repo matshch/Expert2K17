@@ -33,6 +33,19 @@ export const actionCreators = {
             });
         addTask(fetchTask);
         dispatch({ type: 'USELESS_PROFILE_ACTION' });
+    },
+    DeleteTest: (guid: string): AppThunkAction<KnownActions> => (dispatch, getState) => {
+        fetch("api/system/delete/" + guid, {
+            credentials: 'same-origin',
+            method: "DELETE"
+        }).then(() => {
+            fetch("/api/system/get", { credentials: 'same-origin' })
+                .then(response => response.json() as Promise<TestObject[]>).then(data => {
+                    dispatch({ type: 'GET_GET_TESTS_LIST', data: data });
+                });
+           dispatch({ type: 'USELESS_PROFILE_ACTION' });
+
+         });
     }
 };
 

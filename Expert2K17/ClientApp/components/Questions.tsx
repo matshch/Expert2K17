@@ -145,30 +145,39 @@ class Question extends React.Component<QuestionProps, {}>{
                 ...this.props.question,
                 cast_after: item.value
             })
+        } else {
+            if (typeof item == 'undefined') {
+                this.props.syncQuestion({
+                    ...this.props.question,
+                    cast_after: ''
+                })
+            }
         }
     }
     renderThen = () => {
-        if (this.props.question.cast_if.length > 0) {
-            let ind = this.props.conditions.findIndex((e) => {
-                if (e.guid == this.props.question.cast_if) {
-                    return true;
-                }
-            })
+        if (this.props.questions.length > 1) {
+            if (this.props.question.cast_if.length > 0) {
+                let ind = this.props.conditions.findIndex((e) => {
+                    if (e.guid == this.props.question.cast_if) {
+                        return true;
+                    }
+                })
+                return <FormGroup row>
+                    <Label for="chb2" xl={3}>Выводить если</Label>
+                    <Col xl={9}>
+                        <Conditioner.ConnectedCondition dependancy={this.props.question.guid}
+                            index={ind} type={Interf.ComponentCondition.Question} mode={-1} />
+                    </Col>
+                </FormGroup>
+            }
             return <FormGroup row>
                 <Label for="chb2" xl={3}>Выводить если</Label>
                 <Col xl={9}>
                     <Conditioner.ConnectedCondition dependancy={this.props.question.guid}
-                        index={ind} type={Interf.ComponentCondition.Question} mode={-1} />
+                        index={-1} type={Interf.ComponentCondition.Question} mode={-1} />
                 </Col>
             </FormGroup>
         }
-        return <FormGroup row>
-            <Label for="chb2" xl={3}>Выводить если</Label>
-            <Col xl={9}>
-                <Conditioner.ConnectedCondition dependancy={this.props.question.guid}
-                    index={-1} type={Interf.ComponentCondition.Question} mode={-1} />
-            </Col>
-        </FormGroup>
     }
 
     onFullDelete = () => {
@@ -431,10 +440,10 @@ class Answers extends React.Component<SubjecterAttribute, {}> {
                                             </div>
                                         </div>
                                     }}
-                                    placeholder="Выберите значение параметра"></ComboBox.SimpleSelect>
+                                    placeholder="Выберите или создайте значение параметра"></ComboBox.SimpleSelect>
                             </Col>
                         </Row>
-                            <Button color="danger" onClick={this.onFullDelete} size="xs" block><i className="fa fa-trash" ></i> Удалить</Button>
+                            <Button className="answerDeleteButton" color="danger" onClick={this.onFullDelete} size="xs" block><i className="fa fa-trash" ></i> Удалить</Button>
 
                         </div>
                     }

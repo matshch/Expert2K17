@@ -612,11 +612,6 @@ hr
     margin-top: 10px;
 }
 
-.react-selectize.root-node
-{
-    width:inherit;
-    min-width: 150px;
-}
 
 .TestNav
 {
@@ -627,14 +622,7 @@ hr
     min-width: 500px !important;
 }
 
-.conditionColoumn
-{
-    width: 120px;
-}
-.conditionColoumnMain
-{
-    min-width:200px;
-}
+
 
 .listGrouperTest .card
 {
@@ -647,4 +635,97 @@ hr
 
 .listGrouperTest input {
     height: 38px !important;
+}
+
+.answerDeleteButton {
+    margin-top:10px;
+}
+
+
+
+@media screen and (min-width: 992px)
+{
+    .react-selectize.root-node {
+        width: auto;
+        min-width: 100px;
+    }
+
+    .conditionColoumn {
+        width: 120px;
+    }
+
+    .conditionColoumn .react-selectize.root-node {
+        width: 95px;
+        min-width: unset;
+        margin:auto;
+    }
+
+    .conditionColoumnMain {
+        min-width: 200px;
+    }
+
+    .logicUnion .react-selectize.root-node {
+        width: 95px;
+        min-width: unset;
+    }
+}
+
+@media screen and (max-width: 991px) {
+    .react-selectize.root-node {
+        width: auto;
+        min-width: 150px;
+    }
+    .conditionMain .col
+    {
+        flex-basis: unset !important;
+        margin-bottom: 5px;
+    }
+
+    .conditionColoumn .react-selectize.root-node {
+        width: 95px;
+        min-width: unset;
+        margin-left:auto;
+    }
+
+    .logicUnion .react-selectize.root-node {
+        width: 95px;
+        min-width: unset;
+        margin-left: auto;
+    }
+}
+
+
+
+.profileDelete div:first-of-type button.btn {
+    border-bottom-right-radius: 0px;
+    border-top-right-radius: 4px;
+}
+
+.profileDelete div:not(:first-of-type) button.btn {
+    border-bottom-right-radius: 0px;
+    border-top-right-radius: 0px;
+}
+
+.profileDelete a {
+    border-bottom-right-radius: 0px;
+    border-top-right-radius: 0px !important;
+}
+
+
+.deletePanelButtonFormatter{
+    height: auto;
+    margin: auto;
+}
+
+.deletePanelButtonFormatter {
+    height: auto;
+    margin: auto;
+    width:83px;
+}
+
+
+.deletePanelButtonFormatter .fa 
+{
+    padding: 2px;
+    font-size: 11pt;
 }

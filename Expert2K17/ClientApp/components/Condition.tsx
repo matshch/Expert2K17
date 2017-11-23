@@ -442,22 +442,22 @@ class Condition extends React.Component<ConditionProps, {}>{
     render() {
         return <Form>
             <FormGroup>
-                <Row>
-                    <Col xl className="conditionColoumnMain">
+                <Row className='conditionMain'>
+                    <Col lg={5} className="conditionColoumnMain">
                         <ComboBox.SimpleSelect
                             options={this.makeOptionsUnited()}
                             defaultValue={this.defaultValueLeft()}
                             onValueChange={this.onVLeftChange}
                         />
                     </Col>
-                    <Col xl className="conditionColoumn">
+                    <Col lg={2} className="conditionColoumn">
                         <ComboBox.SimpleSelect
                             options={this.prepareActs()}
                             defaultValue={this.defaultValueMiddle()}
                             onValueChange={this.onValueChangeMiddle}
                         />
                     </Col>
-                    <Col xl>
+                    <Col lg={5}>
                         {this.inputReturner()}
                     </Col>
                 </Row>

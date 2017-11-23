@@ -108,11 +108,14 @@ class Logic extends React.Component<ParameterProps, {}>{
                             return <Conditioner.ConnectedCondition dependancy={this.props.logic.guid} key={ind} index={arr[ind]} type={Interf.ComponentCondition.Logic} mode={-1} />
                         }).concat([<Conditioner.ConnectedCondition dependancy={this.props.logic.guid} key={arr.length} index={-1} type={Interf.ComponentCondition.Logic} mode={-1} />])
                 })()}
-                <br/>
-                <ComboBox.SimpleSelect options={this.prepareOptions()}
-                    defaultValue={this.defaultOptioner()}
-                    onValueChange={this.onMiddleChange}
-                />
+                <br />
+                <div className="logicUnion">
+                    <ComboBox.SimpleSelect options={this.prepareOptions()}
+                        defaultValue={this.defaultOptioner()}
+                        onValueChange={this.onMiddleChange}
+                    />
+                </div>
+
                 <br />
                 <h5>ТО</h5>
                 <br />
