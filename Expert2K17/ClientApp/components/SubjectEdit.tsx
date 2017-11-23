@@ -233,7 +233,7 @@ class SubjectToAttribute extends React.Component<SubjecterAttribute, {}> {
                             </div>
                         </div>
                     }}
-                    placeholder="Выберите значение атрибута"></ComboBox.SimpleSelect>
+                    placeholder="Выберите или создайте значение атрибута"></ComboBox.SimpleSelect>
             </CardBody>
         </Card>
     }

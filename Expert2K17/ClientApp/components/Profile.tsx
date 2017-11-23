@@ -5,7 +5,7 @@ import { ApplicationState } from '../store';
 import * as ProfileStore from '../store/Profile';
 import * as Spinner from 'react-spinkit';
 import { Link, NavLink, Route, Redirect } from 'react-router-dom';
-import { Alert, ButtonGroup, Label, ListGroup, ListGroupItem, Card, CardImg, CardText, CardBody, CardTitle, CardSubtitle, Button } from 'reactstrap';
+import { Alert, ButtonGroup, Label, ListGroup, ListGroupItem, Card, CardImg, CardText, CardBody, CardTitle, CardSubtitle, Button, Row } from 'reactstrap';
 import DocumentTitle from 'react-document-title';
 import * as UserStore from '../store/User';
 
@@ -44,6 +44,10 @@ export class Profile extends React.Component<ProfileProps, { showPictureButtons:
 
     SubmitCover = () => {
         this.file2.click()
+    }
+
+    onBasicDelete = (e: string) => {
+        this.props.DeleteTest(e);
     }
 
     private file1: HTMLInputElement;
@@ -86,8 +90,8 @@ export class Profile extends React.Component<ProfileProps, { showPictureButtons:
                             <CardTitle>{this.props.user.userName}</CardTitle>
                             <div className="card-subtitle"><h4>{this.props.user.surname} {this.props.user.name} {this.props.user.patronymic}</h4></div>
                             <h5>Список созданных тестов:</h5>
-                            <ListGroup>
-                                {this.props.TestsList.map(e => <Link className="list-group-item list-group-item-action" to={"/EditTest/" + e.id}>{e.name}</Link>)}
+                            <ListGroup className="profileDelete">
+                                {this.props.TestsList.map((e, ind) => <ButtonGroup key={ind}><Link className="list-group-item list-group-item-action" to={"/EditTest/" + e.id}>{e.name}</Link><Button onClick={() => this.onBasicDelete(e.id)} color="danger"><i className="fa fa-trash" ></i></Button></ButtonGroup>)}
                             </ListGroup>
                         </CardBody>
                         <input ref={(input) => this.file1 = input} accept="image/png,image/gif,image/jpeg" onChange={this.profilePictureChanged} type="file" />
