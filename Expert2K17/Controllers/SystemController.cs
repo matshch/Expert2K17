@@ -68,7 +68,7 @@ namespace Expert2K17.Controllers
 
         // DELETE: api/system/delete/cee8e768-6490-45a8-9848-090c7a89878a
         [HttpDelete("{id}")]
-        public async Task<MyResponse> Remove(Guid id)
+        public async Task<MyResponse> Delete(Guid id)
         {
             var response = new MyResponse();
             var (system, error) = await GetPrepare(id.ToString());
