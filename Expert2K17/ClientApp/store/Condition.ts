@@ -1,7 +1,7 @@
 ﻿// A '.tsx' file enables JSX support in the TypeScript compiler, 
 // for more information see the following page on the TypeScript wiki:
 // https://github.com/Microsoft/TypeScript/wiki/JSX
-import { Condition, Operation, ComponentCondition, ParameterPair } from './TestInterfaces'
+import { Condition, Operation, ComponentCondition, ParameterPair, Question } from './TestInterfaces'
 import { fetch, addTask } from 'domain-task';
 import { Action, Reducer, ActionCreator } from 'redux';
 import { AppThunkAction } from './';
@@ -85,6 +85,11 @@ interface DeleteAdditionalConditionsAction {
     conditionGuid: string
 }
 
+interface SyncQuestionAction {
+    type: 'SYNC_QUESTION';
+    question: Question;
+}
+
 // Declare a 'discriminated union' type. This guarantees that all references to 'type' properties contain one of the
 // declared type strings (and not any other arbitrary string).
 type KnownAction = AddConditionAction | SyncConditionAction | LoadSystemAction | DeletePairAction | DeleteAdditionalConditionsAction;
@@ -136,6 +141,20 @@ export const actionCreators = {
         dispatch({ type: 'SYNC_CONDITION', condition: condition_ });
     },
     deleteCondition: (guid: string): AppThunkAction<KnownAction> => (dispatch, getState) => {
+        dispatch({ type: 'DELETE_QUESTIONCONDITION', conditionGuid: guid });
+    },
+    deleteQuestionCondition: (guid: string): AppThunkAction<KnownAction | SyncQuestionAction> => (dispatch, getState) => {
+       let question = getState().combinedSystem.questions.find(e=>{
+           if(e.cast_if == guid){
+               return true;
+           }
+           return false;
+       })
+       let newQuestion = {
+           ...question,
+           cast_if: ''
+       }
+        dispatch({type:'SYNC_QUESTION', question: newQuestion})
         dispatch({ type: 'DELETE_QUESTIONCONDITION', conditionGuid: guid });
     }
 };
