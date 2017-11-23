@@ -97,6 +97,12 @@ class UsersPanel extends React.Component<PanelUsersProps, {}> {
         /*Отправляю дерьмо*/
         this.props.GetUsersList();
     }
+
+    onFullDelete = (id: string) => {
+
+
+    }
+
     public render() {
         const columns = [{ key: 'id', name: 'ID', resizable: true, filterable: true },
         { key: 'userName', name: 'Имя пользователя', resizable: true, filterable: true, sortable: true, editable: true },
@@ -104,7 +110,16 @@ class UsersPanel extends React.Component<PanelUsersProps, {}> {
         { key: 'name', name: 'Имя', resizable: true, filterable: true, sortable: true, editable: true },
         { key: 'patronymic', name: 'Отчество', resizable: true, filterable: true, sortable: true, editable: true },
         { key: 'group', name: 'Группа', resizable: true, filterable: true, sortable: true, editable: true },
-        { key: 'year', name: 'Год', resizable: true, filterable: true, sortable: true, editable: true, filterRenderer: Filters.NumericFilter }];
+        { key: 'year', name: 'Год', resizable: true, filterable: true, sortable: true, editable: true, filterRenderer: Filters.NumericFilter },
+        {
+            key: 'deleteButtons',
+            name: 'Удаление',
+            width: 100,
+            resizable: true,
+            getRowMetaData: (row: any) => row,
+            formatter: ({ ...dependentValues }) => (<Button className="deletePanelButtonFormatter" onClick={() => this.onFullDelete(dependentValues.id)} color="danger"><i className="fa fa-trash" ></i></Button>) 
+        }
+        ];
         return (<div><Table handleGridRowsUpdated={this.handleGridRowsUpdated} rows={this.getRows()} columns={columns} /></div>);
     }
 }
@@ -121,6 +136,11 @@ class TestsPanel extends React.Component<PanelUsersProps, {}> {
     getRows = () => {
         return this.props.TestsList.map(e => ({ ...e, username: e.user.username }));
     }
+
+    onFullDelete = (guid: string) => {
+
+    }
+
     handleGridRowsUpdated = ({ fromRow, toRow, updated }: any) => {
         let rows = this.getRows().slice();
 
@@ -136,7 +156,15 @@ class TestsPanel extends React.Component<PanelUsersProps, {}> {
         const columns = [{ key: 'id', name: 'ID', resizable: true, filterable: true },
         { key: 'name', name: 'Название', resizable: true, filterable: true, sortable: true, editable: true },
         { key: 'description', name: 'Описание', resizable: true, filterable: true, sortable: true, editable: true },
-        { key: 'username', name: 'Имя пользователя', resizable: true, filterable: true, sortable: true, editable: true }];
+        { key: 'username', name: 'Имя пользователя', resizable: true, filterable: true, sortable: true, editable: true },
+        {
+            key: 'deleteButtons',
+            name: 'Удаление',
+            width: 100,
+            resizable: true,
+            getRowMetaData: (row: any) => row,
+            formatter: ({ ...dependentValues }) => (<Button className="deletePanelButtonFormatter" onClick={() => this.onFullDelete(dependentValues.id)} color="danger"><i className="fa fa-trash" ></i></Button>)
+        }];
         return (<div><Table handleGridRowsUpdated={this.handleGridRowsUpdated} rows={this.getRows()} columns={columns} /></div>);
     }
 }
@@ -153,6 +181,11 @@ class GroupsPanel extends React.Component<PanelGroupsProps, {}> {
     getRows = () => {
         return [].concat(...this.props.GroupsYearsObject.map(e => e.groups.map(i => ({ group: i, year: e.year }))));
     }
+
+    onFullDelete = (guid: string) => {
+
+    }
+
     handleGridRowsUpdated = ({ fromRow, toRow, updated }: any) => {
         let rows = this.getRows().slice();
 
@@ -166,7 +199,15 @@ class GroupsPanel extends React.Component<PanelGroupsProps, {}> {
     }
     public render() {
         const columns = [{ key: 'group', name: 'Группа', resizable: true, filterable: true, sortable: true },
-        { key: 'year', name: 'Год', resizable: true, filterable: true, sortable: true, filterRenderer: Filters.NumericFilter }];
+            { key: 'year', name: 'Год', resizable: true, filterable: true, sortable: true, filterRenderer: Filters.NumericFilter },
+            {
+                key: 'deleteButtons',
+                name: 'Удаление',
+                width: 100,
+                resizable: true,
+                getRowMetaData: (row: any) => row,
+                formatter: ({ ...dependentValues }) => (<Button className="deletePanelButtonFormatter" onClick={() => this.onFullDelete(dependentValues.id)} color="danger"><i className="fa fa-trash" ></i></Button>)
+            }];
         return (<div><Table handleGridRowsUpdated={this.handleGridRowsUpdated} rows={this.getRows()} columns={columns} /></div>);
     }
 }

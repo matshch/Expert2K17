@@ -710,3 +710,22 @@ hr
     border-bottom-right-radius: 0px;
     border-top-right-radius: 0px !important;
 }
+
+
+.deletePanelButtonFormatter{
+    height: auto;
+    margin: auto;
+}
+
+.deletePanelButtonFormatter {
+    height: auto;
+    margin: auto;
+    width:83px;
+}
+
+
+.deletePanelButtonFormatter .fa 
+{
+    padding: 2px;
+    font-size: 11pt;
+}
