@@ -348,7 +348,8 @@ export const reducer: Reducer<TestStore> = (state: TestStore, action: KnownActio
                 oldTest = newTest;
                 newTest = {
                     ...newTest,
-                    answeredParameters: newTest.answeredParameters.map(e => e.reasons.length > 0 ? {...e, reasons: []} : e)
+                    answeredAttributes: newTest.answeredAttributes.map(e => e.reasons.length > 0 ? { ...e, reasons: [] } : e),
+                    answeredParameters: newTest.answeredParameters.map(e => e.reasons.length > 0 ? { ...e, reasons: [] } : e)
                 };
                 newTest = newTest.logics.reduce((test, rule) => {
                     if ((rule.operation === LogicOperation.And &&
@@ -438,9 +439,10 @@ export const reducer: Reducer<TestStore> = (state: TestStore, action: KnownActio
                                     } else if (oldParam.set) {
                                         return test;
                                     } else {
+                                        var sum = oldParam.reasons.reduce((e, n) => e + n, 0);
                                         par = {
                                             ...par,
-                                            value: (parseFloat(oldParam.value) + parseFloat(then.right)).toString(),
+                                            value: (sum + parseFloat(then.right)).toString(),
                                             set: false,
                                             reasons: [...oldParam.reasons, parseFloat(then.right)]
                                         };
@@ -466,9 +468,10 @@ export const reducer: Reducer<TestStore> = (state: TestStore, action: KnownActio
                                     } else if (oldParam.set) {
                                         return test;
                                     } else {
+                                        var sum = oldParam.reasons.reduce((e, n) => e + n, 0);
                                         par = {
                                             ...par,
-                                            value: (parseFloat(oldParam.value) - parseFloat(then.right)).toString(),
+                                            value: (sum - parseFloat(then.right)).toString(),
                                             set: false,
                                             reasons: [...oldParam.reasons, -parseFloat(then.right)]
                                         };
@@ -514,26 +517,22 @@ export const reducer: Reducer<TestStore> = (state: TestStore, action: KnownActio
             console.log("Recalc done.");
             const newQuestions : AskedQuestion[] = [];
             newTest.questions.forEach(q => {
-                if (!newTest.askedQuestions.some(e => e.guid === q.guid)) {
-                    let after = q.cast_after === "";
-                    let ifq = q.cast_if === "";
-                    if (!after && newTest.answers.some(e => e.question_guid === q.cast_after)) {
-                        after = true;
-                    }
-                    if (!ifq && getLogicConditionResult(newTest, q.cast_if)) {
-                        ifq = true;
-                    }
-                    if (after && ifq) {
-                        newQuestions.push(toAskedQuestion(q));
-                    }
+                let after = q.cast_after === "";
+                let ifq = q.cast_if === "";
+                if (!after && newTest.answers.some(e => e.question_guid === q.cast_after)) {
+                    after = true;
+                }
+                if (!ifq && getLogicConditionResult(newTest, q.cast_if)) {
+                    ifq = true;
+                }
+                if (after && ifq) {
+                    newQuestions.push(toAskedQuestion(q));
                 }
             });
-            if (newQuestions.length > 0) {
-                newTest = {
-                    ...newTest,
-                    askedQuestions: [...newTest.askedQuestions, ...newQuestions]
-                };
-            }
+            newTest = {
+                ...newTest,
+                askedQuestions: newQuestions
+            };
             let changed = false;
             newTest.objects.forEach((o, i) => {
                 const results = o.attributes.map((e => {
