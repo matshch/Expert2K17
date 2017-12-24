@@ -35,7 +35,7 @@ export default class About extends React.Component<AboutProps, {}> {
                             <div className="content">
                                 <h1>Лясковский М.А.</h1>
                                 <div className="social">
-                                    <a href="https://github.com/MaxAvatar007" target="_blank"><i className="fa fa-github px-3" aria-hidden="true"></i></a>
+                                    <a href="https://github.com/NyaBit" target="_blank"><i className="fa fa-github px-3" aria-hidden="true"></i></a>
                                     <a href="https://t.me/maxavatar" target="_blank"><i className="fa fa-telegram px-3" aria-hidden="true"></i></a>
                                     <a href="https://vk.com/MaxAvatar" target="_blank"><i className="fa fa-vk px-3" aria-hidden="true"></i></a>
                                     <a href="mailto:maxavatar007@gmail.com" target="_blank"><i className="fa fa-envelope px-3" aria-hidden="true"></i></a>
