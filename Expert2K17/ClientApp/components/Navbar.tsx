@@ -2,12 +2,13 @@ import * as React from 'react';
 import { Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, NavLink as NavBarLink } from 'reactstrap';
 import { ApplicationState } from '../store';
 import * as UserStore from '../store/User';
-import { NavLink, Link, withRouter } from 'react-router-dom';
+import { NavLink, Link, RouteComponentProps, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 type NavBarProps =
     UserStore.UserState
-    & typeof UserStore.actionCreators;
+    & typeof UserStore.actionCreators
+    & RouteComponentProps<{}>;
 
 class NavBar extends React.Component<NavBarProps, { isOpen: boolean }> {
   constructor(props: NavBarProps) {
