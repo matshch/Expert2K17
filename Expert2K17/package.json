@@ -66,7 +66,7 @@
     "aspnet-webpack-react": "^3.0.0",
     "autoprefixer": "^7.2.5",
     "awesome-typescript-loader": "^3.4.1",
-    "bootstrap": "^4.0.0-beta.2",
+    "bootstrap": "^4.0.0-beta.3",
     "cp-file-cli": "^1.0.1",
     "create-react-class": "^15.6.2",
     "css-loader": "^0.28.8",
