@@ -50,31 +50,25 @@ export class Test extends React.Component<TestProps, {}> {
                                                     <h1>{e.question}</h1><hr />
                                                 </div>
                                                 <div>
-                                                    {(() => {
-                                                        if (e.type === QuestionType.Variety) {
-                                                            return (
-                                                                <Form>
-                                                                    <FormGroup>
-                                                                        <legend>Выберите один из вариантов:</legend>
-                                                                        <FormGroup check>
-                                                                            {e.answers.map((a, i) => (<div><div className="radioButton">
-                                                                                <Input onChange={() => this.props.answerQuestion(e.guid, i)} key={i} type="radio" name={e.guid} /></div>
-                                                                                <div className="radioLabel"><div>{a}</div></div></div>
-                                                                            ))}
-                                                                        </FormGroup>
-                                                                    </FormGroup>
-                                                                </Form>
-                                                            )
-                                                        } else {
-                                                            return (
-                                                                <Form>
-                                                                    <FormGroup>
-                                                                        <Input onChange={() => (g: React.ChangeEvent<HTMLInputElement>) => this.props.answerQuestion(e.guid, g.target.value)} type="text" name="inputLabel" id="inputLabel" placeholder="Введите свой ответ" />
-                                                                    </FormGroup>
-                                                                </Form>
-                                                            )
-                                                        }
-                                                    })()}
+                                                    {e.type === QuestionType.Variety ?
+                                                        <Form>
+                                                            <FormGroup>
+                                                                <legend>Выберите один из вариантов:</legend>
+                                                                <FormGroup check>
+                                                                    {e.answers.map((a, i) => (<div><div className="radioButton">
+                                                                        <Input onChange={() => this.props.answerQuestion(e.guid, i)} key={i} type="radio" name={e.guid} /></div>
+                                                                        <div className="radioLabel"><div>{a}</div></div></div>
+                                                                    ))}
+                                                                </FormGroup>
+                                                            </FormGroup>
+                                                        </Form>
+                                                        : 
+                                                        <Form>
+                                                            <FormGroup>
+                                                                <Input onChange={() => (g: React.ChangeEvent<HTMLInputElement>) => this.props.answerQuestion(e.guid, g.target.value)} type="text" name="inputLabel" id="inputLabel" placeholder="Введите свой ответ" />
+                                                            </FormGroup>
+                                                        </Form>
+                                                    }
                                                 </div>
                                             </CardBody>
                                         </Card>

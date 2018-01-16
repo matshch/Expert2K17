@@ -57,22 +57,20 @@ export class Panel extends React.Component<PanelProps, { modal: boolean, showPic
         }
         return (
             <DocumentTitle title="Панель управления">
-                <div>
-                    <div className="flex-container">
-                        <Card className="panel">
-                            <CardBody>
-                                <div className="card-title">
-                                    <h3>Панель управления</h3> <h4>Добро пожаловать, {this.props.user.userName}</h4>
-                                </div>
-                                <Tabs />
-                                <div>
-                                    <Route path='/panel/users' component={ConnectedUsersPanel} />
-                                    <Route path='/panel/tests' component={ConnectedTestsPanel} />
-                                    <Route path='/panel/groups' component={ConnectedGroupsPanel} />
-                                </div>
-                            </CardBody>
-                        </Card>
-                    </div>
+                <div className="flex-container">
+                    <Card className="panel">
+                        <CardBody>
+                            <div className="card-title">
+                                <h3>Панель управления</h3> <h4>Добро пожаловать, {this.props.user.userName}</h4>
+                            </div>
+                            <Tabs />
+                            <div>
+                                <Route path='/panel/users' component={ConnectedUsersPanel} />
+                                <Route path='/panel/tests' component={ConnectedTestsPanel} />
+                                <Route path='/panel/groups' component={ConnectedGroupsPanel} />
+                            </div>
+                        </CardBody>
+                    </Card>
                 </div>
             </DocumentTitle>
         );
@@ -300,19 +298,17 @@ export class Tabs extends React.Component<{}, { dropdownOpen: boolean }> {
 
     render() {
         return (
-            <div>
-                <Nav pills>
-                    <NavItem>
-                        <NavLink to="/panel/users" className='nav-link' activeClassName='active'>Пользователи</NavLink>
-                    </NavItem>
-                    <NavItem>
-                        <NavLink to="/panel/tests" className='nav-link' activeClassName='active'>Тесты</NavLink>
-                    </NavItem>
-                    <NavItem>
-                        <NavLink to="/panel/groups" className='nav-link' activeClassName='active'>Группы</NavLink>
-                    </NavItem>
-                </Nav>
-            </div>
+            <Nav pills>
+                <NavItem>
+                    <NavLink to="/panel/users" className='nav-link' activeClassName='active'>Пользователи</NavLink>
+                </NavItem>
+                <NavItem>
+                    <NavLink to="/panel/tests" className='nav-link' activeClassName='active'>Тесты</NavLink>
+                </NavItem>
+                <NavItem>
+                    <NavLink to="/panel/groups" className='nav-link' activeClassName='active'>Группы</NavLink>
+                </NavItem>
+            </Nav>
         );
     }
 }
