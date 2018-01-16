@@ -1,4 +1,4 @@
-import { createStore, applyMiddleware, compose, combineReducers, GenericStoreEnhancer, Store, StoreEnhancerStoreCreator, ReducersMapObject } from 'redux';
+import { createStore, applyMiddleware, compose, combineReducers, GenericStoreEnhancer, Reducer, Store, StoreEnhancerStoreCreator, ReducersMapObject } from 'redux';
 import thunk from 'redux-thunk';
 import { routerReducer, routerMiddleware } from 'react-router-redux';
 import * as StoreModule from './store';
@@ -9,15 +9,14 @@ export default function configureStore(history: History, initialState?: Applicat
     // Build middleware. These are functions that can process the actions before they reach the store.
     const windowIfDefined = typeof window === 'undefined' ? null : window as any;
     // If devTools is installed, connect to it
-    const devToolsExtension = windowIfDefined && windowIfDefined.devToolsExtension as () => GenericStoreEnhancer;
-    const createStoreWithMiddleware = compose(
-        applyMiddleware(thunk, routerMiddleware(history)),
-        devToolsExtension ? devToolsExtension() : <S>(next: StoreEnhancerStoreCreator<S>) => next
-    )(createStore);
+    const composeEnhancers = windowIfDefined && windowIfDefined.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+    console.log('In case of "TypeError: Cannot read property \'state\' of undefined": disable Redux DevTools');
 
     // Combine all reducers and instantiate the app-wide store instance
     const allReducers = buildRootReducer(reducers);
-    const store = createStoreWithMiddleware(allReducers, initialState) as Store<ApplicationState>;
+    const store = createStore(allReducers, initialState, composeEnhancers(
+        applyMiddleware(thunk, routerMiddleware(history))
+    ));
 
     // Enable Webpack hot module replacement for reducers
     if (module.hot) {
@@ -31,5 +30,5 @@ export default function configureStore(history: History, initialState?: Applicat
 }
 
 function buildRootReducer(allReducers: ReducersMapObject) {
-    return combineReducers<ApplicationState>(Object.assign({}, allReducers, { routing: routerReducer }));
+    return combineReducers<ApplicationState>({...allReducers, routing: routerReducer} as any);
 }

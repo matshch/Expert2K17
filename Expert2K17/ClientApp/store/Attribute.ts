@@ -40,7 +40,7 @@ interface ChangePairAction {
 }
 // Declare a 'discriminated union' type. This guarantees that all references to 'type' properties contain one of the
 // declared type strings (and not any other arbitrary string).
-type KnownAction = SyncConditionAction | AddConditionAction | DeleteAttributeAction | LoadSystemAction;
+export type KnownAction = SyncConditionAction | AddConditionAction | DeleteAttributeAction | LoadSystemAction;
 
 // ----------------
 // REDUCER - For a given state and action, returns the new state. To support time travel, this must not mutate the old state.
@@ -74,7 +74,7 @@ export const unloadedState: Attribute[] =
     []
 ;
 
-export const reducer: Reducer<Attribute[]> = (state: Attribute[], action: KnownAction) => {
+export const reducer: Reducer<Attribute[], KnownAction> = (state, action) => {
     switch (action.type) {
         case "ADD_ATTRIBUTE":
             return [...state, action.attribute];

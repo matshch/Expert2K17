@@ -92,7 +92,7 @@ interface SyncQuestionAction {
 
 // Declare a 'discriminated union' type. This guarantees that all references to 'type' properties contain one of the
 // declared type strings (and not any other arbitrary string).
-type KnownAction = AddConditionAction | SyncConditionAction | LoadSystemAction | DeletePairAction | DeleteAdditionalConditionsAction;
+export type KnownAction = AddConditionAction | SyncConditionAction | LoadSystemAction | DeletePairAction | DeleteAdditionalConditionsAction;
 
 // ----------------
 // REDUCER - For a given state and action, returns the new state. To support time travel, this must not mutate the old state.
@@ -163,7 +163,7 @@ export const actionCreators = {
 
 export const unloadedState: Condition[] = [];
 
-export const reducer: Reducer<Condition[]> = (state: Condition[], action: KnownAction) => {
+export const reducer: Reducer<Condition[], KnownAction> = (state, action) => {
     switch (action.type) {
         case "DELETE_QUESTIONCONDITION":
             return state.filter((e)=>{

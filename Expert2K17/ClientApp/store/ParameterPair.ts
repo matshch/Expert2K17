@@ -53,7 +53,7 @@ interface DeletePairAction {
 
 // Declare a 'discriminated union' type. This guarantees that all references to 'type' properties contain one of the
 // declared type strings (and not any other arbitrary string).
-type KnownAction = AddPairAction | UnPairAction | SetPairAction | LoadSystemAction | DeleteParameterAction | SyncPairAction | DeletePairAction;
+export type KnownAction = AddPairAction | UnPairAction | SetPairAction | LoadSystemAction | DeleteParameterAction | SyncPairAction | DeletePairAction;
 
 // ----------------
 // REDUCER - For a given state and action, returns the new state. To support time travel, this must not mutate the old state.
@@ -73,7 +73,7 @@ export const actionCreators = {
 
 export const unloadedState: ParameterPair[] = [];
 
-export const reducer: Reducer<ParameterPair[]> = (state: ParameterPair[], action: KnownAction) => {
+export const reducer: Reducer<ParameterPair[], KnownAction> = (state, action) => {
     switch (action.type) {
         case "UN_PARPAIR":
             return state.filter((e, ind) => {

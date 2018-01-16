@@ -47,7 +47,7 @@ interface DeleteLogicAction {
 
 // Declare a 'discriminated union' type. This guarantees that all references to 'type' properties contain one of the
 // declared type strings (and not any other arbitrary string).
-type KnownAction = SyncLogicAction | AddLogicAction | LinkResultAction | LinkLogicAction | LoadSystemAction | DeleteLogicAction;
+export type KnownAction = SyncLogicAction | AddLogicAction | LinkResultAction | LinkLogicAction | LoadSystemAction | DeleteLogicAction;
 
 // ----------------
 // REDUCER - For a given state and action, returns the new state. To support time travel, this must not mutate the old state.
@@ -73,7 +73,7 @@ export const actionCreators = {
 
 export const unloadedState: Logic[] = [];
 
-export const reducer: Reducer<Logic[]> = (state: Logic[], action: KnownAction) => {
+export const reducer: Reducer<Logic[], KnownAction> = (state, action) => {
     switch (action.type) {
         case "ADD_LOGIC":
             return [...state, action.logic];

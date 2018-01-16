@@ -6,13 +6,8 @@ export function fetch(url: string | Request, init?: RequestInit): Promise<any> {
     if (cookie === null) {
         return oldFetch(url, init);
     }
-    if (init == undefined || init == null) {
-        init = {};
-    }
-    if (init.headers == undefined || init.headers == null) {
-        init.headers = {};
-    }
-    init.headers["Cookie"] = cookie;
+
+    init = {...init, headers: {...init.headers, Cookie: cookie}};
     return oldFetch(url, init);
 }
 

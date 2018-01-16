@@ -41,7 +41,7 @@ export
         return <DocumentTitle title='Создание системы — ЭЗ ПЕЗ'>
             <Row>
                 <Col md={4} lg={3}>
-                    <FixedConnectedTestCreaterNav link={this.props.match.params.id} />
+                    <FixedConnectedTestCreaterNav link={this.props.match.params.id} { ...({} as RouteComponentProps<{}>) } />
                 </Col>
                 <Col md={8} lg={9} className="testColoumnContainer">
                     <Route path='/CreateTest/new' component={Systemer.ConnectedTestSystemCreater} />
@@ -66,6 +66,7 @@ type NavProps =
     Interf.System
     &
     typeof Store.actionCreators
+    & RouteComponentProps<{}>;
 
 
 export class TestCreaterNav extends React.Component<NavProps, {}>{
@@ -135,11 +136,6 @@ export class TestCreaterNav extends React.Component<NavProps, {}>{
 
 let ConnectedTestCreaterNav = connect((store: ApplicationState) => store.combinedSystem.system, Store.actionCreators)(TestCreaterNav);
 let FixedConnectedTestCreaterNav = withRouter(ConnectedTestCreaterNav);
-
-interface linker {
-    link: string;
-}
-
 
 // Wire up the React component to the Redux store
 export default connect(

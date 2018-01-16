@@ -29,7 +29,7 @@ interface DeleteParameterAction {
 }
 // Declare a 'discriminated union' type. This guarantees that all references to 'type' properties contain one of the
 // declared type strings (and not any other arbitrary string).
-type KnownAction = SyncConditionAction | AddConditioParameternAction | LoadSystemAction | DeleteParameterAction;
+export type KnownAction = SyncConditionAction | AddConditioParameternAction | LoadSystemAction | DeleteParameterAction;
 
 // ----------------
 // REDUCER - For a given state and action, returns the new state. To support time travel, this must not mutate the old state.
@@ -55,7 +55,7 @@ export const actionCreators = {
 
 export const unloadedState: Parameter[] =  [];
 
-export const reducer: Reducer<Parameter[]> = (state: Parameter[], action: KnownAction) => {
+export const reducer: Reducer<Parameter[], KnownAction> = (state, action) => {
     switch (action.type) {
         case "ADD_PARAMETER":
             return [...state, action.parameter]

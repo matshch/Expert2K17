@@ -42,42 +42,28 @@ export const reducers = {
     logics: LogicS.reducer
 };
 
-interface LoadPreviousAction {
-    type: 'LOAD_SYSTEM_PREVIOUS';
-}
-interface AddSystemAction {
-    type: 'SYNC_SUBJECT1';
-}
-interface ClearSystemAction {
-    type: 'CLEAR_STORE';
-}
+type DefaultActions = SystemS.KnownAction |
+                      AttributeS.KnownAction |
+                      SubjectS.KnownAction |
+                      PairS.KnownAction |
+                      ParameterS.KnownAction |
+                      ParPairsS.KnownAction |
+                      QuestionS.KnownAction |
+                      ConditionS.KnownAction |
+                      LogicS.KnownAction;
 
-export const actionCreators = {
-    loadPreviousSystem: (): AppThunkAction<KnownAction> => (dispatch, getState) => {
-        dispatch({ type: 'LOAD_SYSTEM_PREVIOUS'});
-    },
-    syncSystem: (): AppThunkAction<KnownAction> => (dispatch, getState) => {
-        dispatch({ type: 'SYNC_SUBJECT1' });
-    },
-    addAttribute: (attr: FormData): AppThunkAction<KnownAction> => (dispatch, getState) => {
+let defaultReducer = combineReducers<SystemCreateState>(reducers as any);
 
-    }
-};
-
-
-let defaultReducer = combineReducers<SystemCreateState>(reducers);
-
-type KnownAction = LoadPreviousAction | AddSystemAction | ClearSystemAction;
+type KnownActions = SystemS.ClearSystemAction;
 
 function CollectState(state: SystemCreateState) {
     return JSON.stringify(state);
 }
 
-export const reducer: Reducer<SystemCreateState> = (state: SystemCreateState, action: KnownAction) => {
+export const reducer: Reducer<SystemCreateState, KnownActions | DefaultActions> = (state, action) => {
     switch (action.type) {
         case "CLEAR_STORE":
-            let kek;
-            return defaultReducer(kek, action);
+            return defaultReducer(undefined, action);
         default:
             let new_state = defaultReducer(state, action);
             if (new_state.system.guid != '') {

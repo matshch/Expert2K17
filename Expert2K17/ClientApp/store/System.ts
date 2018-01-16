@@ -22,12 +22,12 @@ interface LoadSystemAction {
     type: 'LOAD_SYSTEM';
     system: SystemCreateState;
 }
-interface ClearSystemAction {
+export interface ClearSystemAction {
     type: 'CLEAR_STORE';
 }
 // Declare a 'discriminated union' type. This guarantees that all references to 'type' properties contain one of the
 // declared type strings (and not any other arbitrary string).
-type KnownAction = SyncSystemAction | AddSystemAction | LoadSystemAction;
+export type KnownAction = SyncSystemAction | AddSystemAction | LoadSystemAction;
 
 function CollectState(state: SystemCreateState) {
     return JSON.stringify(state);
@@ -52,7 +52,7 @@ export const actionCreators = {
     syncSystem: (sys: System): AppThunkAction<KnownAction> => (dispatch, getState) => {
         dispatch({ type: "SYNC_SYSTEM", system: sys });
     },
-    clearSystem: (): AppThunkAction<KnownAction | ClearSystemAction> => (dispatch, getState) => {
+    clearSystem: (): AppThunkAction<ClearSystemAction> => (dispatch, getState) => {
         dispatch({ type: "CLEAR_STORE"});
     },
     saveSystem: (): AppThunkAction<KnownAction> => (dispatch, getState) => {
@@ -115,7 +115,7 @@ export const unloadedState: System = {
     guid: '',
 };
 
-export const reducer: Reducer<System> = (state: System, action: KnownAction) => {
+export const reducer: Reducer<System, KnownAction> = (state, action) => {
     switch (action.type) {
         case "ADD_SYSTEM":
             return action.system              

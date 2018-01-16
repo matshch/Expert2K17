@@ -93,7 +93,7 @@ interface SortDownAction {
 
 // Declare a 'discriminated union' type. This guarantees that all references to 'type' properties contain one of the
 // declared type strings (and not any other arbitrary string).
-type KnownAction = SyncQuestionAction | AddQuestionAction | AddAnswerAction | SyncAnswerAction |
+export type KnownAction = SyncQuestionAction | AddQuestionAction | AddAnswerAction | SyncAnswerAction |
     ChangeParameterAction | LoadSystemAction | LinkQuestionAction | DeleteQuestionAction | DeleteAnswerAction | DeletePairAction |
     SortUpAction | SortDownAction;
 // ----------------
@@ -218,7 +218,7 @@ export const actionCreators = {
 
 export const unloadedState: Question[] = [];
 
-export const reducer: Reducer<Question[]> = (state: Question[], action: KnownAction) => {
+export const reducer: Reducer<Question[], KnownAction> = (state, action) => {
     switch (action.type) {
         case "ADD_QUESTION":
             return [...state, { ...action.question }];
